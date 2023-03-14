@@ -1,39 +1,55 @@
+import { useState } from 'react'
+import Switch from 'react-switch'
 import Avatar from '../../avatar'
 
 const UserDetails = ({ selectedUser }) => {
+  const [checked, setChecked] = useState<boolean>(false)
   return (
     <div className="w-1/5 h-full px-2 py-3">
       {selectedUser && (
         <>
-          {selectedUser.logo ? (
-            <img
-              src={selectedUser.logo}
-              className="w-12 h-12 bg-white rounded-full shadow-lg m-auto"
-            />
-          ) : (
-            <Avatar
-              className="rounded-full shadow-lg m-auto"
-              width="30px"
-              height="30px"
-              title={selectedUser.username}
-            />
-          )}
-          <p className="font-bold text-lg text-center mt-2">
-            {selectedUser.username}
-          </p>
-          <p className="text-sm font-bold mt-4">Contact Details:</p>
-          <div className="flex flex-row gap-2 my-3">
-            <div className="bg-black/5 rounded-full p-[7px] w-8 h-8 shadow-lg">
-              <img src="/assets/email.png"></img>
-            </div>
-            <p className="text-sm my-auto break-all">{selectedUser.email}</p>
+          <div className="flex items-center">
+            {selectedUser.logo ? (
+              <img
+                src={selectedUser.logo}
+                className="w-[30px] h-[30px] bg-white rounded-full"
+              />
+            ) : (
+              <Avatar
+                className="rounded-full"
+                width="30px"
+                height="30px"
+                title={selectedUser.username}
+              />
+            )}
+            <p className="font-semibold text-lg text-center ml-2">
+              {selectedUser.username}
+            </p>
           </div>
-          <div className="flex flex-row gap-2">
-            <div className="bg-black/5 rounded-full p-[7px] w-8 h-8 shadow-lg">
-              <img src="/assets/location.png"></img>
-            </div>
-            <p className="text-sm my-auto break-all">{selectedUser.location}</p>
+
+          <p className="font-semibold text-sm mt-5 mb-3">Username</p>
+          <p className="text-gray text-sm my-3">@{selectedUser.username}</p>
+
+          <p className="font-semibold text-sm my-3">Bio</p>
+          <p className="text-gray text-sm my-3">I like talk shows</p>
+
+          <div className="my-5 flex justify-between items-center">
+            <p className="font-semibold text-md">Notifications</p>
+            <Switch
+              onChange={() => setChecked(!checked)}
+              checked={checked}
+              checkedIcon={false}
+              uncheckedIcon={false}
+              handleDiameter={15}
+              offColor="#7E38B7"
+              onColor="#7E38B7"
+              width={38}
+              height={20}
+            />
           </div>
+          <p className="text-sm my-3 text-purple">Block User</p>
+          <p className="text-sm my-3 text-purple">Clear History</p>
+          <p className="text-sm my-3 text-purple">Delete Conversation</p>
         </>
       )}
     </div>

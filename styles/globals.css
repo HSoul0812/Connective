@@ -228,3 +228,8 @@ button:disabled {
 span:has(.signin-image) > span > img {
   max-height: calc(100vh - 64px) !important;
 }
+
+.switch-toggle-button > input:checked ~ .dot {
+  transform: translateX(100%);
+  background-color: #48bb78;
+}

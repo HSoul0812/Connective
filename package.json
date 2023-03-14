@@ -40,6 +40,7 @@
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.2",
     "react-select": "^5.5.0",
+    "react-switch": "^7.0.0",
     "recache-client": "^0.9.63",
     "socket.io-client": "^4.5.4",
     "sparkpost": "^2.1.4",
