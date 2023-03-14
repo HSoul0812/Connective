@@ -1,151 +1,151 @@
-import axios from "axios";
-import { signOut, useSession } from "next-auth/react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import axios from 'axios'
+import { signOut, useSession } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import {
   MouseEventHandler,
   useCallback,
   useContext,
   useEffect,
   useState,
-} from "react";
-import { MessagesContext } from "../../pages/app/messages";
-import { io } from "socket.io-client";
-import { Events } from "../../common/events";
-import { Conversation } from "../../types/types";
-import { MessagesApiResponse } from "../../types/apiResponseTypes";
+} from 'react'
+import { MessagesContext } from '../../pages/app/messages'
+import { io } from 'socket.io-client'
+import { Events } from '../../common/events'
+import { Conversation } from '../../types/types'
+import { MessagesApiResponse } from '../../types/apiResponseTypes'
 
 type Props = {
-  text: string;
-  text2?: string | number;
-  route?: string | URL;
-  icon: string;
-  onClick?: MouseEventHandler<HTMLDivElement>;
-  target?: string;
-};
+  text: string
+  text2?: string | number
+  route?: string | URL
+  icon: string
+  onClick?: MouseEventHandler<HTMLDivElement>
+  target?: string
+}
 
-let socketIO;
+let socketIO
 
 const SidebarItem = ({
   text,
-  text2 = "",
-  route = "",
+  text2 = '',
+  route = '',
   icon,
   onClick = undefined,
   target = undefined,
 }: Props) => {
-  const router = useRouter();
+  const router = useRouter()
 
-  let selected = router.route == route;
-  if (typeof onClick == "undefined") {
+  let selected = router.route == route
+  if (typeof onClick == 'undefined') {
     onClick = () => {
-      router.push(route);
-    };
+      router.push(route)
+    }
   }
-  if (typeof target != "undefined") {
+  if (typeof target != 'undefined') {
     onClick = () => {
-      window.open(route, "_blank");
-    };
+      window.open(route, '_blank')
+    }
   }
 
   return (
     <div
       onClick={onClick}
       className={`flex flex-row gap-5 cursor-pointer text-[1.65vh] 2xl:text-[1.4vh] pl-6 py-[1.25vh] 2xl:py-[1.5vh] w-full transition-all hover:bg-[#051533]/10 ${
-        selected ? "bg-[#051533]" : ""
-      } ${text == "Sign Out" ? "mt-auto" : ""}`}
+        selected ? 'bg-[#051533]' : ''
+      } ${text == 'Sign Out' ? 'mt-auto' : ''}`}
     >
       <img className="w-[2vh] h-[2vh] my-auto" src={icon} />
       <p>{text}</p>
       <p>{text2}</p>
     </div>
-  );
-};
+  )
+}
 
 const Sidebar = ({ user }) => {
-  const router = useRouter();
-  const { conversations } = useContext(MessagesContext);
-  const [sum, setSum] = useState<number>();
-  const { data: session } = useSession();
+  const router = useRouter()
+  const { conversations } = useContext(MessagesContext)
+  const [sum, setSum] = useState<number>()
+  const { data: session } = useSession()
 
   const signout = async () => {
     try {
-      await axios.get("/api/auth/destroysession");
+      await axios.get('/api/auth/destroysession')
       if (session) {
-        await signOut();
+        await signOut()
       }
     } catch (e) {
-      console.log(e);
+      console.log(e)
     } finally {
-      router.push("/");
+      router.push('/')
     }
-  };
+  }
 
   const calculateUnReadMessages = useCallback(
     (conversations: Conversation[]) => {
       return (
         conversations?.reduce(
           (previous, current) => current.unread + previous,
-          0
+          0,
         ) || 0
-      );
+      )
     },
-    []
-  );
+    [],
+  )
 
   const getConversations = useCallback(async () => {
-    try {
-      const data: MessagesApiResponse.IConversations = (
-        await axios.get("/api/messages/conversations")
-      ).data;
-      const sum = calculateUnReadMessages(data.conversations);
-      setSum(sum);
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
+    // try {
+    //   const data: MessagesApiResponse.IConversations = (
+    //     await axios.get("/api/messages/conversations")
+    //   ).data;
+    //   const sum = calculateUnReadMessages(data.conversations);
+    //   setSum(sum);
+    // } catch (e) {
+    //   console.log(e);
+    // }
+  }, [])
 
   useEffect(() => {
     if (user) {
       if (!socketIO) {
-        socketIO = io(process.env.NEXT_PUBLIC_SOCKET_HOST);
+        socketIO = io(process.env.NEXT_PUBLIC_SOCKET_HOST)
 
         socketIO.on(Events.DISCONNECT, () => {
-          socketIO = null;
-        });
+          socketIO = null
+        })
       }
 
-      if (typeof Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID === "function") {
+      if (typeof Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID === 'function') {
         socketIO.on(
           Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID(user.id),
           (conversations: Conversation[]) => {
-            const sum: number = calculateUnReadMessages(conversations);
-            setSum(sum);
-          }
-        );
+            const sum: number = calculateUnReadMessages(conversations)
+            setSum(sum)
+          },
+        )
       }
       return () => {
-        if (typeof Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID === "function") {
-          socketIO?.off(Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID(user.id));
+        if (typeof Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID === 'function') {
+          socketIO?.off(Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID(user.id))
         }
-      };
+      }
     }
-  }, [user]);
+  }, [user])
 
   useEffect(() => {
     if (conversations?.length) {
-      const updatedSum: number = calculateUnReadMessages(conversations);
-      console.log({ updatedSum, sum });
+      const updatedSum: number = calculateUnReadMessages(conversations)
+      console.log({ updatedSum, sum })
       if (updatedSum < sum) {
-        setSum(updatedSum);
+        setSum(updatedSum)
       }
     }
-  }, [conversations]);
+  }, [conversations])
 
   useEffect(() => {
-    getConversations();
-  }, [getConversations]);
+    getConversations()
+  }, [getConversations])
 
   return (
     <div className="z-10 h-fill min-w-[30vh] bg-[#061A40] flex flex-col text-white font-[Montserrat] px-[32px] py-[30px]">
@@ -272,7 +272,7 @@ const Sidebar = ({ user }) => {
       ></SidebarItem>
       {/* </Link> */}
     </div>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

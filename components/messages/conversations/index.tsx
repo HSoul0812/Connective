@@ -23,13 +23,13 @@ const Conversations = ({
     Array<Conversation>
   >([])
 
-  useEffect(() => {
-    try {
-      Recache.logEvent_AutodetectIp('messages')
-    } catch (e) {
-      console.log(e)
-    }
-  }, [])
+  // useEffect(() => {
+  //   try {
+  //     Recache.logEvent_AutodetectIp('messages')
+  //   } catch (e) {
+  //     console.log(e)
+  //   }
+  // }, [])
 
   useEffect(() => {
     setFilteredConversations([...conversations])
