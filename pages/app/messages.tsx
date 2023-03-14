@@ -105,44 +105,44 @@ const Messages = ({ user }) => {
   const [sum, setSum] = useState()
   const [unreadMessages, setUnreadMessages] = useState([])
   const getUsers = async () => {
-    // const data: ProfileApiResponse.IProfiles = (
-    //   await axios.get('/api/profiles/all')
-    // ).data
-    // setUsers(data.users)
-    // if (newUser) {
-    //   const temp = data.users.filter((item) => item.id.toString() == newUser)[0]
-    //   const selectedUser = {
-    //     id: temp.id,
-    //     email: temp.email,
-    //     username: temp.username,
-    //     location: '',
-    //     logo: temp.logo,
-    //   } as Conversation
-    //   setSelectedUser(selectedUser)
-    // }
+    const data: ProfileApiResponse.IProfiles = (
+      await axios.get('/api/profiles/all')
+    ).data
+    setUsers(data.users)
+    if (newUser) {
+      const temp = data.users.filter((item) => item.id.toString() == newUser)[0]
+      const selectedUser = {
+        id: temp.id,
+        email: temp.email,
+        username: temp.username,
+        location: '',
+        logo: temp.logo,
+      } as Conversation
+      setSelectedUser(selectedUser)
+    }
   }
 
   const getConversations = async () => {
-    // try {
-    //   const data: MessagesApiResponse.IConversations = (
-    //     await axios.get('/api/messages/conversations')
-    //   ).data
-    //   // let tempConversations = data.conversations;
-    //   let conversations = data.conversations
-    //   conversations = conversations.map((conversation) => {
-    //     if (conversation.id === selectedUser?.id) {
-    //       return {
-    //         ...conversation,
-    //         unread: 0,
-    //       }
-    //     }
-    //     return conversation
-    //   })
-    //   setConversations(conversations)
-    //   // setSum(unreadMessages?.reduce((a, v) => a + v, 0));
-    // } catch (e) {
-    //   console.log(e)
-    // }
+    try {
+      const data: MessagesApiResponse.IConversations = (
+        await axios.get('/api/messages/conversations')
+      ).data
+      // let tempConversations = data.conversations;
+      let conversations = data.conversations
+      conversations = conversations.map((conversation) => {
+        if (conversation.id === selectedUser?.id) {
+          return {
+            ...conversation,
+            unread: 0,
+          }
+        }
+        return conversation
+      })
+      setConversations(conversations)
+      // setSum(unreadMessages?.reduce((a, v) => a + v, 0));
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   useEffect(() => {

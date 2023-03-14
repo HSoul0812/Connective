@@ -99,62 +99,62 @@ const Chat = ({
   //   }
   // },[user, socketToken])
 
-  // useEffect(() => {
-  //   if (user && selectedUser && socketToken) {
-  //     if (!socketIO) {
-  //       socketIO = io(process.env.NEXT_PUBLIC_SOCKET_HOST)
+  useEffect(() => {
+    if (user && selectedUser && socketToken) {
+      if (!socketIO) {
+        socketIO = io(process.env.NEXT_PUBLIC_SOCKET_HOST)
 
-  //       socketIO.on(Events.DISCONNECT, () => {
-  //         setShowError(true)
-  //         socketIO = null
-  //         setSocketToken('')
-  //       })
-  //     }
-  //     if (typeof Events.NEW_MESSAGE_TO_ID === 'function') {
-  //       socketIO.on(
-  //         Events.NEW_MESSAGE_TO_ID(`${selectedUser.id}_${user.id}`),
-  //         (msg) => {
-  //           setMessages((prevMsgs) => {
-  //             const msgs = [...prevMsgs]
-  //             msgs.push(msg)
-  //             return msgs
-  //           })
-  //           setIsNewMessageArrived(true)
-  //           readMessages({ sender: selectedUser.id, receiver: user.id })
-  //         },
-  //       )
-  //     }
-  //     if (typeof Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID === 'function') {
-  //       socketIO.on(
-  //         Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID(user.id.toString()),
-  //         (conversations) => {
-  //           const mappedConversations = conversations.map((conversation) => {
-  //             if (conversation.id === selectedUser?.id) {
-  //               return {
-  //                 ...conversation,
-  //                 unread: 0,
-  //               }
-  //             }
-  //             return conversation
-  //           })
-  //           setConversations(mappedConversations)
-  //         },
-  //       )
-  //     }
-  //     return () => {
-  //       if (typeof Events.NEW_MESSAGE_TO_ID === 'function') {
-  //         socketIO?.off(
-  //           Events.NEW_MESSAGE_TO_ID(`${selectedUser.id}_${user.id}`),
-  //         )
-  //       }
-  //       if (typeof Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID === 'function') {
-  //         socketIO?.off(
-  //           Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID(user.id.toString()),
-  //         )
-  //       }
-  //     }
-  //   }
-  // }, [user, selectedUser, socketToken])
+        socketIO.on(Events.DISCONNECT, () => {
+          setShowError(true)
+          socketIO = null
+          setSocketToken('')
+        })
+      }
+      if (typeof Events.NEW_MESSAGE_TO_ID === 'function') {
+        socketIO.on(
+          Events.NEW_MESSAGE_TO_ID(`${selectedUser.id}_${user.id}`),
+          (msg) => {
+            setMessages((prevMsgs) => {
+              const msgs = [...prevMsgs]
+              msgs.push(msg)
+              return msgs
+            })
+            setIsNewMessageArrived(true)
+            readMessages({ sender: selectedUser.id, receiver: user.id })
+          },
+        )
+      }
+      if (typeof Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID === 'function') {
+        socketIO.on(
+          Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID(user.id.toString()),
+          (conversations) => {
+            const mappedConversations = conversations.map((conversation) => {
+              if (conversation.id === selectedUser?.id) {
+                return {
+                  ...conversation,
+                  unread: 0,
+                }
+              }
+              return conversation
+            })
+            setConversations(mappedConversations)
+          },
+        )
+      }
+      return () => {
+        if (typeof Events.NEW_MESSAGE_TO_ID === 'function') {
+          socketIO?.off(
+            Events.NEW_MESSAGE_TO_ID(`${selectedUser.id}_${user.id}`),
+          )
+        }
+        if (typeof Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID === 'function') {
+          socketIO?.off(
+            Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID(user.id.toString()),
+          )
+        }
+      }
+    }
+  }, [user, selectedUser, socketToken])
 
   useEffect(() => {
     if (isNewMessageArrived) {
@@ -190,63 +190,66 @@ const Chat = ({
   }, [showError])
 
   const sendMessage = async () => {
-    // if (
-    //   (document.getElementById('message-input') as HTMLInputElement).value != ''
-    // ) {
-    //   try {
-    //     if (socketIO.connected) {
-    //       ;(document.getElementById(
-    //         'message-input',
-    //       ) as HTMLInputElement).value = ''
-    //       setMessages([...messages, { sender: user.id, text }])
-    //       setIsNewMessageArrived(true)
-    //       await axios.post('/api/messages/' + selectedUser.id, { text })
-    //       socketIO.emit(Events.SEND_MESSAGE, {
-    //         receiver: selectedUser.id,
-    //         sender: user.id,
-    //         text,
-    //       })
-    //       //Re-fetch the list of conversations if the message was sent to a new conversation
-    //       if (
-    //         conversations.filter((a) => a.id == selectedUser.id).length == 0
-    //       ) {
-    //         getConversations()
-    //       }
-    //     } else {
-    //       setShowError(true)
-    //     }
-    //   } catch (e) {
-    //     setShowError(true)
-    //   }
-    // }
+    if (
+      (document.getElementById('message-input') as HTMLInputElement).value != ''
+    ) {
+      try {
+        if (socketIO.connected) {
+          ;(document.getElementById(
+            'message-input',
+          ) as HTMLInputElement).value = ''
+          setMessages([...messages, { sender: user.id, text }])
+          setIsNewMessageArrived(true)
+          await axios.post('/api/messages/' + selectedUser.id, { text })
+          socketIO.emit(Events.SEND_MESSAGE, {
+            receiver: selectedUser.id,
+            sender: user.id,
+            text,
+          })
+          //Re-fetch the list of conversations if the message was sent to a new conversation
+
+          if (
+            conversations.filter((a) => a.id == selectedUser.id).length == 0
+          ) {
+            getConversations()
+          }
+        } else {
+          setShowError(true)
+        }
+      } catch (e) {
+        setShowError(true)
+      }
+    }
   }
   const getMessages = async () => {
-    // let temp = messages
-    // const { data } = await axios.get('/api/messages/' + selectedUser.id)
-    // prevMessages = data.length
-    // setMessages(data.messages)
-    // setIsNewMessageArrived(true)
-    // const emailz = await axios('/api/messages/unread-messages-mailer', {
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Accept: 'application/json',
-    //   },
-    // })
-    // await readMessages({ sender: selectedUser.id, receiver: user.id })
+    let temp = messages
+    const { data } = await axios.get('/api/messages/' + selectedUser.id)
+    prevMessages = data.length
+    setMessages(data.messages)
+    setIsNewMessageArrived(true)
+
+    const emailz = await axios('/api/messages/unread-messages-mailer', {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    })
+
+    await readMessages({ sender: selectedUser.id, receiver: user.id })
   }
 
   const readMessages = async ({ sender, receiver }) => {
-    // const data = {
-    //   sender,
-    //   receiver,
-    // }
-    // await axios.post('/api/messages/read-message', {
-    //   header: {
-    //     'Content-Type': 'application/json',
-    //     Accept: 'application/json',
-    //   },
-    //   data,
-    // })
+    const data = {
+      sender,
+      receiver,
+    }
+    await axios.post('/api/messages/read-message', {
+      header: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      data,
+    })
   }
 
   // Send message on pressing Enter key
