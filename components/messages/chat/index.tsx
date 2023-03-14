@@ -99,62 +99,62 @@ const Chat = ({
   //   }
   // },[user, socketToken])
 
-  useEffect(() => {
-    if (user && selectedUser && socketToken) {
-      if (!socketIO) {
-        socketIO = io(process.env.NEXT_PUBLIC_SOCKET_HOST)
+  // useEffect(() => {
+  //   if (user && selectedUser && socketToken) {
+  //     if (!socketIO) {
+  //       socketIO = io(process.env.NEXT_PUBLIC_SOCKET_HOST)
 
-        socketIO.on(Events.DISCONNECT, () => {
-          setShowError(true)
-          socketIO = null
-          setSocketToken('')
-        })
-      }
-      if (typeof Events.NEW_MESSAGE_TO_ID === 'function') {
-        socketIO.on(
-          Events.NEW_MESSAGE_TO_ID(`${selectedUser.id}_${user.id}`),
-          (msg) => {
-            setMessages((prevMsgs) => {
-              const msgs = [...prevMsgs]
-              msgs.push(msg)
-              return msgs
-            })
-            setIsNewMessageArrived(true)
-            readMessages({ sender: selectedUser.id, receiver: user.id })
-          },
-        )
-      }
-      if (typeof Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID === 'function') {
-        socketIO.on(
-          Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID(user.id.toString()),
-          (conversations) => {
-            const mappedConversations = conversations.map((conversation) => {
-              if (conversation.id === selectedUser?.id) {
-                return {
-                  ...conversation,
-                  unread: 0,
-                }
-              }
-              return conversation
-            })
-            setConversations(mappedConversations)
-          },
-        )
-      }
-      return () => {
-        if (typeof Events.NEW_MESSAGE_TO_ID === 'function') {
-          socketIO?.off(
-            Events.NEW_MESSAGE_TO_ID(`${selectedUser.id}_${user.id}`),
-          )
-        }
-        if (typeof Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID === 'function') {
-          socketIO?.off(
-            Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID(user.id.toString()),
-          )
-        }
-      }
-    }
-  }, [user, selectedUser, socketToken])
+  //       socketIO.on(Events.DISCONNECT, () => {
+  //         setShowError(true)
+  //         socketIO = null
+  //         setSocketToken('')
+  //       })
+  //     }
+  //     if (typeof Events.NEW_MESSAGE_TO_ID === 'function') {
+  //       socketIO.on(
+  //         Events.NEW_MESSAGE_TO_ID(`${selectedUser.id}_${user.id}`),
+  //         (msg) => {
+  //           setMessages((prevMsgs) => {
+  //             const msgs = [...prevMsgs]
+  //             msgs.push(msg)
+  //             return msgs
+  //           })
+  //           setIsNewMessageArrived(true)
+  //           readMessages({ sender: selectedUser.id, receiver: user.id })
+  //         },
+  //       )
+  //     }
+  //     if (typeof Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID === 'function') {
+  //       socketIO.on(
+  //         Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID(user.id.toString()),
+  //         (conversations) => {
+  //           const mappedConversations = conversations.map((conversation) => {
+  //             if (conversation.id === selectedUser?.id) {
+  //               return {
+  //                 ...conversation,
+  //                 unread: 0,
+  //               }
+  //             }
+  //             return conversation
+  //           })
+  //           setConversations(mappedConversations)
+  //         },
+  //       )
+  //     }
+  //     return () => {
+  //       if (typeof Events.NEW_MESSAGE_TO_ID === 'function') {
+  //         socketIO?.off(
+  //           Events.NEW_MESSAGE_TO_ID(`${selectedUser.id}_${user.id}`),
+  //         )
+  //       }
+  //       if (typeof Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID === 'function') {
+  //         socketIO?.off(
+  //           Events.NEW_UNREAD_CONVERSATION_RECEIVER_ID(user.id.toString()),
+  //         )
+  //       }
+  //     }
+  //   }
+  // }, [user, selectedUser, socketToken])
 
   useEffect(() => {
     if (isNewMessageArrived) {

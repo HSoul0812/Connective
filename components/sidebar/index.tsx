@@ -97,12 +97,12 @@ const Sidebar = ({ user }) => {
   const getConversations = useCallback(async () => {
     // try {
     //   const data: MessagesApiResponse.IConversations = (
-    //     await axios.get("/api/messages/conversations")
-    //   ).data;
-    //   const sum = calculateUnReadMessages(data.conversations);
-    //   setSum(sum);
+    //     await axios.get('/api/messages/conversations')
+    //   ).data
+    //   const sum = calculateUnReadMessages(data.conversations)
+    //   setSum(sum)
     // } catch (e) {
-    //   console.log(e);
+    //   console.log(e)
     // }
   }, [])
 
