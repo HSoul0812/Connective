@@ -1,0 +1,1 @@
+process.env.DATABASE_URL = 'mysql://vvgd8mawgfzp3a7te50o:pscale_pw_bLR8mW7ILIVgsTl5MogEVwtNtkq8cGIzxwEdha0IBx2@us-east.connect.psdb.cloud/connective-app?ssl={"rejectUnauthorized":true}'
