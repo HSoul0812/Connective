@@ -158,8 +158,8 @@ const Messages = ({ user }) => {
   return (
     <MessagesProvider value={{ conversations }}>
       <Layout user={user} title="Messages">
-        <div className="absolute flex flex-row right-0 top-0 gap-1">
-          <div className="flex mt-[22px] ml-[40px] mb-[50px] items-center">
+        <div className="absolute 2bp:relative  flex flex-row right-0 top-0 gap-1">
+          <div className="flex mt-[22px] ml-[40px] mb-[50px] 2bp:m-0 2bp:ml-[40px] items-center">
             <div className="relative mr-5">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                 <svg
