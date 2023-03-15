@@ -20,9 +20,18 @@ const Messages = ({ user }) => {
   const router = useRouter()
   const { newUser } = router.query
   const [users, setUsers] = useState<User[]>([])
+  const [showUserdetail, setShowUserDetail] = useState<boolean>(false)
   const [selectedUser, setSelectedUser] = useState<Conversation>()
 
   ///      mock data part
+  const mockCurrentUser = {
+    id: 123,
+    email: 'pratham@gmail.com',
+    username: 'Pratham Doshi',
+    location: 'Cortana IL',
+    logo: '/assets/Pratham.svg',
+    typename: 'Conversation',
+  }
   const mockConversationData = [
     {
       id: 1,
@@ -84,14 +93,7 @@ const Messages = ({ user }) => {
   useEffect(() => {
     window.sessionStorage.setItem(
       'currentUser',
-      JSON.stringify({
-        id: 123,
-        email: 'pratham@gmail.com',
-        username: 'Pratham Doshi',
-        location: 'Cortana IL',
-        logo: '/assets/Pratham.svg',
-        typename: 'Conversation',
-      }),
+      JSON.stringify(mockCurrentUser),
     )
     if (selectedUser != undefined) {
       window.sessionStorage.setItem(
@@ -161,15 +163,22 @@ const Messages = ({ user }) => {
             selectedUser={selectedUser}
             conversations={conversations}
             setSelectedUser={setSelectedUser}
-          ></Conversations>
+          />
           <Chat
-            users={users}
+            userList={users}
+            currentAccountUser={mockCurrentUser}
             selectedUser={selectedUser}
             conversations={conversations}
             getConversations={getConversations}
             setConversations={setConversations}
-          ></Chat>
-          <UserDetails selectedUser={selectedUser}></UserDetails>
+            showUserDetail={() => setShowUserDetail(true)}
+          />
+          {showUserdetail && (
+            <UserDetails
+              selectedUser={selectedUser}
+              onClose={() => setShowUserDetail(false)}
+            />
+          )}
         </div>
       </Layout>
     </MessagesProvider>

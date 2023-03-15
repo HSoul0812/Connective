@@ -1,30 +1,36 @@
 import { useState } from 'react'
+import Image from 'next/image'
 import Switch from 'react-switch'
 import Avatar from '../../avatar'
 
-const UserDetails = ({ selectedUser }) => {
+const UserDetails = ({ selectedUser, onClose }) => {
   const [checked, setChecked] = useState<boolean>(false)
   return (
     <div className="w-1/5 h-full px-2 py-3">
       {selectedUser && (
         <>
-          <div className="flex items-center">
-            {selectedUser.logo ? (
-              <img
-                src={selectedUser.logo}
-                className="w-[30px] h-[30px] bg-white rounded-full"
-              />
-            ) : (
-              <Avatar
-                className="rounded-full"
-                width="30px"
-                height="30px"
-                title={selectedUser.username}
-              />
-            )}
-            <p className="font-semibold text-lg text-center ml-2">
-              {selectedUser.username}
-            </p>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              {selectedUser.logo ? (
+                <img
+                  src={selectedUser.logo}
+                  className="w-[30px] h-[30px] bg-white rounded-full"
+                />
+              ) : (
+                <Avatar
+                  className="rounded-full"
+                  width="30px"
+                  height="30px"
+                  title={selectedUser.username}
+                />
+              )}
+              <p className="font-semibold text-lg text-center ml-2">
+                {selectedUser.username}
+              </p>
+            </div>
+            <div className="cursor-pointer" onClick={onClose}>
+              <Image src="/assets/messages/close.svg" width={27} height={27} />
+            </div>
           </div>
 
           <p className="font-semibold text-sm mt-5 mb-3">Username</p>

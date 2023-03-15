@@ -11,28 +11,23 @@ type PropsMessage = {
   message: Message
   showDate: boolean
   showAvatar: boolean
-  users: User[]
+  userList: User[]
   isSender: boolean
 }
 
 const MessageFun = ({
   message,
-  users,
+  userList,
   showDate,
   showAvatar,
   isSender,
 }: PropsMessage) => {
   const { text, timestamp, id } = message
-  const [currentUser, setCurrentUser] = useState<User>()
 
-  const sender = useMemo(() => users.find((user) => user.id === id), [
+  const sender = useMemo(() => userList.find((user) => user.id === id), [
     message,
-    users,
+    userList,
   ])
-
-  useEffect(() => {
-    setCurrentUser(JSON.parse(window.sessionStorage.getItem('currentUser')))
-  }, [setCurrentUser])
 
   return (
     <>
@@ -63,8 +58,8 @@ const MessageFun = ({
             {showAvatar ? (
               <div className="flex items-end mr-2">
                 <Image
-                  src={sender.logo}
-                  alt={sender.username}
+                  src={sender?.logo}
+                  alt={sender?.username}
                   width={44}
                   height={44}
                 />
