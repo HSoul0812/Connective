@@ -277,7 +277,7 @@ const Chat = ({
   }, [])
 
   return (
-    <div className="flex flex-col h-full w-9/12 rounded-r-lg">
+    <div className="flex flex-col h-full w-full rounded-r-lg">
       {selectedUser && (
         <>
           <div className="flex flex-row justify-between items-center w-full p-2">
@@ -285,11 +285,13 @@ const Chat = ({
               className="flex flex-row items-center cursor-pointer"
               onClick={showUserDetail}
             >
-              <img
+              <Image
                 src={selectedUser.logo}
-                className="w-12 h-12 bg-white rounded-full shadow-lg"
+                width={40}
+                height={40}
+                className="w-12 h-12 bg-white rounded-full"
               />
-              <p className="font-medium font-bold  text-md ml-2 border-b-2 border-slate-100">
+              <p className="font-medium font-bold  text-md ml-2 border-slate-100">
                 {selectedUser?.username}
               </p>
               <div className="flex items-center">
@@ -303,7 +305,7 @@ const Chat = ({
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center mr-5">
               <div className="cursor-pointer">
                 <Image
                   src="/assets/messages/searchIcon.svg"
@@ -358,7 +360,7 @@ const Chat = ({
         </>
       )}
       {selectedUser && (
-        <div className="flex flex-row p-5 items-center justify-center">
+        <div className="flex flex-row p-3 items-center justify-center">
           <div className="cursor-pointer my-auto">
             <Image src="/assets/messages/emoticon.svg" width={24} height={24} />
           </div>

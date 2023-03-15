@@ -158,8 +158,8 @@ const Messages = ({ user }) => {
   return (
     <MessagesProvider value={{ conversations }}>
       <Layout user={user} title="Messages">
-        <div className="absolute 2bp:relative 2bp:ml-auto flex flex-row right-0 top-0 gap-1">
-          <div className="flex mt-[22px] ml-[40px] mb-[50px] 2bp:m-0 2bp:ml-[40px] items-center">
+        <div className="absolute flex flex-row right-0 top-0 gap-1">
+          <div className="flex mt-[22px] ml-[40px] mb-[50px] 2bp:m-0 2bp:mt-[55px] items-center">
             <div className="relative mr-5">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                 <svg
@@ -183,8 +183,8 @@ const Messages = ({ user }) => {
                 className={`placeholder:text-sm outline-none w-full pl-[36px] pr-[14px] text-sm py-2 rounded-lg outline-gray/5 focus:outline-blue-200 transition-all hover:outline hover:outline-blue-300`}
               />
             </div>
-            <div className="bg-gray/[0.1] rounded-full items-center flex p-[4px]">
-              <Image src="/assets/messages/alarm.svg" height={40} width={40} />
+            <div className="bg-gray/[0.2] rounded-full items-center flex p-[10px]">
+              <Image src="/assets/messages/alarm.svg" height={20} width={20} />
             </div>
             <div className="flex items-center ml-5 mr-3">
               <Image src="/assets/Pratham.svg" height={40} width={40} />
@@ -195,13 +195,14 @@ const Messages = ({ user }) => {
             </div>
           </div>
         </div>
-        <div className="bg-white h-full overflow-clip mt-1 flex flex-row">
+        <div className="bg-white h-full overflow-clip flex flex-row">
           <Conversations
             unreadMessages={unreadMessages}
             selectedUser={selectedUser}
             conversations={conversations}
             setSelectedUser={setSelectedUser}
           />
+          <div className="h-full w-[5px] bg-[#F8F9FA]"></div>
           <Chat
             userList={users}
             currentAccountUser={mockCurrentUser}
@@ -209,8 +210,9 @@ const Messages = ({ user }) => {
             conversations={conversations}
             getConversations={getConversations}
             setConversations={setConversations}
-            showUserDetail={() => setShowUserDetail(true)}
+            showUserDetail={() => setShowUserDetail(!showUserdetail)}
           />
+          <div className="h-full w-[5px] bg-[#F8F9FA]"></div>
           {showUserdetail && (
             <UserDetails
               selectedUser={selectedUser}

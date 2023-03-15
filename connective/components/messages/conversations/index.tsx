@@ -48,7 +48,7 @@ const Conversations = ({
   }, [filter])
 
   return (
-    <div className="flex flex-col w-1/5 overflow-y-scroll bg-white min-w-[180px]">
+    <div className="flex flex-col w-[23%] overflow-y-scroll bg-white min-w-[180px]">
       <Head>
         <title>Messages - Connective</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -87,17 +87,17 @@ const Conversations = ({
               setSelectedUser(item)
             }}
             className={`flex items-center  flex-row 2bp:pl-0 px-[28px] py-[18px] cursor-pointer text-sm border-b border-slate-200 w-full ${
-              selectedUser?.id == item.id ? 'bg-white' : 'bg-slate-100'
+              selectedUser?.id == item.id ? 'bg-slate-100' : 'bg-white'
             } hover:bg-slate-100/50 transition-all`}
           >
-            <div className="h-full flex items-center mr-2">
+            <div className="h-full flex rounded-full items-center mr-2">
               {item.logo ? (
-                <div className="min-w-[40px] min-y-[40px]">
+                <div className="min-w-[40px] min-y-[40px] rounded-full ">
                   <Image
                     width="100%"
                     height="100%"
                     src={item.logo}
-                    className="bg-white rounded-full shadow-lg"
+                    className="bg-white rounded-full"
                   />
                 </div>
               ) : (
@@ -109,13 +109,13 @@ const Conversations = ({
                 />
               )}
             </div>
-            <div className="flex flex-col w-4/5 h-full justify-between">
+            <div className="flex flex-col w-4/5 h-full justify-between py-2">
               <div className="flex justify-between items-center">
-                <p className="my-auto font-bold">{item.username}</p>
-                <p className="my-auto text-gray">10:49</p>
+                <p className="my-auto font-bold leading-6">{item.username}</p>
+                <p className="my-auto text-gray">10:49 AM</p>
               </div>
               <div className="flex justify-between items-center">
-                <p className="text-gray text-ellipsis w-full overflow-hidden whitespace-nowrap ">
+                <p className="text-gray text-ellipsis w-full overflow-hidden whitespace-nowrap leading-6 w-4/6">
                   this is mock data test ellipsis casethis is mock data test
                   ellipsis casethis is mock data test ellipsis casethis is mock
                   data test ellipsis case
