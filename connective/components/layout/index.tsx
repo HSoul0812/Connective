@@ -23,7 +23,7 @@ const Layout = ({ title, scroll = true, user, children }: Props) => {
           scroll ? 'overflow-y-scroll' : 'h-full max-h-screen'
         } flex flex-col relative`}
       >
-        <div className="flex justify-between">
+        <div className="flex justify-between bg-[#F8F9FA]">
           <p className="mt-[22px] ml-[40px] mb-[50px] text-[#A0AEC0] text-sm">
             General /{' '}
             <span className="font-bold text-3xl leading-[29px] text-[#0D1011]">

@@ -6,7 +6,7 @@ import Avatar from '../../avatar'
 const UserDetails = ({ selectedUser, onClose }) => {
   const [checked, setChecked] = useState<boolean>(false)
   return (
-    <div className="w-1/5 h-full px-2 py-3">
+    <div className="w-[30%] h-full px-2 py-3">
       {selectedUser && (
         <>
           <div className="flex justify-between items-center">
