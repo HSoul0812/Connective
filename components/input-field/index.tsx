@@ -1,17 +1,17 @@
-import Image from "next/image";
-import dollarIcon from "../../public/assets/dollar.svg";
+import Image from 'next/image'
+import dollarIcon from '../../public/assets/dollar.svg'
 
 type Props = {
-  name: string;
-  placeholder?: string;
-  password?: boolean;
-  textarea?: boolean;
-  price?: boolean;
-  updateValue: (value: string) => void;
-  errorText?: string;
-  value?: string | number;
-  disabled?: boolean;
-};
+  name: string
+  placeholder?: string
+  password?: boolean
+  textarea?: boolean
+  price?: boolean
+  updateValue: (value: string) => void
+  errorText?: string
+  value?: string | number
+  disabled?: boolean
+}
 
 const InputField = ({
   name,
@@ -42,7 +42,7 @@ const InputField = ({
           <input
             disabled={disabled}
             onChange={(e) => {
-              updateValue(e.target.value);
+              updateValue(e.target.value)
             }}
             type="number"
             min="0"
@@ -57,7 +57,7 @@ const InputField = ({
       {textarea && (
         <textarea
           onChange={(e) => {
-            updateValue(e.target.value);
+            updateValue(e.target.value)
           }}
           className="outline-none w-full px-[14px] text-[14px] h-[47px] border border-black/20 rounded-md focus:outline-blue-200 transition-all hover:outline hover:outline-blue-300"
           placeholder={placeholder}
@@ -68,10 +68,10 @@ const InputField = ({
       {!textarea && !price && (
         <input
           onChange={(e) => {
-            updateValue(e.target.value);
+            updateValue(e.target.value)
           }}
-          className="outline-none w-full px-[14px] text-[14px] h-[47px] border border-black/20 rounded-md focus:outline-blue-200 transition-all hover:outline hover:outline-blue-300"
-          type={password ? "password" : ""}
+          className="outline-none w-full px-[14px] text-[14px] h-[47px] border border-black/20 rounded-full focus:outline-blue-200 transition-all hover:outline hover:outline-blue-300"
+          type={password ? 'password' : ''}
           placeholder={placeholder}
           value={value}
         ></input>
@@ -81,7 +81,7 @@ const InputField = ({
         <p className="text-red-500 font-bold text-[12px]">{errorText}</p>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default InputField;
+export default InputField

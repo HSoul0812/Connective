@@ -1,45 +1,46 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import Avatar from "../../avatar";
-import { Individual, User } from "../../../types/types";
+import axios from 'axios'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
+import Avatar from '../../avatar'
+import * as Routes from '../../../util/routes'
+import { Individual, User } from '../../../types/types'
 import {
   IApiResponseError,
   ProfileApiResponse,
-} from "../../../types/apiResponseTypes";
+} from '../../../types/apiResponseTypes'
 
 type Props = {
-  user: User;
-  id: number;
-};
+  user: User
+  id: number
+}
 
 export default function IndividualProfile({ user, id }: Props) {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [data, setData] = useState<Individual>(null);
-  const [loaded, setLoaded] = useState<boolean>(false);
-
-  useEffect(() => {
-    setLoaded(false);
-    getProfile();
-  }, []);
+  const [data, setData] = useState<Individual>(null)
+  const [loaded, setLoaded] = useState<boolean>(false)
 
   useEffect(() => {
-    if (typeof window != "undefined" && typeof user == "undefined") {
-      router.push("/auth/signin");
+    setLoaded(false)
+    getProfile()
+  }, [])
+
+  useEffect(() => {
+    if (typeof window != 'undefined' && typeof user == 'undefined') {
+      router.push(Routes.SIGNIN)
     }
-  }, [user]);
+  }, [user])
 
   const getProfile = async () => {
     await axios.get(`/api/profiles/individual?id=${id}`).then((res) => {
-      let data: ProfileApiResponse.IIndividual | IApiResponseError = res.data;
-      if (data.type == "IApiResponseError") throw data;
+      let data: ProfileApiResponse.IIndividual | IApiResponseError = res.data
+      if (data.type == 'IApiResponseError') throw data
       else {
-        setData(data.individual);
-        setLoaded(true);
+        setData(data.individual)
+        setLoaded(true)
       }
-    });
-  };
+    })
+  }
 
   return (
     <div className="flex flex-col w-[100%] h-full p-[64px]">
@@ -52,7 +53,7 @@ export default function IndividualProfile({ user, id }: Props) {
 
           <div className="w-[100%] flex flex-row justify-between items-center mt-[-70px]">
             <div className="mb-[64px] flex flex-row items-center gap-[40px] pl-[50px]">
-              {data?.profile_picture == "" ? (
+              {data?.profile_picture == '' ? (
                 <Avatar width="100px" height="100px" title={data?.name} />
               ) : (
                 <div className="w-[200px] h-[200px]">
@@ -85,7 +86,7 @@ export default function IndividualProfile({ user, id }: Props) {
             {user.id == id && (
               <div
                 className="flex flex-row gap-[12px] cursor-pointer text-white rounded-lg bg-[#061A40] items-center py-[18px] px-[40px]"
-                onClick={() => router.push("/app/profile/edit-profile")}
+                onClick={() => router.push(Routes.EDITPROFILE)}
               >
                 <img className="w-[20px] h-[20px]" src="/assets/edit.svg" />
                 <p className="hover:scale-105 hover:shadow-lg font-[Poppins] text-center text-[14px]">
@@ -100,20 +101,20 @@ export default function IndividualProfile({ user, id }: Props) {
               className="rounded py-3 px-6 w-fit"
               style={{
                 backgroundColor:
-                  data?.status === "Looking to give client for commission."
-                    ? "#4b5e6d"
-                    : "#c2cfd8",
-                justifyContent: "center",
-                alignItems: "center",
-                marginBottom: "20px",
+                  data?.status === 'Looking to give client for commission.'
+                    ? '#4b5e6d'
+                    : '#c2cfd8',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: '20px',
               }}
             >
               <p
                 style={{
                   color:
-                    data?.status === "Looking to give client for commission."
-                      ? "white"
-                      : "black",
+                    data?.status === 'Looking to give client for commission.'
+                      ? 'white'
+                      : 'black',
                 }}
               >{`Status: ${data?.status}`}</p>
             </div>
@@ -151,5 +152,5 @@ export default function IndividualProfile({ user, id }: Props) {
         </div>
       )}
     </div>
-  );
+  )
 }

@@ -3,100 +3,100 @@ import type {
   GetStaticProps,
   InferGetStaticPropsType,
   NextPage,
-} from "next";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import Head from "next/head";
-import InputField from "../../../../components/input-field";
-import { AuthApiResponse } from "../../../../types/apiResponseTypes";
-import axios from "axios";
+} from 'next'
+import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import Image from 'next/image'
+import Head from 'next/head'
+import * as Routes from '../../../../util/routes'
+import InputField from '../../../../components/input-field'
+import { AuthApiResponse } from '../../../../types/apiResponseTypes'
+import axios from 'axios'
 
-type Props = InferGetStaticPropsType<typeof getStaticProps>;
+type Props = InferGetStaticPropsType<typeof getStaticProps>
 
 const ResetPassword: NextPage<Props> = ({ email, token }) => {
-  const router = useRouter();
-  const [linkExpired, setLinkExpired] = useState<boolean>(false);
-  const [linkVerified, setLinkVerified] = useState<boolean>(false);
-  const [password, setPassword] = useState<string>("");
-  const [passwordConfirm, setPasswordConfirm] = useState<string>("");
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [showPasswordConfirm, setShowPasswordConfirm] =
-    useState<boolean>(false);
-  const [passwordError, setPasswordError] = useState<string>("");
-  const [linkError, setLinkError] = useState<string>("");
-  const [passwordConfirmError, setPasswordConfirmError] = useState<string>("");
+  const router = useRouter()
+  const [linkExpired, setLinkExpired] = useState<boolean>(false)
+  const [linkVerified, setLinkVerified] = useState<boolean>(false)
+  const [password, setPassword] = useState<string>('')
+  const [passwordConfirm, setPasswordConfirm] = useState<string>('')
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState<boolean>(false)
+  const [passwordError, setPasswordError] = useState<string>('')
+  const [linkError, setLinkError] = useState<string>('')
+  const [passwordConfirmError, setPasswordConfirmError] = useState<string>('')
   // const { email, token } = router.query;
 
   useEffect(() => {
     async function verifyLink() {
       if (email && token) {
         await axios({
-          method: "post",
-          url: "/api/auth/verifyLink",
+          method: 'post',
+          url: '/api/auth/verifyLink',
           data: { email, token },
         })
           .then((res) => {
-            setLinkExpired(false);
-            setLinkVerified(true);
+            setLinkExpired(false)
+            setLinkVerified(true)
           })
           .catch((err) => {
             if (err?.response.data.error) {
-              setLinkExpired(true);
-              setLinkVerified(false);
-              setLinkError(err?.response.data.error);
+              setLinkExpired(true)
+              setLinkVerified(false)
+              setLinkError(err?.response.data.error)
             }
-          });
+          })
       }
     }
-    verifyLink();
-  }, [email, token]);
+    verifyLink()
+  }, [email, token])
 
   const showPasswordHandler = () => {
-    setShowPassword((prevState) => !prevState);
-  };
+    setShowPassword((prevState) => !prevState)
+  }
 
   const showPasswordConfirmHandler = () => {
-    setShowPasswordConfirm((prevState) => !prevState);
-  };
+    setShowPasswordConfirm((prevState) => !prevState)
+  }
 
   const submitNewPassword = async () => {
-    if (password == "") {
-      setPasswordError("You must enter a password.");
-      setPasswordConfirmError("");
-      return;
+    if (password == '') {
+      setPasswordError('You must enter a password.')
+      setPasswordConfirmError('')
+      return
     }
-    if (passwordConfirm == "") {
-      setPasswordConfirmError("You must enter a password.");
-      setPasswordError("");
-      return;
+    if (passwordConfirm == '') {
+      setPasswordConfirmError('You must enter a password.')
+      setPasswordError('')
+      return
     }
     if (password !== passwordConfirm) {
-      setPasswordConfirmError("Passwords must match");
+      setPasswordConfirmError('Passwords must match')
     } else {
       await axios({
-        method: "post",
-        url: "/api/auth/resetPassword",
+        method: 'post',
+        url: '/api/auth/resetPassword',
         data: { email, password, token },
       })
         .then(async (res) => {
           if (res.data.success === true) {
-            router.push("/auth/signin");
+            router.push(Routes.SIGNIN)
           }
         })
         .catch(async (err) => {
           if (err?.response.data.error) {
-            setLinkExpired(true);
-            setLinkVerified(false);
-            setLinkError(err?.response.data.error);
+            setLinkExpired(true)
+            setLinkVerified(false)
+            setLinkError(err?.response.data.error)
           }
-        });
+        })
     }
-  };
+  }
 
   const toSignIn = () => {
-    router.push("/auth/signin");
-  };
+    router.push(Routes.SIGNIN)
+  }
 
   return (
     <main>
@@ -131,8 +131,8 @@ const ResetPassword: NextPage<Props> = ({ email, token }) => {
 
               <div className="relative flex flex-col items-center gap-4 mt-4">
                 <InputField
-                  name={"Password"}
-                  placeholder={"Enter new password"}
+                  name={'Password'}
+                  placeholder={'Enter new password'}
                   password={!showPassword ? true : false}
                   updateValue={setPassword}
                   errorText={passwordError}
@@ -159,8 +159,8 @@ const ResetPassword: NextPage<Props> = ({ email, token }) => {
                   )}
                 </div>
                 <InputField
-                  name={"Confirm Password"}
-                  placeholder={"Confirm new password"}
+                  name={'Confirm Password'}
+                  placeholder={'Confirm new password'}
                   password={!showPasswordConfirm ? true : false}
                   updateValue={setPasswordConfirm}
                   errorText={passwordConfirmError}
@@ -229,25 +229,25 @@ const ResetPassword: NextPage<Props> = ({ email, token }) => {
         </div>
       </div>
     </main>
-  );
-};
+  )
+}
 
-export default ResetPassword;
+export default ResetPassword
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [],
-    fallback: "blocking",
-  };
-};
+    fallback: 'blocking',
+  }
+}
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { email, token } = context?.params;
+  const { email, token } = context?.params
 
   return {
     props: {
       email,
       token,
     },
-  };
-};
+  }
+}

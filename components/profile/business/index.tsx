@@ -1,57 +1,58 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import Avatar from "../../avatar";
-import { User, Industry } from "../../../types/types";
+import axios from 'axios'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
+import Avatar from '../../avatar'
+import { User, Industry } from '../../../types/types'
+import * as Routes from '../../../util/routes'
 import {
   IApiResponseError,
   ProfileApiResponse,
-} from "../../../types/apiResponseTypes";
+} from '../../../types/apiResponseTypes'
 
 type Props = {
-  user: User;
-  industries: Industry[];
-  id: number;
-};
+  user: User
+  industries: Industry[]
+  id: number
+}
 
 export default function BusinessProfile({ user, industries, id }: Props) {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [data, setData] = useState<any>(null);
-  const [industry, setIndustry] = useState<string>("");
-  const [loaded, setLoaded] = useState<boolean>(false);
-
-  useEffect(() => {
-    getProfile();
-  }, []);
+  const [data, setData] = useState<any>(null)
+  const [industry, setIndustry] = useState<string>('')
+  const [loaded, setLoaded] = useState<boolean>(false)
 
   useEffect(() => {
-    if (typeof window != "undefined" && typeof user == "undefined") {
-      router.push("/auth/signin");
+    getProfile()
+  }, [])
+
+  useEffect(() => {
+    if (typeof window != 'undefined' && typeof user == 'undefined') {
+      router.push(Routes.SIGNIN)
     }
-  }, [user]);
+  }, [user])
 
   const getProfile = async () => {
     try {
       await axios.get(`/api/profiles/business?id=${id}`).then((res) => {
-        let data: ProfileApiResponse.IBusiness | IApiResponseError = res.data;
-        if (data.type == "IApiResponseError") {
-          throw data;
+        let data: ProfileApiResponse.IBusiness | IApiResponseError = res.data
+        if (data.type == 'IApiResponseError') {
+          throw data
         } else {
-          setData(data.business);
-          setLoaded(true);
+          setData(data.business)
+          setLoaded(true)
           const selectedIndustry = industries.find(
             (industry) =>
               industry.id ==
-              (data as ProfileApiResponse.IBusiness).business.industry
-          );
-          setIndustry(selectedIndustry.name);
+              (data as ProfileApiResponse.IBusiness).business.industry,
+          )
+          setIndustry(selectedIndustry.name)
         }
-      });
+      })
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
-  };
+  }
 
   return (
     <div className="flex flex-col w-[100%] h-full p-[64px]">
@@ -63,7 +64,7 @@ export default function BusinessProfile({ user, industries, id }: Props) {
           />
           <div className="w-[100%] flex flex-row justify-between items-center mt-[-70px]">
             <div className="mb-[64px] flex flex-row items-center gap-[40px] pl-[50px]">
-              {data?.logo == "" ? (
+              {data?.logo == '' ? (
                 <Avatar
                   width="150px"
                   height="150px"
@@ -98,9 +99,9 @@ export default function BusinessProfile({ user, industries, id }: Props) {
                     <a
                       className="font-normal cursor-pointer text-[#061A40] underline-offset-0 font-[Poppins]"
                       href={
-                        data?.website.includes("https")
+                        data?.website.includes('https')
                           ? data?.website
-                          : "https://" + data?.website
+                          : 'https://' + data?.website
                       }
                     >
                       Visit Website
@@ -113,7 +114,7 @@ export default function BusinessProfile({ user, industries, id }: Props) {
             {user.id == id && (
               <div
                 className="flex flex-row gap-[12px] cursor-pointer text-white rounded-lg bg-[#061A40] items-center py-[18px] px-[40px]"
-                onClick={() => router.push("/app/profile/edit-profile")}
+                onClick={() => router.push(Routes.EDITPROFILE)}
               >
                 <img className="w-[20px] h-[20px]" src="/assets/edit.svg" />
                 <p className="hover:scale-105 hover:shadow-lg font-[Poppins] text-center text-[14px]">
@@ -128,21 +129,21 @@ export default function BusinessProfile({ user, industries, id }: Props) {
               className="rounded py-3 px-6 w-fit"
               style={{
                 backgroundColor:
-                  data.status === "Looking to give client for commission."
-                    ? "#4b5e6d"
-                    : "#c2cfd8",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginBottom: "20px",
+                  data.status === 'Looking to give client for commission.'
+                    ? '#4b5e6d'
+                    : '#c2cfd8',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: '20px',
               }}
             >
               <p
                 style={{
                   color:
-                    data.status === "Looking to give client for commission."
-                      ? "white"
-                      : "black",
+                    data.status === 'Looking to give client for commission.'
+                      ? 'white'
+                      : 'black',
                 }}
               >{`Status: ${data.status}`}</p>
             </div>
@@ -199,5 +200,5 @@ export default function BusinessProfile({ user, industries, id }: Props) {
         </div>
       )}
     </div>
-  );
+  )
 }

@@ -1,130 +1,131 @@
-import InputField from "../../components/input-field";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import OnboardingSidebar from "../../components/onboarding-sidebar";
-import Link from "next/link";
-import Image from "next/image";
-import Head from "next/head";
-import EmailVerification from "../../components/dailog/EmailVerification";
-import GoogleSsoDivider from "../../components/divider/orDivider";
-import GoogleAuthButton from "../../components/button/GoogleAuthButton";
+import InputField from '../../components/input-field'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import OnboardingSidebar from '../../components/onboarding-sidebar'
+import Link from 'next/link'
+import Image from 'next/image'
+import Head from 'next/head'
+import * as Routes from '../../util/routes'
+import EmailVerification from '../../components/dailog/EmailVerification'
+import GoogleSsoDivider from '../../components/divider/orDivider'
+import AuthButton from '../../components/button/AuthButton'
 import {
   AuthApiResponse,
   IApiResponseError,
-} from "../../types/apiResponseTypes";
+} from '../../types/apiResponseTypes'
 
 export default function SignUp() {
-  const [name, setName] = useState<string>("");
-  const [nameError, setNameError] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [emailError, setEmailError] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [passwordError, setPasswordError] = useState<string>("");
-  const [otpError, setOtpError] = useState<string>("");
-  const [tacError, setTacError] = useState<string>("");
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [isSubscribed, setSubscribed] = useState<boolean>(false);
-  const [otpCode, setOtpCode] = useState<string>("");
-  const [emailVerified, setEmailVerified] = useState<boolean>(false);
-  const [signUpSuccess, setSignUpSuccess] = useState<boolean>(false);
+  const [name, setName] = useState<string>('')
+  const [nameError, setNameError] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
+  const [emailError, setEmailError] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [passwordError, setPasswordError] = useState<string>('')
+  const [otpError, setOtpError] = useState<string>('')
+  const [tacError, setTacError] = useState<string>('')
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [isSubscribed, setSubscribed] = useState<boolean>(false)
+  const [otpCode, setOtpCode] = useState<string>('')
+  const [emailVerified, setEmailVerified] = useState<boolean>(false)
+  const [signUpSuccess, setSignUpSuccess] = useState<boolean>(false)
 
-  const router = useRouter();
+  const router = useRouter()
 
   const verifyEmail = async () => {
     const verifiedEmail: AuthApiResponse.IVerifyEmail | IApiResponseError = (
       await axios({
-        method: "post",
-        url: "/api/auth/verifyEmail",
+        method: 'post',
+        url: '/api/auth/verifyEmail',
         data: { code: otpCode, email },
       })
-    ).data;
+    ).data
     if (!verifiedEmail.success) {
       if (
-        verifiedEmail.type == "IApiResponseError" &&
-        verifiedEmail.error === "Incorrect verification code"
+        verifiedEmail.type == 'IApiResponseError' &&
+        verifiedEmail.error === 'Incorrect verification code'
       )
-        setOtpError("Incorrect verification code");
+        setOtpError('Incorrect verification code')
     } else {
-      setEmailVerified(true);
+      setEmailVerified(true)
     }
-  };
+  }
 
   useEffect(() => {
     if (otpCode && signUpSuccess) {
-      verifyEmail();
+      verifyEmail()
     }
-  }, [otpCode, signUpSuccess]);
+  }, [otpCode, signUpSuccess])
 
   const signIn = async () => {
     await axios({
-      method: "post",
-      url: "/api/auth/sessions",
+      method: 'post',
+      url: '/api/auth/sessions',
       data: { email, password },
     })
       .then((res) => {
-        const data: AuthApiResponse.ISessions = res.data;
+        const data: AuthApiResponse.ISessions = res.data
         if (res.status == 201) {
           data.accountExists
-            ? router.push("/app/discover")
-            : router.push("/onboarding/create-profile");
+            ? router.push(Routes.DISCOVER)
+            : router.push(Routes.CREATEPROFILE)
         }
       })
       .catch((e) => {
         if (
           e.response.status == 403 ||
-          e.response.data.error == "Account does not exist"
+          e.response.data.error == 'Account does not exist'
         )
-          setPasswordError("Incorrect email or password");
-      });
-  };
+          setPasswordError('Incorrect email or password')
+      })
+  }
 
   useEffect(() => {
     if (emailVerified) {
-      signIn();
+      signIn()
     }
-  }, [emailVerified]);
+  }, [emailVerified])
 
   const submitAccount = async () => {
     // @ts-ignore
-    let checkboxChecked = document.getElementById("checkbox").checked;
+    let checkboxChecked = document.getElementById('checkbox').checked
 
-    if (name == "") {
-      setNameError("You must enter a name.");
-      setEmailError("");
-      setPasswordError("");
-      setTacError("");
-      return;
+    if (name == '') {
+      setNameError('You must enter a name.')
+      setEmailError('')
+      setPasswordError('')
+      setTacError('')
+      return
     }
-    if (email == "") {
-      setEmailError("You must enter an email.");
-      setNameError("");
-      setPasswordError("");
-      setTacError("");
-      return;
+    if (email == '') {
+      setEmailError('You must enter an email.')
+      setNameError('')
+      setPasswordError('')
+      setTacError('')
+      return
     }
-    if (password == "") {
-      setPasswordError("You must enter a password.");
-      setNameError("");
-      setEmailError("");
-      setTacError("");
-      return;
+    if (password == '') {
+      setPasswordError('You must enter a password.')
+      setNameError('')
+      setEmailError('')
+      setTacError('')
+      return
     }
     if (!checkboxChecked) {
-      setTacError("You must accept the terms and conditions");
-      setPasswordError("");
-      setNameError("");
-      setEmailError("");
-      return;
+      setTacError('You must accept the terms and conditions')
+      setPasswordError('')
+      setNameError('')
+      setEmailError('')
+      return
     }
 
-    setNameError("");
-    setPasswordError("");
-    setEmailError("");
+    setNameError('')
+    setPasswordError('')
+    setEmailError('')
 
     await axios({
-      method: "post",
-      url: "/api/auth/signup",
+      method: 'post',
+      url: '/api/auth/signup',
       data: {
         username: name,
         email,
@@ -133,35 +134,35 @@ export default function SignUp() {
       },
     })
       .then(async (res) => {
-        const randomOtp = Math.floor(1000 + Math.random() * 9000);
+        const randomOtp = Math.floor(1000 + Math.random() * 9000)
         await axios({
-          method: "post",
-          url: "/api/auth/sendVerificationCode",
+          method: 'post',
+          url: '/api/auth/sendVerificationCode',
           data: { code: randomOtp, email },
         })
           .then(async (data) => {
-            if (data) setSignUpSuccess(true);
+            if (data) setSignUpSuccess(true)
           })
           .catch((error) => {
-            console.log(error);
-          });
+            console.log(error)
+          })
       })
       .catch((e) => {
-        if (e.response.data.error == "Email already exists") {
-          setEmailError("Email already exists.");
+        if (e.response.data.error == 'Email already exists') {
+          setEmailError('Email already exists.')
         } else {
-          console.log(e);
+          console.log(e)
         }
-      });
-  };
+      })
+  }
 
   const showPasswordHandler = () => {
-    setShowPassword((prevState) => !prevState);
-  };
+    setShowPassword((prevState) => !prevState)
+  }
 
   const changeSubscription = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSubscribed(e.target.checked);
-  };
+    setSubscribed(e.target.checked)
+  }
 
   return (
     <main className="flex flex-row min-h-screen min-w-screen gap-[90px] justify-center 2bp:gap-[50px]">
@@ -175,38 +176,38 @@ export default function SignUp() {
             Sign up
           </p>
           <p className="text-[#414141] mt-[12px] font-normal text-[16px] leading-[24px] font-[Poppins]  1bp:text-[18px] mb-[40px]">
-            Have an account?{" "}
+            Have an account?{' '}
             <Link href="./signin">
               <span className="font-bold cursor-pointer">Log In</span>
             </Link>
           </p>
         </div>
-        <GoogleAuthButton isSignUp={true} />
+        <AuthButton isSignUp={true} type="google" />
         <GoogleSsoDivider />
 
         <div className="flex flex-col gap-5 mt-[28px]">
           <InputField
-            name={"Name"}
-            placeholder={"Enter your name"}
+            name={'Name'}
+            placeholder={'Enter your name'}
             updateValue={setName}
             errorText={nameError}
-          ></InputField>
+          />
 
           <InputField
-            name={"Email"}
-            placeholder={"Enter your email"}
+            name={'Email'}
+            placeholder={'Enter your email'}
             updateValue={setEmail}
             errorText={emailError}
-          ></InputField>
+          />
 
           <div className="relative flex flex-row items-center justify-center">
             <InputField
-              name={"Password"}
-              placeholder={"Enter password"}
+              name={'Password'}
+              placeholder={'Enter password'}
               password={!showPassword ? true : false}
               updateValue={setPassword}
               errorText={passwordError}
-            ></InputField>
+            />
             <div
               className="absolute right-[14px] bottom-[5px] cursor-pointer"
               onClick={showPasswordHandler}
@@ -248,11 +249,11 @@ export default function SignUp() {
             id="checkbox"
           ></input>
           <p className="font-[Poppins] font-normal text-[12px] leading-[18px] text-[#0D1011] 1bp:text-[16px]">
-            I accept the{" "}
+            I accept the{' '}
             <span className="underline cursor-pointer">
               Terms and Conditions
-            </span>{" "}
-            and I have read the{" "}
+            </span>{' '}
+            and I have read the{' '}
             <span className="underline cursor-pointer">Privacy Policy</span>
           </p>
         </div>
@@ -277,5 +278,5 @@ export default function SignUp() {
         </>
       ) : null}
     </main>
-  );
+  )
 }

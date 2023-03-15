@@ -10,11 +10,13 @@ import {
   useEffect,
   useState,
 } from 'react'
+
 import { MessagesContext } from '../../pages/app/messages'
 import { io } from 'socket.io-client'
 import { Events } from '../../common/events'
 import { Conversation } from '../../types/types'
 import { MessagesApiResponse } from '../../types/apiResponseTypes'
+import * as Routes from '../../util/routes'
 
 type Props = {
   text: string
@@ -84,7 +86,7 @@ const Sidebar = ({ user }) => {
     } catch (e) {
       console.log(e)
     } finally {
-      router.push('/')
+      router.push(Routes.LANDING)
     }
   }
 

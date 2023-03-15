@@ -1,106 +1,107 @@
-import InputField from "../input-field";
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import FileUpload from "../file-upload";
-import Util from "../../util";
-import Select from "react-select";
-import { User } from "../../types/types";
+import InputField from '../input-field'
+import axios from 'axios'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
+import FileUpload from '../file-upload'
+import Util from '../../util'
+import Select from 'react-select'
+import { User } from '../../types/types'
+import * as Routes from '../../util/routes'
 import {
   ProfileApiResponse,
   IApiResponseError,
-} from "../../types/apiResponseTypes";
+} from '../../types/apiResponseTypes'
 
 type Props = {
-  user: User;
-};
+  user: User
+}
 
 export default function EditProfile({ user }: Props) {
-  const [name, setName] = useState<string>("");
-  const [userId, setUserId] = useState<string>("");
-  const [nameError, setNameError] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [location, setLocation] = useState<string>("");
-  const [status, setStatus] = useState<string>("");
-  const [isSubscribed, setSubscribed] = useState<boolean>(false);
-  const [pfp, setPfp] = useState<Blob>();
-  const [src, setSrc] = useState<string>("");
-  const [loaded, setLoaded] = useState<boolean>(false);
-  const [processing, setProcessing] = useState<boolean>(false);
-  const [pfpChanged, setPfpChanged] = useState<boolean>(false);
-  const [curruntStatus, setCurruntStatus] = useState<string>("");
+  const [name, setName] = useState<string>('')
+  const [userId, setUserId] = useState<string>('')
+  const [nameError, setNameError] = useState<string>('')
+  const [description, setDescription] = useState<string>('')
+  const [location, setLocation] = useState<string>('')
+  const [status, setStatus] = useState<string>('')
+  const [isSubscribed, setSubscribed] = useState<boolean>(false)
+  const [pfp, setPfp] = useState<Blob>()
+  const [src, setSrc] = useState<string>('')
+  const [loaded, setLoaded] = useState<boolean>(false)
+  const [processing, setProcessing] = useState<boolean>(false)
+  const [pfpChanged, setPfpChanged] = useState<boolean>(false)
+  const [curruntStatus, setCurruntStatus] = useState<string>('')
   useEffect(() => {
-    setLoaded(false);
-    getProfile();
-  }, []);
+    setLoaded(false)
+    getProfile()
+  }, [])
 
   const getProfile = async () => {
-    await axios.get("/api/profiles/individual").then((res) => {
-      let data: ProfileApiResponse.IIndividual | IApiResponseError = res.data;
-      if (data.type == "IApiResponseError") {
-        throw data;
+    await axios.get('/api/profiles/individual').then((res) => {
+      let data: ProfileApiResponse.IIndividual | IApiResponseError = res.data
+      if (data.type == 'IApiResponseError') {
+        throw data
       } else {
-        let individual = data.individual;
-        setUserId(individual.user_id.toString());
-        setSrc(individual.profile_picture);
-        setName(individual.name);
-        setDescription(individual.bio);
-        setLocation(individual.location);
-        setStatus(individual.status);
-        setSubscribed(individual.is_subscribed);
-        setLoaded(true);
-        setCurruntStatus(individual.status);
+        let individual = data.individual
+        setUserId(individual.user_id.toString())
+        setSrc(individual.profile_picture)
+        setName(individual.name)
+        setDescription(individual.bio)
+        setLocation(individual.location)
+        setStatus(individual.status)
+        setSubscribed(individual.is_subscribed)
+        setLoaded(true)
+        setCurruntStatus(individual.status)
       }
-    });
-  };
+    })
+  }
 
   const statusOptions = [
     {
-      value: "Looking to give client for commission.",
-      label: "Looking to give client for commission.",
+      value: 'Looking to give client for commission.',
+      label: 'Looking to give client for commission.',
     },
     {
-      value: "Looking to get client for a commission.",
-      label: "Looking to get client for a commission.",
+      value: 'Looking to get client for a commission.',
+      label: 'Looking to get client for a commission.',
     },
     {
-      value: "Looking to expand my network",
-      label: "Looking to expand my network",
+      value: 'Looking to expand my network',
+      label: 'Looking to expand my network',
     },
-  ];
+  ]
 
-  const router = useRouter();
+  const router = useRouter()
 
   useEffect(() => {
-    if (pfp == null || pfp == undefined || typeof pfp == "undefined") return;
-    setPfpChanged(true);
-    setSrc(URL.createObjectURL(pfp));
-  }, [pfp]);
+    if (pfp == null || pfp == undefined || typeof pfp == 'undefined') return
+    setPfpChanged(true)
+    setSrc(URL.createObjectURL(pfp))
+  }, [pfp])
 
   const submit = async () => {
-    if (processing) return;
-    setProcessing(true);
+    if (processing) return
+    setProcessing(true)
 
-    if (name == "") {
-      setNameError("You must enter a name.");
-      return;
+    if (name == '') {
+      setNameError('You must enter a name.')
+      return
     }
 
-    setNameError("");
+    setNameError('')
 
-    let hasPfp = false;
-    if (pfp != null && pfp != undefined && typeof pfp != "undefined") {
-      hasPfp = true;
+    let hasPfp = false
+    if (pfp != null && pfp != undefined && typeof pfp != 'undefined') {
+      hasPfp = true
     }
 
-    let uploadUrl;
+    let uploadUrl
     if (hasPfp) {
-      uploadUrl = await Util.uploadFile(user.id + "-pfp", pfp);
+      uploadUrl = await Util.uploadFile(user.id + '-pfp', pfp)
     }
 
     await axios
-      .put("/api/profiles/individual", {
-        pfp: hasPfp ? uploadUrl : "",
+      .put('/api/profiles/individual', {
+        pfp: hasPfp ? uploadUrl : '',
         pfpChanged,
         name,
         bio: description,
@@ -110,31 +111,31 @@ export default function EditProfile({ user }: Props) {
       })
       .then(async (res) => {
         if (res.status == 200) {
-          console.log("success");
+          console.log('success')
           if (status !== curruntStatus) {
-            await axios.post("/api/notifications/sendEmailOnStatusChange", {
+            await axios.post('/api/notifications/sendEmailOnStatusChange', {
               userId,
               status,
-              profile: "Individual",
-            });
+              profile: 'Individual',
+            })
           }
-          router.push(`/app/profile/${userId}`);
+          router.push(`${Routes.PROFILE}/${userId}`)
         }
       })
       .catch((e) => {
         if (
           e.response.status == 403 ||
-          e.response.data.error == "Account does not exist"
+          e.response.data.error == 'Account does not exist'
         ) {
         }
-      });
+      })
 
-    setProcessing(false);
-  };
+    setProcessing(false)
+  }
 
   const changeSubscription = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSubscribed(e.target.checked);
-  };
+    setSubscribed(e.target.checked)
+  }
 
   return loaded ? (
     <main className="flex flex-row min-h-screen min-w-screen">
@@ -145,15 +146,15 @@ export default function EditProfile({ user }: Props) {
 
         <div className="flex flex-col gap-5 mt-0">
           <InputField
-            name={"Name*"}
-            placeholder={"Enter your name"}
+            name={'Name*'}
+            placeholder={'Enter your name'}
             updateValue={setName}
             errorText={nameError}
             value={name}
           />
           <InputField
-            name={"Bio"}
-            placeholder={"Enter your bio"}
+            name={'Bio'}
+            placeholder={'Enter your bio'}
             updateValue={setDescription}
             textarea={true}
             value={description}
@@ -164,7 +165,7 @@ export default function EditProfile({ user }: Props) {
               text="Upload profile picture"
               file={pfp}
               setFile={setPfp}
-              id={"Individual pfp upload"}
+              id={'Individual pfp upload'}
               src={src}
               profilePicture={true}
               user={name}
@@ -172,8 +173,8 @@ export default function EditProfile({ user }: Props) {
             ></FileUpload>
           </div>
           <InputField
-            name={"Location"}
-            placeholder={"Enter your location"}
+            name={'Location'}
+            placeholder={'Enter your location'}
             updateValue={setLocation}
             value={location}
           ></InputField>
@@ -183,7 +184,7 @@ export default function EditProfile({ user }: Props) {
           <Select
             className="w-full text-[12px] font-[Poppins]"
             onChange={(e) => {
-              setStatus(e.value);
+              setStatus(e.value)
             }}
             options={statusOptions}
             placeholder="Choose your Status"
@@ -207,8 +208,8 @@ export default function EditProfile({ user }: Props) {
           disabled={processing}
           className={`w-full  font-bold text-white py-4 mt-20 rounded-md shadow-md transition-all ${
             !processing
-              ? "hover:scale-105 hover:shadow-lg bg-[#0F172A]"
-              : "bg-[#0F172A]/70"
+              ? 'hover:scale-105 hover:shadow-lg bg-[#0F172A]'
+              : 'bg-[#0F172A]/70'
           }`}
         >
           Save Profile
@@ -217,5 +218,5 @@ export default function EditProfile({ user }: Props) {
     </main>
   ) : (
     <>Loading...</>
-  );
+  )
 }
