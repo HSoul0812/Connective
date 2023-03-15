@@ -48,9 +48,9 @@ const Conversations = ({
   }, [filter])
 
   return (
-    <div className="flex flex-col w-1/5 overflow-y-scroll bg-white min-w-[375px]">
+    <div className="flex flex-col w-1/5 overflow-y-scroll bg-white min-w-[200px]">
       <Head>
-        <title>Messages - Conenctive</title>
+        <title>Messages - Connective</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <div className="relative mx-[28px] my-[14px]">
@@ -91,14 +91,16 @@ const Conversations = ({
               selectedUser?.id == item.id ? 'bg-white' : 'bg-slate-100'
             } hover:bg-slate-100/50 transition-all`}
           >
-            <div className="w-1/5 h-full flex items-center">
+            <div className="h-full flex items-center mr-2">
               {item.logo ? (
-                <Image
-                  width="100%"
-                  height="100%"
-                  src={item.logo}
-                  className="bg-white rounded-full shadow-lg"
-                />
+                <div className="min-w-[40px] min-y-[40px]">
+                  <Image
+                    width="100%"
+                    height="100%"
+                    src={item.logo}
+                    className="bg-white rounded-full shadow-lg"
+                  />
+                </div>
               ) : (
                 <Avatar
                   className="rounded-full shadow-lg"
@@ -108,7 +110,7 @@ const Conversations = ({
                 />
               )}
             </div>
-            <div className="flex flex-col ml-2 w-4/5 h-full justify-between">
+            <div className="flex flex-col w-4/5 h-full justify-between">
               <div className="flex justify-between items-center">
                 <p className="my-auto font-bold">{item.username}</p>
                 <p className="my-auto text-gray">10:49</p>

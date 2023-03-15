@@ -148,21 +148,22 @@ const Sidebar = ({ user }) => {
   }, [getConversations])
 
   return (
-    <div className="z-10 h-fill min-w-[30vh] bg-[#061A40] flex flex-col text-white font-[Montserrat] px-[32px] py-[30px]">
+    <div className="z-10 h-fill min-w-[30vh] bg-[#F8F9FA] flex flex-col text-white font-[Montserrat] px-[32px] py-[30px]">
       <Link href="/">
         <div className="flex flex-row cursor-pointer items-center gap-2 mb-9">
           <Image
-            className="w-[2vh] h-[4vh]"
-            src="/assets/logo-1.svg"
-            width="70px"
-            height="75px"
+            // className="w-[2vh] h-[4vh]"
+            src="/assets/messages/logoIcon.svg"
+            width={41}
+            height={41}
             priority
           />
           <Image
-            className="w-[5vh] h-[1.5vh]"
-            src="/assets/logo-2.svg"
-            width="196px"
-            height="36px"
+            className="ml-2"
+            // className="w-[5vh] h-[1.5vh]"
+            src="/assets/messages/logoText.svg"
+            width={125}
+            height={20}
             priority
           />
         </div>
