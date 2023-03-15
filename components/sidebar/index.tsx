@@ -52,11 +52,11 @@ const SidebarItem = ({
   return (
     <div
       onClick={onClick}
-      className={`flex flex-row gap-5 cursor-pointer text-[1.65vh] 2xl:text-[1.4vh] pl-6 py-[1.25vh] 2xl:py-[1.5vh] w-full transition-all hover:bg-[#051533]/10 ${
-        selected ? 'bg-[#051533]' : ''
-      } ${text == 'Sign Out' ? 'mt-auto' : ''}`}
+      className={`flex flex-row gap-5 cursor-pointer text-[1.65vh] 2xl:text-[1.4vh] pl-6 py-[1.25vh] 2xl:py-[1.5vh] w-full transition-all text-gray hover:bg-[#051533]/10
+       ${selected ? 'bg-[#051533]' : ''}
+       ${text == 'Sign Out' ? 'mt-auto' : ''}`}
     >
-      <img className="w-[2vh] h-[2vh] my-auto" src={icon} />
+      <img className="w-[2vh] h-[2vh] my-auto " src={icon} />
       <p>{text}</p>
       <p>{text2}</p>
     </div>
@@ -148,38 +148,33 @@ const Sidebar = ({ user }) => {
   }, [getConversations])
 
   return (
-    <div className="z-10 h-fill min-w-[30vh] bg-[#F8F9FA] flex flex-col text-white font-[Montserrat] px-[32px] py-[30px]">
+    <div className="z-10 h-fill min-w-[30vh] bg-[#F8F9FA] flex flex-col text-white font-[Montserrat] px-[30px] py-[25px]">
       <Link href="/">
-        <div className="flex flex-row cursor-pointer items-center gap-2 mb-9">
+        <div className="flex flex-row cursor-pointer items-center mb-9">
           <Image
-            // className="w-[2vh] h-[4vh]"
             src="/assets/messages/logoIcon.svg"
             width={41}
             height={41}
             priority
           />
-          <Image
-            className="ml-2"
-            // className="w-[5vh] h-[1.5vh]"
-            src="/assets/messages/logoText.svg"
-            width={125}
-            height={20}
-            priority
-          />
+          <div className="ml-2 flex items-center">
+            <Image
+              src="/assets/messages/logoText.svg"
+              width={125}
+              height={20}
+              priority
+            />
+          </div>
         </div>
       </Link>
 
-      <div className="mb-3">
-        <p className="font-[Montserrat] font-bold text-[1.5vh] leading-[20px] text-[#BFBFBF] mb-2">
-          General
-        </p>
-        {/*
+      <div className="mb-5">
         <SidebarItem
           text="Dashboard"
           icon="/assets/navbar/DashboardIcon.svg"
           route="/app/dashboard"
         ></SidebarItem>
-        */}
+
         <SidebarItem
           text="Profile"
           icon="/assets/navbar/ProfileIcon.svg"
@@ -227,7 +222,7 @@ const Sidebar = ({ user }) => {
       */}
       <div className="mb-3">
         <p className="font-[Montserrat] font-bold text-[1.5vh] leading-[20px] text-[#BFBFBF] mb-2">
-          Chat
+          CHAT
         </p>
         <SidebarItem
           text="Discover"
