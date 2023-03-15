@@ -48,12 +48,12 @@ const Conversations = ({
   }, [filter])
 
   return (
-    <div className="flex flex-col w-1/5 overflow-y-scroll bg-white min-w-[200px]">
+    <div className="flex flex-col w-1/5 overflow-y-scroll bg-white min-w-[180px]">
       <Head>
         <title>Messages - Connective</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <div className="relative mx-[28px] my-[14px]">
+      <div className="relative mx-[28px] my-[14px] 2bp:mx-0">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           <svg
             aria-hidden="true"
@@ -87,7 +87,7 @@ const Conversations = ({
             onClick={() => {
               setSelectedUser(item)
             }}
-            className={`flex items-center  flex-row px-[28px] py-[18px] cursor-pointer text-sm border-b border-slate-200 w-full ${
+            className={`flex items-center  flex-row 2bp:pl-0 px-[28px] py-[18px] cursor-pointer text-sm border-b border-slate-200 w-full ${
               selectedUser?.id == item.id ? 'bg-white' : 'bg-slate-100'
             } hover:bg-slate-100/50 transition-all`}
           >

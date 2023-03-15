@@ -52,7 +52,7 @@ const SidebarItem = ({
   return (
     <div
       onClick={onClick}
-      className={`flex flex-row gap-5 cursor-pointer text-[1.65vh] 2xl:text-[1.4vh] pl-6 py-[1.25vh] 2xl:py-[1.5vh] w-full transition-all text-gray hover:bg-[#051533]/10
+      className={`flex flex-row gap-3 cursor-pointer text-[1.65vh] 2xl:text-[1.4vh] pl-6 py-[1.25vh] 2xl:py-[1.5vh] w-full transition-all text-gray hover:bg-[#051533]/10
        ${selected ? 'bg-[#051533]' : ''}
        ${text == 'Sign Out' ? 'mt-auto' : ''}`}
     >
@@ -148,7 +148,7 @@ const Sidebar = ({ user }) => {
   }, [getConversations])
 
   return (
-    <div className="z-10 h-fill min-w-[30vh] bg-[#F8F9FA] flex flex-col text-white font-[Montserrat] px-[30px] py-[25px]">
+    <div className="z-10 h-fill min-w-[25vh] w-1/6 bg-[#F8F9FA] flex flex-col text-white font-[Montserrat] px-[30px] py-[25px]">
       <Link href="/">
         <div className="flex flex-row cursor-pointer items-center mb-9">
           <Image
@@ -168,7 +168,7 @@ const Sidebar = ({ user }) => {
         </div>
       </Link>
 
-      <div className="mb-5">
+      <div className="mt-24">
         <SidebarItem
           text="Dashboard"
           icon="/assets/navbar/DashboardIcon.svg"
@@ -232,7 +232,7 @@ const Sidebar = ({ user }) => {
         <SidebarItem
           text="Messages"
           text2={sum && sum > 0 ? sum : null}
-          icon="/assets/navbar/messages.png"
+          icon="/assets/navbar/messages.svg"
           route="/app/messages"
         ></SidebarItem>
       </div>
