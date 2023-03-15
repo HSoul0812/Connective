@@ -1,25 +1,16 @@
-import Image from 'next/image'
-import bgImg from '../../public/assets/partnerships.svg'
-
 const LoginSidebar = () => {
   return (
-    <div className="relative z-1 w-full h-full 2bp:min-w-fit !max-h-[calc(100vh-64px)] bg-[url('/assets/partnerships.svg')] bg-no-repeat bg-center bg-contain">
-      <Image
-        className="w-full min-h-0 min-w-0 !max-h-[100vw] max-w-0 z-[-5]"
-        src={bgImg}
-        alt="bg"
-        priority
-      />
-
-      {/* <div  className="absolute bottom-0 px-[60px] mb-[208px] z-[20] top-0">
-        <h1  className="max-w-[403px] font-[Montserrat] text-[#F2F4F5] font-bold text-[40px] leading-[49px] mb-[24px] 1bp:text-[54px] 1bp:leading-[59px]">
-          Curated B2B Assets Monetized
+    <div className="flex justify-center items-end font-[Poppins] z-1 w-full h-[100vh] 2bp:min-w-fit bg-[url('/assets/partnerships.svg')] bg-no-repeat bg-center bg-cover">
+      <div className="w-fit h-fit mb-40 px-[40px] py-[24px] z-[1] bg-[#fff2f2]/[0.13] backdrop-blur-[35.5px] mix-blend-normal rounded-xl">
+        <h1 className="text-[#F2F4F5] font-bold text-[40px] leading-[49px] mb-[24px] 1bp:text-[54px] 1bp:leading-[59px]">
+          Affiliate Partnerships <br />
+          simplified
         </h1>
-        <p  className="max-w-[454px] font-[Montserrat] text-[#F2F4F5] font-light text-[20px] leading-[150%] 1bp:text-[24px]">
-          Connective is an open marketplace designed for businesses to help each
-          other grow through buying and selling digital assets.
+        <p className="text-[#F2F4F5] font-light text-lg leading-[33px] 1bp:text-2xl">
+          Connective is a chat app designed for businesses to <br />
+          form affiliate partnerships.
         </p>
-      </div> */}
+      </div>
     </div>
   )
 }

@@ -60,11 +60,11 @@ const AuthButton = ({ isSignUp = false, type }: Props) => {
           <Image
             src={isGoogle ? googleIcon : facebookIcon}
             alt="Connective logo"
-            width="30px"
-            height="30px"
+            width="24px"
+            height="24px"
             style={{ marginRight: '3px', border: '1px solid black' }}
           />
-          <span className="ml-2">
+          <span className="ml-2 font-[500]">
             {isSignUp
               ? isWorking
                 ? 'Signing up...'

@@ -79,7 +79,6 @@ const Conversations = ({
           className={`placeholder:text-sm outline-none w-full pl-[36px] pr-[14px] text-sm py-2 rounded-lg outline-gray/5 focus:outline-blue-200 transition-all hover:outline hover:outline-blue-300`}
         />
       </div>
-
       {filteredConversations.map((item, index) => {
         return (
           <div

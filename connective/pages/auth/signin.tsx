@@ -156,7 +156,7 @@ export default function SignIn() {
   }
 
   return (
-    <main className="flex flex-row-reverse gap-[80px] 2bp:gap-[40px] justify-center bg-[#FCF7FF]">
+    <main className="flex flex-row-reverse gap-[80px] 2bp:gap-[40px] justify-center h-[100vh] bg-[#FCF7FF]">
       <Head>
         <title>Signin - Connective</title>
       </Head>
