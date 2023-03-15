@@ -1,11 +1,11 @@
-import Image from "next/image";
-import bgImg from "../../public/assets/Right.png";
+import Image from 'next/image'
+import bgImg from '../../public/assets/partnerships.svg'
 
 const LoginSidebar = () => {
   return (
-    <div className="relative min-w-[620px] my-[32px] mr-[32px] 2bp:min-w-fit !max-h-[calc(100vh-64px)]">
+    <div className="relative z-1 w-full h-full 2bp:min-w-fit !max-h-[calc(100vh-64px)] bg-[url('/assets/partnerships.svg')] bg-no-repeat bg-center bg-contain">
       <Image
-        className="w-fit rounded-[16px] min-h-0 min-w-0 !max-h-[100vw] max-w-0 z-[-5] signin-image"
+        className="w-full min-h-0 min-w-0 !max-h-[100vw] max-w-0 z-[-5]"
         src={bgImg}
         alt="bg"
         priority
@@ -21,7 +21,7 @@ const LoginSidebar = () => {
         </p>
       </div> */}
     </div>
-  );
-};
+  )
+}
 
-export default LoginSidebar;
+export default LoginSidebar

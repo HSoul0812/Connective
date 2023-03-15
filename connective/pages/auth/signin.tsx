@@ -1,185 +1,194 @@
-import InputField from "../../components/input-field";
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { withIronSession } from "next-iron-session";
-import Link from "next/link";
-import Image from "next/image";
-import logo from "../../public/assets/logo.svg";
-import Head from "next/head";
-import GoogleSsoDivider from "../../components/divider/orDivider";
-import GoogleAuthButton from "../../components/button/GoogleAuthButton";
-import LoginSidebar from "../../components/login-sidebar";
-import EmailVerification from "../../components/dailog/EmailVerification";
-import ResetPassword from "./resetpassword/[email]/[token]";
+import InputField from '../../components/input-field'
+import axios from 'axios'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
+import { withIronSession } from 'next-iron-session'
+import Switch from 'react-switch'
+import Link from 'next/link'
+import Image from 'next/image'
+import logo from '../../public/assets/logo.svg'
+import Head from 'next/head'
+import * as Routes from '../../util/routes'
+import GoogleSsoDivider from '../../components/divider/orDivider'
+import AuthButton from '../../components/button/AuthButton'
+import LoginSidebar from '../../components/login-sidebar'
+import EmailVerification from '../../components/dailog/EmailVerification'
+import ResetPassword from './resetpassword/[email]/[token]'
 import {
   AuthApiResponse,
   IApiResponseError,
-} from "../../types/apiResponseTypes";
+} from '../../types/apiResponseTypes'
 
 export default function SignIn() {
-  const router = useRouter();
-  const { error } = router.query;
-  const [email, setEmail] = useState<string>("");
-  const [emailError, setEmailError] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [passwordError, setPasswordError] = useState<string>("");
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [resetPassword, setResetPassword] = useState<boolean>(false);
-  const [emailNotVerified, setEmailNotVerified] = useState<boolean>(false);
-  const [otpCode, setOtpCode] = useState<string>("");
-  const [otpCodeforResetPassword, setOtpCodeforResetPassword] =
-    useState<string>("");
-  const [otpError, setOtpError] = useState<string>("");
-  const [expiredError, setExpiredError] = useState<boolean>(false);
+  const router = useRouter()
+  const { error } = router.query
+  const [email, setEmail] = useState<string>('')
+  const [emailError, setEmailError] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [passwordError, setPasswordError] = useState<string>('')
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [resetPassword, setResetPassword] = useState<boolean>(false)
+  const [emailNotVerified, setEmailNotVerified] = useState<boolean>(false)
+  const [otpCode, setOtpCode] = useState<string>('')
+  const [checked, setChecked] = useState<boolean>(false)
+  const [otpCodeforResetPassword, setOtpCodeforResetPassword] = useState<
+    string
+  >('')
+  const [otpError, setOtpError] = useState<string>('')
+  const [expiredError, setExpiredError] = useState<boolean>(false)
 
   const verifyEmail = async () => {
     const verifiedEmail: AuthApiResponse.IVerifyEmail | IApiResponseError = (
       await axios({
-        method: "post",
-        url: "/api/auth/verifyEmail",
+        method: 'post',
+        url: '/api/auth/verifyEmail',
         data: { code: otpCode, email },
       })
-    ).data;
+    ).data
     if (!verifiedEmail.success) {
-      if (verifiedEmail.type == "IApiResponseError") {
-        if (verifiedEmail.error === "Incorrect verification code") {
-          setOtpError("Incorrect verification code");
+      if (verifiedEmail.type == 'IApiResponseError') {
+        if (verifiedEmail.error === 'Incorrect verification code') {
+          setOtpError('Incorrect verification code')
         } else {
-          setOtpError(verifiedEmail.error as string);
+          setOtpError(verifiedEmail.error as string)
         }
       }
     } else {
-      setOtpError(null);
-      setEmailError(null);
-      setEmailNotVerified(false);
+      setOtpError(null)
+      setEmailError(null)
+      setEmailNotVerified(false)
     }
-  };
+  }
 
   useEffect(() => {
     if (otpCode && emailNotVerified) {
-      verifyEmail();
+      verifyEmail()
     }
-  }, [otpCode, emailNotVerified]);
+  }, [otpCode, emailNotVerified])
 
   useEffect(() => {
     if (!emailNotVerified) {
-      verifyEmail();
+      verifyEmail()
     }
-  }, [otpCode, emailNotVerified]);
+  }, [otpCode, emailNotVerified])
 
   useEffect(() => {
     if (error) {
-      setPasswordError("You didn't sign up with Google SSO.");
+      setPasswordError("You didn't sign up with Google SSO.")
     }
-  }, [error]);
+  }, [error])
 
   const submitAccount = async () => {
-    if (email == "") {
-      setEmailError("You must enter an email.");
-      setPasswordError("");
-      return;
+    if (email == '') {
+      setEmailError('You must enter an email.')
+      setPasswordError('')
+      return
     }
-    if (password == "") {
-      setPasswordError("You must enter a password.");
-      setEmailError("");
-      return;
+    if (password == '') {
+      setPasswordError('You must enter a password.')
+      setEmailError('')
+      return
     }
 
-    setPasswordError("");
-    setEmailError("");
+    setPasswordError('')
+    setEmailError('')
 
     await axios({
-      method: "post",
-      url: "/api/auth/sessions",
+      method: 'post',
+      url: '/api/auth/sessions',
       data: { email, password },
     })
       .then((res) => {
-        const data: AuthApiResponse.ISessions = res.data;
+        const data: AuthApiResponse.ISessions = res.data
         if (res.status == 201) {
           data.accountExists
-            ? router.push("/app/discover")
-            : router.push("/onboarding/create-profile");
+            ? router.push(Routes.DISCOVER)
+            : router.push(Routes.CREATEPROFILE)
         }
       })
       .catch((e) => {
-        if (e.response.data.error == "Email not verified") {
-          setEmailError("Email not verified");
-          setEmailNotVerified(true);
+        if (e.response.data.error == 'Email not verified') {
+          setEmailError('Email not verified')
+          setEmailNotVerified(true)
         }
         if (
           e.response.status == 403 ||
-          e.response.data.error == "Account does not exist"
+          e.response.data.error == 'Account does not exist'
         )
-          setPasswordError("Incorrect email or password");
-      });
-  };
+          setPasswordError('Incorrect email or password')
+      })
+  }
 
   const forgotPassword = async () => {
-    if (email == "") {
-      setEmailError("You must enter an email.");
-      setPasswordError("");
-      return;
+    if (email == '') {
+      setEmailError('You must enter an email.')
+      setPasswordError('')
+      return
     }
 
-    setPasswordError("");
-    setEmailError("");
+    setPasswordError('')
+    setEmailError('')
 
     await axios({
-      method: "post",
-      url: "/api/auth/sendPasswordResetEmail",
+      method: 'post',
+      url: '/api/auth/sendPasswordResetEmail',
       data: { email },
     })
       .then(async (res) => {
-        if (res) setResetPassword(true);
-        if (res.data.error === "You can send only 2 requests in 15 minutes") {
-          setExpiredError(true);
+        if (res) setResetPassword(true)
+        if (res.data.error === 'You can send only 2 requests in 15 minutes') {
+          setExpiredError(true)
         } else {
-          setExpiredError(false);
+          setExpiredError(false)
         }
       })
       .catch(async (e) => {
         if (
           e.response.status == 500 ||
-          e.response.data.error == "Account does not exist"
+          e.response.data.error == 'Account does not exist'
         )
-          setEmailError("Incorrect email");
-      });
-  };
+          setEmailError('Incorrect email')
+      })
+  }
 
   const showPasswordHandler = () => {
-    setShowPassword((prevState) => !prevState);
-  };
+    setShowPassword((prevState) => !prevState)
+  }
 
   return (
-    <main className="flex flex-row-reverse gap-[80px] 2bp:gap-[40px] justify-center">
+    <main className="flex flex-row-reverse gap-[80px] 2bp:gap-[40px] justify-center bg-[#FCF7FF]">
       <Head>
-        <title>Signin - Conenctive</title>
+        <title>Signin - Connective</title>
       </Head>
       <LoginSidebar />
 
       <div className="flex flex-col max-w-[704px] w-[100%] font-[Montserrat] my-[32px] ml-[64px]">
-        <div className="cursor-pointer">
-          <Link href="https://www.connective-app.xyz">
-            <div className="mb-[40px]">
+        <div className="flex justify-between items-center mb-5">
+          <div className="cursor-pointer">
+            <Link href="https://www.connective-app.xyz">
               <Image
                 src={logo}
                 alt="Connective logo"
-                width="205px"
-                height="48px"
+                width="173px"
+                height="41px"
               />
-            </div>
-          </Link>
+            </Link>
+          </div>
+
+          <p className="font-[Poppins] font-normal text-[14px] leading-[36px] text-center text-[#414141] 1bp:text-[16px]">
+            Don't have an account?{' '}
+            <Link href="/auth/signup">
+              <span className="text-purple cursor-pointer">Sign up!</span>
+            </Link>
+          </p>
         </div>
-
-        <div>
-          <div>
-            <p className="font-bold text-[32px] leading-[39px] text-[#0D1011]">
-              Sign in
+        <div className="mt-5 flex flex-col items-center">
+          <div className="text-center">
+            <p className="font-semibold text-[44px] leading-[39px] text-[#0D1011]">
+              Welcome Back!
             </p>
-
-            <p className="text-[#414141] my-[12px] font-normal text-[16px] leading-[24px] font-[Poppins] 1bp:text-[18px] mb-10">
-              Welcome back! Please enter your details
+            <p className="text-[#414141] my-[12px] font-normal text-[16px] leading-[37px] font-[Poppins] 1bp:text-[18px] mb-10">
+              Login into your account
             </p>
 
             {/* <div
@@ -208,78 +217,78 @@ export default function SignIn() {
             </div> */}
           </div>
 
-          <GoogleAuthButton isSignUp={false} />
-          <GoogleSsoDivider />
+          <AuthButton isSignUp={false} type="google" />
+          <div className="w-3/5 4bp:w-full">
+            <GoogleSsoDivider />
 
-          <div className="relative flex flex-col gap-5 mt-10 items-center">
-            <InputField
-              name={"E-mail"}
-              placeholder={"Enter your email"}
-              updateValue={setEmail}
-              errorText={emailError}
-            ></InputField>
+            <div className="relative flex flex-col gap-5 mt-10 items-center">
+              <InputField
+                name={'Email'}
+                placeholder={'Enter your email'}
+                updateValue={setEmail}
+                errorText={emailError}
+              />
+              <InputField
+                name={'Password'}
+                placeholder={'Enter password'}
+                password={!showPassword ? true : false}
+                updateValue={setPassword}
+                errorText={passwordError}
+              />
+              <div
+                className="absolute right-[14px] bottom-[5px] cursor-pointer"
+                onClick={showPasswordHandler}
+              >
+                {!showPassword && (
+                  <Image
+                    src="/assets/eye-slash.svg"
+                    alt="eye slash"
+                    width="20px"
+                    height="20px"
+                  />
+                )}
+                {showPassword && (
+                  <Image
+                    src="/assets/eye.svg"
+                    alt="eye"
+                    width="20px"
+                    height="20px"
+                  />
+                )}
+              </div>
+            </div>
 
-            <InputField
-              name={"Password"}
-              placeholder={"Enter password"}
-              password={!showPassword ? true : false}
-              updateValue={setPassword}
-              errorText={passwordError}
-            ></InputField>
-            <div
-              className="absolute right-[14px] bottom-[5px] cursor-pointer"
-              onClick={showPasswordHandler}
+            <div className="flex flex-row justify-between items-center">
+              <div className="flex flex-row gap-[8px] my-[24px] 1bp:gap-[14px] items-center">
+                <Switch
+                  onChange={() => setChecked(!checked)}
+                  checked={checked}
+                  checkedIcon={false}
+                  uncheckedIcon={false}
+                  handleDiameter={15}
+                  offColor="#eeecf6"
+                  onColor="#eeecf6"
+                  width={38}
+                  height={20}
+                />
+                <p className="font-[Poppins] font-normal text-[12px] leading-[18px] text-[#0D1011] 1bp:text-[16px]">
+                  Remember me
+                </p>
+              </div>
+              <span onClick={forgotPassword}>
+                <p className="font-Poppins font-normal text-[12px] leading-[18px] text-[#D93F21] cursor-pointer 1bp:text-[16px]">
+                  Recover Password
+                </p>
+              </span>
+            </div>
+
+            <button
+              onClick={submitAccount}
+              className="w-[100%] h-[56px] bg-[#7E38B7] font-[Poppins] text-[#F2F4F5] text-[16px] leading-[18px] text-center rounded-full shadow-md transition-all hover:scale-105 hover:shadow-lg 1bp:text-[16px]"
             >
-              {!showPassword && (
-                <Image
-                  src="/assets/eye-slash.svg"
-                  alt="eye slash"
-                  width="24px"
-                  height="24px"
-                />
-              )}
-              {showPassword && (
-                <Image
-                  src="/assets/eye.svg"
-                  alt="eye"
-                  width="24px"
-                  height="24px"
-                />
-              )}
-            </div>
+              Login
+            </button>
           </div>
-
-          <div className="flex flex-row justify-between items-center">
-            <div className="flex flex-row gap-[8px] my-[24px] 1bp:gap-[14px] items-center">
-              <input
-                className="b-[#0D1011] b-[0.5px] w-[16px] h-[16px] 1bp:w-[20px] 1bp:h-[20px]"
-                type="checkbox"
-                id="checkbox"
-              ></input>
-              <p className="font-[Poppins] font-normal text-[12px] leading-[18px] text-[#0D1011] 1bp:text-[16px]">
-                Remember my information
-              </p>
-            </div>
-            <span onClick={forgotPassword}>
-              <p className="font-Poppins font-normal text-[12px] leading-[18px] text-[#061A40] cursor-pointer 1bp:text-[16px]">
-                Forgot your password?
-              </p>
-            </span>
-          </div>
-
-          <button
-            onClick={submitAccount}
-            className="w-[100%] h-[47px] bg-[#061A40] font-semibold font-[Poppins] text-[#F2F4F5] text-[12px] leading-[18px] text-center rounded-[8px] shadow-md transition-all hover:scale-105 hover:shadow-lg 1bp:text-[16px]"
-          >
-            Log in
-          </button>
-
-          <p className="mt-[24px] font-[Poppins] font-normal text-[12px] leading-[18px] text-center text-[#414141] 1bp:text-[16px]">
-            Dont have an account?{" "}
-            <Link href="/auth/signup">
-              <span className="font-bold cursor-pointer">Sign up</span>
-            </Link>
-          </p>
         </div>
       </div>
       {emailNotVerified ? (
@@ -307,26 +316,26 @@ export default function SignIn() {
         </>
       ) : null}
     </main>
-  );
+  )
 }
 
 export const getServerSideProps = withIronSession(
   async ({ req, res }) => {
-    const user = req.session.get("user");
+    const user = req.session.get('user')
 
     if (!user) {
-      return { props: {} };
+      return { props: {} }
     }
 
     return {
       props: { user },
-    };
+    }
   },
   {
-    cookieName: "Connective",
+    cookieName: 'Connective',
     cookieOptions: {
-      secure: process.env.NODE_ENV == "production" ? true : false,
+      secure: process.env.NODE_ENV == 'production' ? true : false,
     },
     password: process.env.APPLICATION_SECRET,
-  }
-);
+  },
+)

@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=ABeeZee&family=Montserrat:wght@300;400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=ABeeZee&family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -19,7 +19,7 @@
   }
 
   .inputClass {
-    @apply w-[704px] mt-2.5 px-3 py-3.5 border-[0.5px] border-[#0d101180]/[.15] rounded-lg
+    @apply w-[704px] mt-2.5 px-3 py-3.5 border-[0.5px] border-[#0d101180]/[.15] rounded-lg;
   }
 
   .error-message {
@@ -29,12 +29,16 @@
   .error-border {
     @apply border-bright-red border-[1px];
   }
-  
+
   .valid-border {
     @apply border-desaturated-cyan border-[1px];
   }
 }
 
+p,
+span {
+  font-family: 'Poppins';
+}
 table {
   border-color: white;
   /* border-collapse: collapse; */
@@ -58,7 +62,7 @@ th {
 } */
 
 .text-subheading {
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 #main-checkout-container {
@@ -144,7 +148,7 @@ button:disabled {
 .spinner:before,
 .spinner:after {
   position: absolute;
-  content: "";
+  content: '';
 }
 
 .spinner:before {
@@ -218,9 +222,37 @@ button:disabled {
   border-radius: 100vh;
   cursor: pointer;
 }
-.navbar-items a:hover{
+.navbar-items a:hover {
   color: rgba(255, 255, 255, 0.75);
 }
-span:has(.signin-image) > span > img{
+span:has(.signin-image) > span > img {
   max-height: calc(100vh - 64px) !important;
+}
+
+.switch-toggle-button > input:checked ~ .dot {
+  transform: translateX(100%);
+  background-color: #48bb78;
+}
+
+.border-gradient-br-purple-transparent {
+  background: linear-gradient(to right, #fff, #fff),
+    linear-gradient(to right, #7e38b7, #7e38b7, #fff);
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+}
+
+.hover\:border-gradient-br-purple-transparent:hover {
+  background: linear-gradient(to right, #fff, #fff),
+    linear-gradient(to right, #7e38b7, #7e38b7, #fff);
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+}
+
+.gradient-border-3 {
+  border: 3px solid transparent;
+}
+
+.icon-filtering {
+  filter: invert(24%) sepia(94%) saturate(3432%) hue-rotate(265deg)
+    brightness(77%) contrast(80%);
 }

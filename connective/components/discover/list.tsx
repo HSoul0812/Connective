@@ -1,30 +1,31 @@
-import Image from "next/image";
-import { useRouter } from "next/router";
-import Avatar from "../avatar";
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import * as Routes from '../../util/routes'
+import Avatar from '../avatar'
 
 type Props = {
-  id: string | number;
-  title: string;
-  description: string;
-  imgURL: string;
-  status: string;
-};
+  id: string | number
+  title: string
+  description: string
+  imgURL: string
+  status: string
+}
 
 const DiscoverList = ({ id, title, description, imgURL, status }: Props) => {
-  const router = useRouter();
+  const router = useRouter()
 
-  let statusStyle;
+  let statusStyle
   if (status) {
     statusStyle = {
-      marginTop: description.length > 195 ? "5px" : "45px",
+      marginTop: description.length > 195 ? '5px' : '45px',
       backgroundColor:
-        status === "Looking to give client for commission."
-          ? "#4b5e6d"
-          : "#c2cfd8",
+        status === 'Looking to give client for commission.'
+          ? '#4b5e6d'
+          : '#c2cfd8',
       textColor:
-        status === "Looking to give client for commission." ? "white" : "black",
-      textMarginBottom: description.length > 195 ? "1px" : "",
-    };
+        status === 'Looking to give client for commission.' ? 'white' : 'black',
+      textMarginBottom: description.length > 195 ? '1px' : '',
+    }
   }
 
   return (
@@ -45,7 +46,7 @@ const DiscoverList = ({ id, title, description, imgURL, status }: Props) => {
         <p className="text-xl font-bold mt-4">{title}</p>
         <p className="text-sm flex-1 h-full">
           {description.length > 195
-            ? description.slice(0, 195) + "..."
+            ? description.slice(0, 195) + '...'
             : description}
         </p>
         <div className="text-sm">
@@ -69,20 +70,20 @@ const DiscoverList = ({ id, title, description, imgURL, status }: Props) => {
       <div className="w-60 shrink-0 flex flex-col justify-center items-center gap-3 m-5">
         <button
           className="text-sm font-normal bg-[#006494] font-[Poppins]"
-          onClick={() => router.push(`/app/profile/${id}`)}
+          onClick={() => router.push(`${Routes.PROFILE}/${id}`)}
         >
           View Profile
         </button>
 
         <button
           className="text-sm font-normal bg-[#061A40] font-[Poppins]"
-          onClick={() => router.push(`/app/messages?newUser=${id}`)}
+          onClick={() => router.push(`${Routes.MESSAGES}?newUser=${id}`)}
         >
           Start a chat
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DiscoverList;
+export default DiscoverList
