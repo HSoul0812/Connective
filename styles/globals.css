@@ -233,3 +233,26 @@ span:has(.signin-image) > span > img {
   transform: translateX(100%);
   background-color: #48bb78;
 }
+
+.border-gradient-br-purple-transparent {
+  background: linear-gradient(to right, #fff, #fff),
+    linear-gradient(to right, #7e38b7, #7e38b7, #fff);
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+}
+
+.hover\:border-gradient-br-purple-transparent:hover {
+  background: linear-gradient(to right, #fff, #fff),
+    linear-gradient(to right, #7e38b7, #7e38b7, #fff);
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+}
+
+.gradient-border-3 {
+  border: 3px solid transparent;
+}
+
+.icon-filtering {
+  filter: invert(24%) sepia(94%) saturate(3432%) hue-rotate(265deg)
+    brightness(77%) contrast(80%);
+}

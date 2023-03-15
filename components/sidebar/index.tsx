@@ -52,13 +52,19 @@ const SidebarItem = ({
   return (
     <div
       onClick={onClick}
-      className={`flex flex-row gap-3 cursor-pointer text-[1.65vh] 2xl:text-[1.4vh] pl-6 py-[1.25vh] 2xl:py-[1.5vh] w-full transition-all text-gray hover:bg-[#051533]/10
-       ${selected ? 'bg-[#051533]' : ''}
+      className={`
+      flex flex-row items-center gap-3 cursor-pointer text-[1.65vh] 2xl:text-[1.4vh] pl-3 py-[1.25vh] my-3 2xl:py-[1.5vh] w-full transition-all text-gray hover:border-gradient-br-purple-transparent gradient-border-2 rounded-xl
+       ${selected ? 'border-gradient-br-purple-transparent' : ''}
        ${text == 'Sign Out' ? 'mt-auto' : ''}`}
     >
-      <img className="w-[2vh] h-[2vh] my-auto " src={icon} />
-      <p>{text}</p>
-      <p>{text2}</p>
+      <img
+        className={`w-[2vh] h-[2vh] my-auto ${
+          selected ? 'icon-filtering' : ''
+        } `}
+        src={icon}
+      />
+      <p className={`${selected ? 'text-purple' : ''}`}>{text}</p>
+      <p className="rounded-full px-1 bg-purple text-white">{text2}</p>
     </div>
   )
 }
@@ -168,7 +174,7 @@ const Sidebar = ({ user }) => {
         </div>
       </Link>
 
-      <div className="mt-24">
+      <div className="mt-4">
         <SidebarItem
           text="Dashboard"
           icon="/assets/navbar/DashboardIcon.svg"
@@ -220,24 +226,24 @@ const Sidebar = ({ user }) => {
         ></SidebarItem>
       </div>
       */}
-      <div className="mb-3">
+      <div className="mt-4">
         <p className="font-[Montserrat] font-bold text-[1.5vh] leading-[20px] text-[#BFBFBF] mb-2">
           CHAT
         </p>
-        <SidebarItem
-          text="Discover"
-          icon="/assets/navbar/compass.svg"
-          route="/app/discover"
-        ></SidebarItem>
         <SidebarItem
           text="Messages"
           text2={sum && sum > 0 ? sum : null}
           icon="/assets/navbar/messages.svg"
           route="/app/messages"
         ></SidebarItem>
+        <SidebarItem
+          text="Discover"
+          icon="/assets/navbar/compass.svg"
+          route="/app/discover"
+        ></SidebarItem>
       </div>
 
-      <div className="mb-3">
+      <div className="mt-4">
         <p className="font-[Montserrat] font-bold text-[1.5vh] leading-[20px] text-[#BFBFBF] mb-2">
           Support
         </p>

@@ -158,7 +158,7 @@ const Messages = ({ user }) => {
   return (
     <MessagesProvider value={{ conversations }}>
       <Layout user={user} title="Messages">
-        <div className="absolute 2bp:relative  flex flex-row right-0 top-0 gap-1">
+        <div className="absolute 2bp:relative 2bp:ml-auto flex flex-row right-0 top-0 gap-1">
           <div className="flex mt-[22px] ml-[40px] mb-[50px] 2bp:m-0 2bp:ml-[40px] items-center">
             <div className="relative mr-5">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -195,7 +195,7 @@ const Messages = ({ user }) => {
             </div>
           </div>
         </div>
-        <div className="bg-white h-full overflow-clip mt-5 flex flex-row">
+        <div className="bg-white h-full overflow-clip mt-1 flex flex-row">
           <Conversations
             unreadMessages={unreadMessages}
             selectedUser={selectedUser}
