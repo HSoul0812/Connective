@@ -18,6 +18,7 @@ module.exports = {
         'desaturated-cyan': '#5FB4A2',
         'bright-red': '#F43030',
         purple: '#7E38B7',
+        'dark-purple': '#6B06C9',
         black: '#111',
         gray: '#A0AEC0',
         lightGray: '#989BA1',
