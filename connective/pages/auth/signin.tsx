@@ -18,6 +18,7 @@ import {
   AuthApiResponse,
   IApiResponseError,
 } from '../../types/apiResponseTypes'
+import SigninModal from '../../components/auth/signinModal'
 
 export default function SignIn() {
   const router = useRouter()
@@ -36,6 +37,7 @@ export default function SignIn() {
   >('')
   const [otpError, setOtpError] = useState<string>('')
   const [expiredError, setExpiredError] = useState<boolean>(false)
+  const [showForgotModal, setShowForgotModal] = useState<boolean>(false)
 
   const verifyEmail = async () => {
     const verifiedEmail: AuthApiResponse.IVerifyEmail | IApiResponseError = (
@@ -119,16 +121,7 @@ export default function SignIn() {
       })
   }
 
-  const forgotPassword = async () => {
-    if (email == '') {
-      setEmailError('You must enter an email.')
-      setPasswordError('')
-      return
-    }
-
-    setPasswordError('')
-    setEmailError('')
-
+  const forgotPassword = async (email?) => {
     await axios({
       method: 'post',
       url: '/api/auth/sendPasswordResetEmail',
@@ -275,7 +268,7 @@ export default function SignIn() {
                   Remember me
                 </p>
               </div>
-              <span onClick={forgotPassword}>
+              <span onClick={() => setShowForgotModal(true)}>
                 <p className="font-Poppins font-normal text-[12px] leading-[18px] text-[#D93F21] cursor-pointer 1bp:text-[16px]">
                   Recover Password
                 </p>
@@ -303,7 +296,7 @@ export default function SignIn() {
           </div>
         </>
       ) : null}
-      {resetPassword ? (
+      {/* {resetPassword ? (
         <>
           <div className="fixed z-10 flex items-center justify-center w-full h-full shadow-black backdrop-blur-sm backdrop-brightness-90">
             <ResetPassword
@@ -314,7 +307,13 @@ export default function SignIn() {
             />
           </div>
         </>
-      ) : null}
+      ) : null} */}
+      <SigninModal
+        isShow={showForgotModal}
+        onClick={forgotPassword}
+        onClose={() => setShowForgotModal(false)}
+        emailSet={setEmail}
+      />
     </main>
   )
 }

@@ -1,6 +1,4 @@
-import Image from 'next/image'
 import { User } from '../../types/types'
-import Avatar from '../avatar'
 import Sidebar from '../sidebar'
 
 type Props = {

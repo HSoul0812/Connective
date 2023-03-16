@@ -2,7 +2,7 @@ import Image from 'next/image'
 import dollarIcon from '../../public/assets/dollar.svg'
 
 type Props = {
-  name: string
+  name?: string
   placeholder?: string
   password?: boolean
   textarea?: boolean
@@ -26,9 +26,11 @@ const InputField = ({
 }: Props) => {
   return (
     <div className="flex flex-col w-[100%]">
-      <p className="text-[14px] leading-[15px] font-[500] text-[#111] font-[Montserrat] mb-3 1bp:text-[16.5px]">
-        {name}
-      </p>
+      {name && (
+        <p className="text-[14px] leading-[15px] font-[500] text-[#111] font-[Montserrat] mb-3 1bp:text-[16.5px]">
+          {name}
+        </p>
+      )}
       {price && (
         <div className="relative flex items-center">
           <div className="absolute z-[10] pl-[12px] my-auto flex items-center">
