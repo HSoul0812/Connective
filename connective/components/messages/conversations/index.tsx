@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { Recache } from 'recache-client'
 import Avatar from '../../../components/avatar'
 import { Conversation } from '../../../types/types'
+import { getFormatTime } from 'util/validation/onboarding'
 
 type PropsConversations = {
   selectedUser: Conversation
@@ -112,7 +113,9 @@ const Conversations = ({
             <div className="flex flex-col w-4/5 h-full justify-between py-2">
               <div className="flex justify-between items-center">
                 <p className="my-auto font-bold leading-6">{item.username}</p>
-                <p className="my-auto text-gray">10:49 AM</p>
+                <p className="my-auto text-gray">
+                  {getFormatTime(new Date(item.timestamp))}
+                </p>
               </div>
               <div className="flex justify-between items-center">
                 <p className="text-gray text-ellipsis w-full overflow-hidden whitespace-nowrap leading-6 w-4/6">

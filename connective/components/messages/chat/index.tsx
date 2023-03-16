@@ -19,15 +19,14 @@ type PropsChat = {
 }
 
 const Chat = ({
+  user,
   userList,
   selectedUser,
   showUserDetail,
-  currentAccountUser,
   conversations,
   getConversations,
   setConversations,
 }) => {
-  const [user, setUser] = useState<User>()
   const [messages, setMessages] = useState([])
   const [isNewMessageArrived, setIsNewMessageArrived] = useState(false)
   const [showError, setShowError] = useState(false)
@@ -37,35 +36,6 @@ const Chat = ({
   const [text, setText] = useState('')
   let prevMessages = 0
 
-  const mockMessages = [
-    {
-      id: 1,
-      username: 'Kyle',
-      timestamp: new Date('2020-05-12T23:50:21.817Z'),
-      text: 'This is great news and go to the mountain',
-    },
-    {
-      id: 1,
-      timestamp: new Date('2020-05-12T23:51:21.817Z'),
-      text: 'This is great news and go to the mountain',
-    },
-    {
-      id: 1,
-      timestamp: new Date('2020-05-12T23:52:21.817Z'),
-      text: 'This is great news and go to the mountain',
-    },
-    {
-      id: 1,
-      timestamp: new Date('2020-05-14T23:53:21.817Z'),
-      text: 'This is great news and go to the mountain',
-    },
-    {
-      id: 123,
-      timestamp: new Date('2020-05-14T23:53:21.817Z'),
-      text: 'This is great news and go to the mountain',
-    },
-  ]
-
   const scrollWindow = () => {
     document.getElementById('messages-container').scroll({
       top: document.getElementById('messages-container').scrollHeight,
@@ -74,14 +44,6 @@ const Chat = ({
   }
 
   useEffect(() => {
-    setUser(
-      JSON.parse(window.sessionStorage.getItem('currentUser')) ||
-        currentAccountUser,
-    )
-  }, [setUser])
-
-  useEffect(() => {
-    setMessages(mockMessages)
     let temp = []
     userList.forEach((user) => {
       temp.push({
@@ -205,7 +167,10 @@ const Chat = ({
           ;(document.getElementById(
             'message-input',
           ) as HTMLInputElement).value = ''
-          setMessages([...messages, { sender: user.id, text }])
+          setMessages([
+            ...messages,
+            { sender: user.id, text, timestamp: new Date() },
+          ])
           setIsNewMessageArrived(true)
           await axios.post('/api/messages/' + selectedUser.id, { text })
           socketIO.emit(Events.SEND_MESSAGE, {
@@ -276,6 +241,26 @@ const Chat = ({
     }
   }, [])
 
+  const handleShowDate = (item, index) => {
+    console.log('------: ', item, messages[index - 1])
+    return index === 0
+      ? false
+      : !IsSameDate(item.timestamp, messages[index - 1]?.timestamp)
+  }
+
+  const handleShowName = (item, index) => {
+    return index === 0 ? true : item.sender !== messages[index - 1].sender
+  }
+
+  const handleShowAvatar = (item, index) => {
+    return (
+      (index === messages.length - 1
+        ? true
+        : !IsSameDate(item.timestamp, messages[index + 1]?.timestamp)) ||
+      (item.sender !== user?.id && item.sender !== messages[index + 1].sender)
+    )
+  }
+
   return (
     <div className="flex flex-col h-full w-full rounded-r-lg">
       {selectedUser && (
@@ -324,7 +309,6 @@ const Chat = ({
               </div>
             </div>
           </div>
-
           <div
             id="messages-container"
             className="h-full overflow-y-scroll p-5 flex flex-col gap-10 bg-[#F8F9FA]"
@@ -334,26 +318,11 @@ const Chat = ({
                 <MessageFun
                   key={index}
                   message={item}
-                  userList={userList}
-                  showDate={
-                    index === 0
-                      ? false
-                      : !IsSameDate(
-                          item.timestamp,
-                          messages[index - 1]?.timestamp,
-                        )
-                  }
-                  showAvatar={
-                    (index === messages.length - 1
-                      ? true
-                      : !IsSameDate(
-                          item.timestamp,
-                          messages[index + 1]?.timestamp,
-                        )) ||
-                    (item.id !== user?.id && item.id !== messages[index + 1].id)
-                  }
-                  isSender={item.id === user?.id}
-                ></MessageFun>
+                  showDate={handleShowDate(item, index)}
+                  showName={handleShowName(item, index)}
+                  showAvatar={handleShowAvatar(item, index)}
+                  isSender={item.sender === user?.id}
+                />
               )
             })}
           </div>

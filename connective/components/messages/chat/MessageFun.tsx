@@ -1,33 +1,29 @@
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { Message, User } from '../../../types/types'
-import {
-  getFormatDate,
-  getFormatTime,
-  IsSameDate,
-} from '../../../util/validation/onboarding'
+import { Message, User } from 'types/types'
+import { getFormatDate, getFormatTime } from 'util/validation/onboarding'
 
 type PropsMessage = {
   message: Message
   showDate: boolean
   showAvatar: boolean
-  userList: User[]
+  showName: boolean
   isSender: boolean
 }
 
 const MessageFun = ({
   message,
-  userList,
   showDate,
   showAvatar,
+  showName,
   isSender,
 }: PropsMessage) => {
-  const { text, timestamp, id } = message
+  const [selectedUser, setSelectedUser] = useState<User>()
+  const { text, timestamp } = message
 
-  const sender = useMemo(() => userList.find((user) => user.id === id), [
-    message,
-    userList,
-  ])
+  useEffect(() => {
+    setSelectedUser(JSON.parse(window.sessionStorage.getItem('selectedUser')))
+  }, [setSelectedUser])
 
   return (
     <>
@@ -45,33 +41,38 @@ const MessageFun = ({
           <p className="ml-auto text-right bg-blue-100 w-fit rounded-t-xl rounded-bl-xl p-[18px]">
             {text}
           </p>
-          <div className="float-right mr-2 mt-1">
+          <div className="float-right mr-2 mt-1 text-[14px]">
             {getFormatTime(new Date(timestamp))}
           </div>
         </div>
       ) : (
         <div>
-          {showDate && (
-            <p className="text-lg text-purple ml-[50px]">{sender.username}</p>
+          {(showDate || showName) && (
+            <p className="text-lg text-purple ml-[52px] mb-1">
+              {selectedUser?.username}
+            </p>
           )}
           <div className="flex">
             {showAvatar ? (
-              <div className="flex items-end mr-2">
+              <div className="flex items-end mr-2 rounded-full">
                 <Image
-                  src={sender?.logo}
-                  alt={sender?.username}
+                  src={selectedUser?.logo}
+                  alt={selectedUser?.username}
                   width={44}
                   height={44}
+                  className="rounded-full"
                 />
               </div>
             ) : (
               <div className="w-[44px] h-[44px] mr-2"></div>
             )}
-            <p className="bg-slate-100 w-fit rounded-t-xl rounded-br-xl bg-gray/[.2] p-[18px]">
+            <p className="bg-gray w-fit rounded-t-xl rounded-br-xl bg-gray/[.2] p-[18px]">
               {text}
             </p>
           </div>
-          <div className="ml-[50px]">{getFormatTime(new Date(timestamp))}</div>
+          <div className="text-[14px] ml-[52px]">
+            {getFormatTime(new Date(timestamp))}
+          </div>
         </div>
       )}
     </>

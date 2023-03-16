@@ -86,9 +86,10 @@ export function individual(
   return res
 }
 
-export const IsSameDate = (first: Date, last: Date) => {
-  const firstDate = first.getDate()
-  const lastDate = last.getDate()
+export const IsSameDate = (first: string, last: string) => {
+  const firstDate = new Date(first).getDate()
+  const lastDate = new Date(last).getDate()
+  console.log('------------------firstDate: ', firstDate, lastDate)
   return firstDate === lastDate
 }
 
@@ -114,7 +115,9 @@ export const getFormatDate = (date: Date) => {
 export const getFormatTime = (date: Date) => {
   const [hour, minutes] = [date.getHours(), date.getMinutes()]
   const isDay = hour <= 12
-  return `${isDay ? hour : hour - 12} : ${minutes} ${isDay ? 'AM' : 'PM'}`
+  return `${isDay ? hour : '0' + (hour - 12)} : ${
+    minutes < 10 ? '0' : ''
+  }${minutes} ${isDay ? 'AM' : 'PM'}`
 }
 
 export const validateEmail = (email: string) => {

@@ -24,65 +24,6 @@ const Messages = ({ user }) => {
   const [showUserdetail, setShowUserDetail] = useState<boolean>(false)
   const [selectedUser, setSelectedUser] = useState<Conversation>()
 
-  ///      mock data part
-  const mockCurrentUser = {
-    id: 123,
-    email: 'pratham@gmail.com',
-    username: 'Pratham Doshi',
-    location: 'Cortana IL',
-    logo: '/assets/Pratham.svg',
-    typename: 'Conversation',
-  }
-  const mockConversationData = [
-    {
-      id: 1,
-      email: 'Kyle@gmail.com',
-      username: 'Kyle',
-      logo: '/assets/messages/person1.svg',
-      location: 'I like talk shows',
-      typename: 'Conversation',
-    },
-    {
-      id: 2,
-      email: 'Kathryn@gmail.com',
-      username: 'Kathryn Cooper',
-      location: 'Kathryn location',
-      logo: '/assets/messages/person1.svg',
-      unread: 3,
-      typename: 'Conversation',
-    },
-    {
-      id: 3,
-      email: 'Arthur@gmail.com',
-      username: 'Arthur Cooper',
-      location: 'Arthur location',
-      logo: '/assets/messages/person1.svg',
-      unread: 1,
-      typename: 'Conversation',
-    },
-  ] as Conversation[]
-
-  const mockUserList = [
-    {
-      id: 1,
-      username: 'Kyle',
-      email: 'Kyle@gmail.com',
-      logo: '/assets/messages/person1.svg',
-    },
-    {
-      id: 2,
-      username: 'Kathryn@gmail.com',
-      logo: '/assets/messages/person1.svg',
-      email: 'Kathryn',
-    },
-    {
-      id: 3,
-      username: 'Arthur@gmail.com',
-      logo: '/assets/messages/person1.svg',
-      email: 'Arthur',
-    },
-  ] as User[]
-
   // Automatically open latest (last opened) conversation when navigating to messages page
   useEffect(() => {
     let x: (prevState: undefined) => undefined
@@ -92,10 +33,7 @@ const Messages = ({ user }) => {
     }
   }, [])
   useEffect(() => {
-    window.sessionStorage.setItem(
-      'currentUser',
-      JSON.stringify(mockCurrentUser),
-    )
+    window.sessionStorage.setItem('currentUser', JSON.stringify(user))
     if (selectedUser != undefined) {
       window.sessionStorage.setItem(
         'selectedUser',
@@ -149,10 +87,10 @@ const Messages = ({ user }) => {
   }
 
   useEffect(() => {
-    setConversations(mockConversationData)
-    setUsers(mockUserList)
-    // getUsers()
-    // getConversations()
+    // setConversations(mockConversationData)
+    // setUsers(mockUserList)
+    getUsers()
+    getConversations()
   }, [])
 
   return (
@@ -205,7 +143,7 @@ const Messages = ({ user }) => {
           <div className="h-full w-[5px] bg-[#F8F9FA]"></div>
           <Chat
             userList={users}
-            currentAccountUser={mockCurrentUser}
+            user={user}
             selectedUser={selectedUser}
             conversations={conversations}
             getConversations={getConversations}
