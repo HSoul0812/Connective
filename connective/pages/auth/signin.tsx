@@ -13,7 +13,7 @@ import AuthButton from 'components/button/AuthButton'
 import GoogleSsoDivider from 'components/divider/orDivider'
 import EmailVerification from 'components/dailog/EmailVerification'
 import { AuthApiResponse, IApiResponseError } from 'types/apiResponseTypes'
-import logo from '/assets/logo.svg'
+import logo from 'public/assets/logo.svg'
 import * as Routes from 'util/routes'
 // import ResetPassword from './resetpassword/[email]/[token]'
 
