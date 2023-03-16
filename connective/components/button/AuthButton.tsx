@@ -68,7 +68,7 @@ const AuthButton = ({ isSignUp = false, type }: Props) => {
             {isSignUp
               ? isWorking
                 ? 'Signing up...'
-                : `Sign up With ${isGoogle ? 'Google' : 'Facebook'}`
+                : `${isGoogle ? 'Google' : 'Facebook'}`
               : isWorking
               ? 'Signing in...'
               : `${isGoogle ? 'Google' : 'Facebook'}`}

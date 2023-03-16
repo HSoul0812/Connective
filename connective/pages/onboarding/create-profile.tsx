@@ -280,7 +280,7 @@ export default function CreateProfile({ user, industries }) {
                     )[0]?.error
                   : ''
               }
-            ></InputField>
+            />
             <InputField
               name={'Description'}
               placeholder={'Enter company description'}
@@ -293,7 +293,7 @@ export default function CreateProfile({ user, industries }) {
                   : ''
               }
               textarea={true}
-            ></InputField>
+            />
             <div className="relative">
               <p className="text-[14px] leading-[15px] font-bold text-[#0D1011] font-[Montserrat] mb-3 1bp:text-[16.5px]">
                 Logo
@@ -313,12 +313,12 @@ export default function CreateProfile({ user, industries }) {
                 name={'Website'}
                 placeholder={'Enter company website URL'}
                 updateValue={setUrl}
-              ></InputField>
+              />
               <InputField
                 name={'Location'}
                 placeholder={'Enter where your company is located'}
                 updateValue={setLocation}
-              ></InputField>
+              />
             </div>
 
             <div className="flex flex-row justify-between gap-[24px]">
@@ -407,7 +407,7 @@ export default function CreateProfile({ user, industries }) {
                     )[0]?.error
                   : ''
               }
-            ></InputField>
+            />
             <InputField
               name={'Bio'}
               placeholder={'Enter your bio'}
@@ -420,7 +420,7 @@ export default function CreateProfile({ user, industries }) {
                   : ''
               }
               textarea={true}
-            ></InputField>
+            />
             <div className="relative">
               <p className="text-[14px] leading-[15px] font-bold text-[#0D1011] font-[Montserrat] mb-[10px] 1bp:text-[16.5px]">
                 Profile picture
@@ -432,13 +432,13 @@ export default function CreateProfile({ user, industries }) {
                 id={'Individual pfp upload'}
                 src={src}
                 profilePicture={true}
-              ></FileUpload>
+              />
             </div>
             <InputField
               name={'Location'}
               placeholder={'Enter your location'}
               updateValue={setLocation}
-            ></InputField>
+            />
             <div className="flex flex-row w-full gap-10">
               <SelectField
                 title="Industry"
@@ -456,7 +456,7 @@ export default function CreateProfile({ user, industries }) {
                       )[0]?.error
                     : ''
                 }
-              ></SelectField>
+              />
               <SelectField
                 title="Occupation"
                 placeholder="Choose your occupation"
@@ -471,7 +471,7 @@ export default function CreateProfile({ user, industries }) {
                       )[0]?.error
                     : ''
                 }
-              ></SelectField>
+              />
               <SelectField
                 title="Status"
                 placeholder="Choose your status"
@@ -486,7 +486,7 @@ export default function CreateProfile({ user, industries }) {
                       )[0]?.error
                     : ''
                 }
-              ></SelectField>
+              />
             </div>
           </div>
         )}

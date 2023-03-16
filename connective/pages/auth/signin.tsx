@@ -1,33 +1,29 @@
-import InputField from '../../components/input-field'
-import axios from 'axios'
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
-import { withIronSession } from 'next-iron-session'
 import Switch from 'react-switch'
-import Link from 'next/link'
+import { withIronSession } from 'next-iron-session'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
-import logo from '../../public/assets/logo.svg'
+import Link from 'next/link'
 import Head from 'next/head'
-import * as Routes from '../../util/routes'
-import GoogleSsoDivider from '../../components/divider/orDivider'
-import AuthButton from '../../components/button/AuthButton'
-import LoginSidebar from '../../components/login-sidebar'
-import EmailVerification from '../../components/dailog/EmailVerification'
-import ResetPassword from './resetpassword/[email]/[token]'
-import {
-  AuthApiResponse,
-  IApiResponseError,
-} from '../../types/apiResponseTypes'
-import SigninModal from '../../components/auth/signinModal'
+import axios from 'axios'
+import InputField from 'components/input-field'
+import LoginSidebar from 'components/login-sidebar'
+import SigninModal from 'components/auth/signinModal'
+import AuthButton from 'components/button/AuthButton'
+import GoogleSsoDivider from 'components/divider/orDivider'
+import EmailVerification from 'components/dailog/EmailVerification'
+import { AuthApiResponse, IApiResponseError } from 'types/apiResponseTypes'
+import logo from '/assets/logo.svg'
+import * as Routes from 'util/routes'
+// import ResetPassword from './resetpassword/[email]/[token]'
 
 export default function SignIn() {
   const router = useRouter()
   const { error } = router.query
   const [email, setEmail] = useState<string>('')
-  const [emailError, setEmailError] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [emailError, setEmailError] = useState<string>('')
   const [passwordError, setPasswordError] = useState<string>('')
-  const [showPassword, setShowPassword] = useState<boolean>(false)
   const [resetPassword, setResetPassword] = useState<boolean>(false)
   const [emailNotVerified, setEmailNotVerified] = useState<boolean>(false)
   const [otpCode, setOtpCode] = useState<string>('')
@@ -144,10 +140,6 @@ export default function SignIn() {
       })
   }
 
-  const showPasswordHandler = () => {
-    setShowPassword((prevState) => !prevState)
-  }
-
   return (
     <main className="flex flex-row-reverse gap-[80px] 2bp:gap-[40px] justify-center h-[100vh] bg-[#FCF7FF]">
       <Head>
@@ -224,31 +216,10 @@ export default function SignIn() {
               <InputField
                 name={'Password'}
                 placeholder={'Enter password'}
-                password={!showPassword ? true : false}
                 updateValue={setPassword}
+                password
                 errorText={passwordError}
               />
-              <div
-                className="absolute right-[14px] bottom-[5px] cursor-pointer"
-                onClick={showPasswordHandler}
-              >
-                {!showPassword && (
-                  <Image
-                    src="/assets/eye-slash.svg"
-                    alt="eye slash"
-                    width="20px"
-                    height="20px"
-                  />
-                )}
-                {showPassword && (
-                  <Image
-                    src="/assets/eye.svg"
-                    alt="eye"
-                    width="20px"
-                    height="20px"
-                  />
-                )}
-              </div>
             </div>
 
             <div className="flex flex-row justify-between items-center">

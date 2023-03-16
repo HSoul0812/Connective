@@ -138,58 +138,16 @@ const ResetPassword: NextPage<Props> = ({ email, token }) => {
                     <div className="relative w-50 mx-auto text-left mt-5  flex flex-col items-center gap-4 mt-4">
                       <InputField
                         placeholder={'Enter new password'}
-                        password={!showPassword ? true : false}
                         updateValue={setPassword}
                         errorText={passwordError}
+                        password
                       />
-                      <div
-                        className="absolute right-[14px] top-[10px] cursor-pointer"
-                        onClick={showPasswordHandler}
-                      >
-                        {!showPassword && (
-                          <Image
-                            src="/assets/eye-slash.svg"
-                            alt="eye slash"
-                            width="24px"
-                            height="24px"
-                          />
-                        )}
-                        {showPassword && (
-                          <Image
-                            src="/assets/eye.svg"
-                            alt="eye"
-                            width="24px"
-                            height="24px"
-                          />
-                        )}
-                      </div>
                       <InputField
                         placeholder={'Confirm new password'}
-                        password={!showPasswordConfirm ? true : false}
+                        password
                         updateValue={setPasswordConfirm}
                         errorText={passwordConfirmError}
-                      ></InputField>
-                      <div
-                        className="absolute right-[14px] bottom-[5px] cursor-pointer"
-                        onClick={showPasswordConfirmHandler}
-                      >
-                        {!showPasswordConfirm && (
-                          <Image
-                            src="/assets/eye-slash.svg"
-                            alt="eye slash"
-                            width="24px"
-                            height="24px"
-                          />
-                        )}
-                        {showPasswordConfirm && (
-                          <Image
-                            src="/assets/eye.svg"
-                            alt="eye"
-                            width="24px"
-                            height="24px"
-                          />
-                        )}
-                      </div>
+                      />
                     </div>
                     <button
                       onClick={submitNewPassword}

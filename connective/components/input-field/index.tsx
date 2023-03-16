@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Image from 'next/image'
 import dollarIcon from '../../public/assets/dollar.svg'
 
@@ -16,14 +17,16 @@ type Props = {
 const InputField = ({
   name,
   placeholder,
-  password,
   textarea,
   price,
+  password,
   updateValue,
   errorText,
   value,
   disabled,
 }: Props) => {
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+
   return (
     <div className="flex flex-col w-[100%]">
       {name && (
@@ -68,15 +71,38 @@ const InputField = ({
       )}
 
       {!textarea && !price && (
-        <input
-          onChange={(e) => {
-            updateValue(e.target.value)
-          }}
-          className="outline-none w-full px-[14px] text-[14px] h-[47px] border border-black/20 rounded-full focus:outline-blue-200 transition-all hover:outline hover:outline-blue-300"
-          type={password ? 'password' : ''}
-          placeholder={placeholder}
-          value={value}
-        />
+        <>
+          <input
+            onChange={(e) => {
+              updateValue(e.target.value)
+            }}
+            className="outline-none w-full px-[14px] text-[14px] h-[47px] border border-black/20 rounded-full focus:outline-blue-200 transition-all hover:outline hover:outline-blue-300"
+            type={password && !showPassword ? 'password' : ''}
+            placeholder={placeholder}
+            value={value}
+          />
+          <div
+            className="absolute right-[14px] bottom-[5px] cursor-pointer"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {!showPassword && (
+              <Image
+                src="/assets/eye-slash.svg"
+                alt="eye slash"
+                width="24px"
+                height="24px"
+              />
+            )}
+            {showPassword && (
+              <Image
+                src="/assets/eye.svg"
+                alt="eye"
+                width="24px"
+                height="24px"
+              />
+            )}
+          </div>
+        </>
       )}
 
       {errorText && (
