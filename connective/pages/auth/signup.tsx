@@ -6,7 +6,7 @@ import AuthService from 'services/authService'
 import InputField from 'components/input-field'
 import AuthButton from 'components/button/AuthButton'
 import GoogleSsoDivider from 'components/divider/orDivider'
-import OnboardingSidebar from 'components/onboarding-sidebar'
+import OnboardingSidebar from 'components/onboarding/sidebar'
 import EmailVerification from 'components/dailog/EmailVerification'
 import { AuthApiResponse, IApiResponseError } from 'types/apiResponseTypes'
 import { validateEmail } from 'util/validation/onboarding'
@@ -136,7 +136,7 @@ const SignUp = () => {
       <Head>
         <title>Signup - Conenctive</title>
       </Head>
-      <OnboardingSidebar />
+      <OnboardingSidebar isSignUp />
       <div className="relative w-7/12 min-h-screen">
         <p className="absolute top-[35px] right-[50px] text-[#414141] mt-[12px] font-normal text-[14px] leading-[36px] font-[Poppins] font-[400] 1bp:text-[18px] mb-[40px]">
           Have an account?{' '}

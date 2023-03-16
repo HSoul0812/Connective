@@ -1,30 +1,25 @@
-import InputField from '../../components/input-field'
-import Logo from '../../components/logo'
-import axios from 'axios'
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { Recache } from 'recache-client'
+import axios from 'axios'
 import { withIronSession } from 'next-iron-session'
-import OnBoardingProfile from '../../components/onboarding-createProfile'
-import ProfileTypeSelector from '../../components/onboarding/profile-type-selector'
-import FileUpload from '../../components/file-upload'
-import Util from '../../util'
-import Link from 'next/link'
-import logo from '../../public/assets/logo.svg'
-import * as Routes from '../../util/routes'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
+import Link from 'next/link'
+import Head from 'next/head'
+import { AccountType, IValidationItem, ValidationResponse } from 'types/types'
+import ProfileTypeSelector from 'components/onboarding/profile-type-selector'
+import { SelectField } from 'components/select-field/selectField'
+import OnboardingSidebar from 'components/onboarding/sidebar'
+import InputField from 'components/input-field'
+import FileUpload from 'components/file-upload'
+import { DAO } from 'lib/dao'
 import {
   business as ValidateBusiness,
   individual as ValidateIndividual,
-} from '../../util/validation/onboarding'
-import Head from 'next/head'
-import { SelectField } from '../../components/select-field/selectField'
-import {
-  AccountType,
-  IValidationItem,
-  ValidationResponse,
-} from '../../types/types'
-import { Recache } from 'recache-client'
-import { DAO } from '../../lib/dao'
+} from 'util/validation/onboarding'
+import * as Routes from 'util/routes'
+import Util from 'util/index'
+import logo from 'public/assets/logo.svg'
 
 export default function CreateProfile({ user, industries }) {
   const [name, setName] = useState<string>('')
@@ -238,37 +233,17 @@ export default function CreateProfile({ user, industries }) {
       <Head>
         <title>Create Profile - Conenctive</title>
       </Head>
-      <OnBoardingProfile />
-
-      <div className="flex flex-col min-w-[740px] mx-auto font-[Montserrat] rounded-xl my-[40px]">
-        <Link href="/">
-          <div className="mb-[40px]">
-            <Image
-              src={logo}
-              alt="Connective logo"
-              width="205px"
-              height="48px"
-            />
-          </div>
-        </Link>
-
-        <div className="mb-[40px]">
-          <p className="text-[24px] font-bold leading-[29px] text-[#061A40]">
-            Create {type == 'business' ? 'Company' : 'Individual'} Profile
-          </p>
-        </div>
-
-        <p className="font-[Poppins font-normal text-[16px] leading-[24px] text-[#0D1011] text-center mb-[20px]">
-          Choose which best describes you
+      <OnboardingSidebar />
+      <div className="flex flex-col min-w-[740px] mx-auto font-[Poppins] rounded-xl my-[40px]">
+        <p className="text-[44px] font-[600] text-black text-center">
+          Create {type == 'business' ? 'Company' : 'Individual'} Profile
         </p>
-
-        <ProfileTypeSelector
-          type={type}
-          setType={setType}
-        ></ProfileTypeSelector>
-
+        <p className="font-[400] text-[16px] leading-[37px] text-black text-center mb-[20px]">
+          Choose the best describe you
+        </p>
+        <ProfileTypeSelector type={type} setType={setType} />
         {type == 'business' ? (
-          <div className="flex flex-col gap-5 mt-10">
+          <div className="flex flex-col gap-3 mt-10">
             <InputField
               name={'Name'}
               placeholder={'Enter company name'}
@@ -299,13 +274,13 @@ export default function CreateProfile({ user, industries }) {
                 Logo
               </p>
               <FileUpload
-                text="Upload company logo"
+                text="Upload company logo here"
                 file={pfp}
                 setFile={setPfp}
                 id={'Company pfp upload'}
                 src={src}
                 profilePicture={true}
-              ></FileUpload>
+              />
             </div>
 
             <div className="flex flex-row gap-[24px]">
