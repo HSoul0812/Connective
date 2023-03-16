@@ -9,7 +9,7 @@ class AuthService {
 
   async signin(data) {
     const payload = await axios.post('/api/auth/sessions', data)
-    return payload.data
+    return payload
   }
 
   async sendVerifyCode(email) {

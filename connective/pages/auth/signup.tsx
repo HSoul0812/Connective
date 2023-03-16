@@ -145,7 +145,7 @@ const SignUp = () => {
           </Link>
         </p>
         <div className="flex flex-col font-[Montserrat] mt-[92px] py-[30px] px-[50px]">
-          <div className="mt-5">
+          <div className="mt-[2vw]">
             <p className="font-bold text-center text-[44px] leading-[60px] text-black">
               Getting started with Connective!
             </p>

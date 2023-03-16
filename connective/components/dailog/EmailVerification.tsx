@@ -107,6 +107,7 @@ const EmailVerification = ({
     setOtpNotMatchError(null)
     setButtonDisabled(false)
     const isEmpty = Object.values(otp).map((number) => number == '')
+    console.log('isEmpty: ', isEmpty)
     if (isEmpty.includes(true)) {
       setOtpError('Please enter 4 digits code')
     } else {
@@ -116,6 +117,7 @@ const EmailVerification = ({
         .map((number) => number)
         .join('')
       code(updatedOtp)
+      console.log(updatedOtp)
       return
     }
   }
@@ -152,7 +154,7 @@ const EmailVerification = ({
                             type="text"
                             id={`code_${index}`}
                             name={`code${number}`}
-                            className="w-[8vw] h-[8vw] inline-block rounded-3xl mr-4 py-3 px-4 border-2 border-gray text-[44px] focus:border-purple focus:outline-none focus-visible:border-purple text-center"
+                            className="max-w-[125px] max-h-[125px] w-[8vw] h-[8vw] inline-block rounded-3xl mr-4 py-3 px-4 border-2 border-gray text-[44px] focus:border-purple focus:outline-none focus-visible:border-purple text-center"
                             required
                             maxLength={4}
                             onChange={(e) => handleOnChangeNumber(e, index)}
