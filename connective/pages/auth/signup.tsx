@@ -210,15 +210,18 @@ const SignUp = () => {
           </div>
         </div>
       </div>
-      <div className="w-full fixed h-full shadow-black z-10 backdrop-blur-sm flex items-center backdrop-brightness-90">
-        <EmailVerification
-          code={setOtpCode}
-          email={email}
-          otpNotMatchError={otpError}
-          setOtpNotMatchError={setOtpError}
-        />
-      </div>
-      {signUpSuccess ? <></> : null}
+      {signUpSuccess ? (
+        <>
+          <div className="w-full fixed h-full shadow-black z-10 backdrop-blur-sm flex items-center backdrop-brightness-90">
+            <EmailVerification
+              code={setOtpCode}
+              email={email}
+              otpNotMatchError={otpError}
+              setOtpNotMatchError={setOtpError}
+            />
+          </div>
+        </>
+      ) : null}
     </main>
   )
 }
