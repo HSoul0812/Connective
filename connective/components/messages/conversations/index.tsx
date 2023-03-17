@@ -119,9 +119,7 @@ const Conversations = ({
               </div>
               <div className="flex justify-between items-center">
                 <p className="text-gray text-ellipsis w-full overflow-hidden whitespace-nowrap leading-6 w-4/6">
-                  this is mock data test ellipsis casethis is mock data test
-                  ellipsis casethis is mock data test ellipsis casethis is mock
-                  data test ellipsis case
+                  {item.text}
                 </p>
 
                 {item.id !== selectedUser?.id && item.unread > 0 ? (

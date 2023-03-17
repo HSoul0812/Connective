@@ -51,9 +51,19 @@ export namespace DAO {
      * @returns {User | boolean} The user object, or false if not found
      */
     static async getByEmail(email: string): Promise<User | boolean> {
-      var query = `SELECT * FROM Users WHERE email=?;`
-      var [results] = await connection.promise().query(query, [email])
+      // var query = `SELECT * FROM Users JOIN Business on User.id = Business.userid WHERE email=?; `
 
+      var query = `SELECT PROFILE.user_id, PROFILE.location, PROFILE.user_name, PROFILE.logo, Users.* FROM (
+            SELECT user_id,  location, company_name AS user_name, logo 
+              FROM Business 
+            UNION ALL 
+            SELECT user_id,  location, NAME AS user_name, profile_picture AS logo
+              FROM Individual
+           ORDER BY user_id 
+          ) as PROFILE
+          INNER JOIN Users ON Users.id = PROFILE.user_id WHERE email=?;`
+
+      var [results] = await connection.promise().query(query, [email])
       if (Array.isArray(results) && results.length == 0) return false
       var selectedUser = results[0]
       if (typeof selectedUser == 'undefined') return false
@@ -799,7 +809,7 @@ export namespace DAO {
       userId: number,
     ): Promise<Conversation[]> {
       var query1 =
-        `SELECT distinct profile.id, profile.email, profile.username, profile.location, profile.logo, coalesce(c.unread_count,0) as "unread", mes.timestamp 
+        `SELECT distinct profile.id, profile.email, profile.username, profile.location, profile.logo, coalesce(c.unread_count,0) as "unread", mes.timestamp, mes.text
         FROM(
           (
             SELECT Users.id, Users.email, Business.company_name as username, Business.location, Business.logo 
@@ -808,7 +818,7 @@ export namespace DAO {
             SELECT Users.id, Users.email, Individual.name as username, Individual.location, Individual.profile_picture AS logo 
               FROM Users JOIN Individual on Users.id = Individual.user_id
           ) as profile 
-          JOIN (select distinct sender, receiver, timestamp from messages where sender = ? or receiver = ? ORDER BY timestamp desc Limit 0, 1 ) as mes
+          JOIN (select distinct sender, receiver, text, timestamp from messages where sender = ? or receiver = ? ORDER BY timestamp desc Limit 0, 1 ) as mes
         ) 
         LEFT JOIN ( select count(id) as "unread_count",sender from messages where receiver = ? and ` +
         "`read`='0'" +

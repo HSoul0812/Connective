@@ -89,7 +89,6 @@ export function individual(
 export const IsSameDate = (first: string, last: string) => {
   const firstDate = new Date(first).getDate()
   const lastDate = new Date(last).getDate()
-  console.log('------------------firstDate: ', firstDate, lastDate)
   return firstDate === lastDate
 }
 

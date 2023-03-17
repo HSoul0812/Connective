@@ -242,7 +242,6 @@ const Chat = ({
   }, [])
 
   const handleShowDate = (item, index) => {
-    console.log('------: ', item, messages[index - 1])
     return index === 0
       ? false
       : !IsSameDate(item.timestamp, messages[index - 1]?.timestamp)

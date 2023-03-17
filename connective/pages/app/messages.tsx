@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext } from 'react'
+import { useState, useEffect, createContext, useMemo } from 'react'
 import Image from 'next/image'
 import axios from 'axios'
 import { useRouter } from 'next/router'
@@ -23,6 +23,9 @@ const Messages = ({ user }) => {
   const [users, setUsers] = useState<User[]>([])
   const [showUserdetail, setShowUserDetail] = useState<boolean>(false)
   const [selectedUser, setSelectedUser] = useState<Conversation>()
+  const currentUser = useMemo(() => {
+    return users.find((item) => item.id === user.id)
+  }, [users])
 
   // Automatically open latest (last opened) conversation when navigating to messages page
   useEffect(() => {
@@ -49,6 +52,8 @@ const Messages = ({ user }) => {
     const data: ProfileApiResponse.IProfiles = (
       await axios.get('/api/profiles/all')
     ).data
+    console.log('user: ', user)
+    console.log('users: ', data.users)
     setUsers(data.users)
     if (newUser) {
       const temp = data.users.filter((item) => item.id.toString() == newUser)[0]
@@ -125,9 +130,9 @@ const Messages = ({ user }) => {
               <Image src="/assets/messages/alarm.svg" height={20} width={20} />
             </div>
             <div className="flex items-center ml-5 mr-3">
-              <Image src="/assets/Pratham.svg" height={40} width={40} />
+              <Image src={user.logo} height={40} width={40} />
               <div className="ml-3 mr-5">
-                <div className="font-bold text-sm">Pratham Doshi.</div>
+                <div className="font-bold text-sm">{user.username}</div>
                 <div className="text-sm text-gray">Mananger</div>
               </div>
             </div>
@@ -168,7 +173,6 @@ export default Messages
 export const getServerSideProps = withIronSession(
   async ({ req, res }) => {
     const user = req.session.get('user')
-
     if (!user) {
       return { props: {} }
     }

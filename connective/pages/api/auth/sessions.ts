@@ -1,17 +1,17 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { withIronSession } from "next-iron-session";
-import bcrypt from "bcryptjs";
-import { DAO } from "../../../lib/dao";
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { withIronSession } from 'next-iron-session'
+import bcrypt from 'bcryptjs'
+import { DAO } from '../../../lib/dao'
 import {
   AuthApiResponse,
   IApiResponseError,
-} from "../../../types/apiResponseTypes";
-import { ActivityFeed } from "../../../services/activity/activityFeed";
+} from '../../../types/apiResponseTypes'
+import { ActivityFeed } from '../../../services/activity/activityFeed'
 
 export default withIronSession(
   async (req: NextApiRequest, res: NextApiResponse) => {
-    if (req.method !== "POST") {
-      return res.status(404).send("");
+    if (req.method !== 'POST') {
+      return res.status(404).send('')
     }
 
     const {
@@ -20,110 +20,124 @@ export default withIronSession(
       rememberme,
       type = null,
       accessToken = null,
-    } = req.body;
-
-    if (type === "google") {
-      const user = await DAO.Users.getByEmail(email);
-
+    } = req.body
+    if (type === 'google') {
+      const user = await DAO.Users.getByEmail(email)
       if (!user) {
-        console.log("No account");
+        console.log('No account')
         return res.status(500).json({
           success: false,
-          error: "Account does not exist",
-        } as IApiResponseError);
+          error: 'Account does not exist',
+        } as IApiResponseError)
       }
 
-      if (typeof user != "boolean") {
+      if (typeof user != 'boolean') {
         if (!user.email_verified) {
           return res.status(500).json({
             success: false,
-            error: "Email not verified",
-          } as IApiResponseError);
+            error: 'Email not verified',
+          } as IApiResponseError)
         }
       }
 
       if (
-        typeof user != "boolean" &&
+        typeof user != 'boolean' &&
         bcrypt.compareSync(accessToken, user.password_hash.toString())
       ) {
         // @ts-ignore
-        req.session.set("user", { email, id: user.id });
+        req.session.set('user', {
+          email,
+          id: user.id,
+          username: user.username,
+          logo: user.logo,
+        })
         // @ts-ignore
-        await req.session.save();
+        await req.session.save()
 
-        const isBusinessAccount = await DAO.Business.isBusiness(user.id);
-        const isIndividualAccount = await DAO.Individual.isIndividual(user.id);
+        const isBusinessAccount = await DAO.Business.isBusiness(user.id)
+        const isIndividualAccount = await DAO.Individual.isIndividual(user.id)
 
         // @ts-ignore
-        req.session.set("user", { email, id: user.id });
+        req.session.set('user', {
+          email,
+          id: user.id,
+          username: user.username,
+          logo: user.logo,
+        })
         // @ts-ignore
-        await req.session.save();
+        await req.session.save()
 
         await ActivityFeed.Auth.handleAuth(
-          "user_login",
-          `user ${user.id} has logged in`
-        );
+          'user_login',
+          `user ${user.id} has logged in`,
+        )
 
         return res.status(201).json({
           accountExists:
             isBusinessAccount || isIndividualAccount ? true : false,
-        } as AuthApiResponse.ISessions);
+        } as AuthApiResponse.ISessions)
       } else {
         return res.status(500).json({
           success: false,
-          error: "Account does not exist",
-        } as IApiResponseError);
+          error: 'Account does not exist',
+        } as IApiResponseError)
       }
     }
 
-    const user = await DAO.Users.getByEmail(email);
+    const user = await DAO.Users.getByEmail(email)
 
     if (!user) {
-      console.log("No account");
+      console.log('No account')
       return res.status(500).json({
         success: false,
-        error: "Account does not exist",
-      } as IApiResponseError);
+        error: 'Account does not exist',
+      } as IApiResponseError)
     }
 
-    if (typeof user != "boolean") {
+    if (typeof user != 'boolean') {
       if (!user.email_verified) {
         return res.status(500).json({
           success: false,
-          error: "Email not verified",
-        } as IApiResponseError);
+          error: 'Email not verified',
+        } as IApiResponseError)
       }
     }
 
     if (
-      typeof user != "boolean" &&
+      typeof user != 'boolean' &&
       bcrypt.compareSync(password, user.password_hash.toString())
     ) {
       // @ts-ignore
-      req.session.set("user", { email, id: user.id, rememberme });
+      req.session.set('user', {
+        email,
+        id: user.id,
+        username: user.username,
+        logo: user.logo,
+        rememberme,
+      })
       // @ts-ignore
-      await req.session.save();
+      await req.session.save()
 
-      const isBusinessAccount = await DAO.Business.isBusiness(user.id);
-      const isIndividualAccount = await DAO.Individual.isIndividual(user.id);
+      const isBusinessAccount = await DAO.Business.isBusiness(user.id)
+      const isIndividualAccount = await DAO.Individual.isIndividual(user.id)
 
       await ActivityFeed.Auth.handleAuth(
-        "user_login",
-        `user ${user.id} has logged in`
-      );
+        'user_login',
+        `user ${user.id} has logged in`,
+      )
 
       return res.status(201).json({
         accountExists: isBusinessAccount || isIndividualAccount ? true : false,
-      } as AuthApiResponse.ISessions);
+      } as AuthApiResponse.ISessions)
     }
 
-    return res.status(403).send("");
+    return res.status(403).send('')
   },
   {
-    cookieName: "Connective",
+    cookieName: 'Connective',
     cookieOptions: {
-      secure: process.env.NODE_ENV === "production",
+      secure: process.env.NODE_ENV === 'production',
     },
     password: process.env.APPLICATION_SECRET,
-  }
-);
+  },
+)

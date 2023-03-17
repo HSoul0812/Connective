@@ -84,6 +84,7 @@ export type Conversation = {
   logo: string
   unread?: number
   timestamp?: string
+  text?: string
   typename: 'Conversation'
 }
 

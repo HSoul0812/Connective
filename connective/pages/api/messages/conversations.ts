@@ -20,7 +20,6 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
       let conversations = await DAO.Messages.getConversationsWithUnReadCount(
         user.id,
       )
-      console.log('conversations: ', conversations)
       res
         .status(200)
         .json({ conversations } as MessagesApiResponse.IConversations)
