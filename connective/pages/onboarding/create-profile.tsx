@@ -229,12 +229,12 @@ export default function CreateProfile({ user, industries }) {
   }
 
   return (
-    <main className="flex flex-row min-h-screen min-w-screen gap-5">
+    <main className="flex flex-row min-h-screen min-w-screen bg-[#FCF7FF]">
       <Head>
-        <title>Create Profile - Conenctive</title>
+        <title>Create Profile - Connective</title>
       </Head>
       <OnboardingSidebar />
-      <div className="flex flex-col min-w-[740px] mx-auto font-[Poppins] rounded-xl my-[40px]">
+      <div className="flex flex-col mx-auto font-[Poppins] rounded-xl my-[40px]">
         <p className="text-[44px] font-[600] text-black text-center">
           Create {type == 'business' ? 'Company' : 'Individual'} Profile
         </p>
@@ -243,7 +243,7 @@ export default function CreateProfile({ user, industries }) {
         </p>
         <ProfileTypeSelector type={type} setType={setType} />
         {type == 'business' ? (
-          <div className="flex flex-col gap-3 mt-10">
+          <div className="flex flex-col gap-3 mt-3">
             <InputField
               name={'Name'}
               placeholder={'Enter company name'}
@@ -469,7 +469,7 @@ export default function CreateProfile({ user, industries }) {
         <button
           onClick={submit}
           disabled={processing}
-          className={`w-full h-[47px] font-semibold font-[Poppins] text-[12px] leading-[18px] text-[#F2F4F5] mt-10 rounded-md shadow-md transition-all ${
+          className={`w-full h-[47px] font-semibold font-[Poppins] text-[12px] leading-[18px] text-[#F2F4F5] bg-purple mt-10 rounded-full shadow-md transition-all ${
             !processing
               ? 'hover:scale-105 hover:shadow-lg bg-[#0F172A]'
               : 'bg-[#0F172A]/70'

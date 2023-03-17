@@ -23,9 +23,6 @@ const Messages = ({ user }) => {
   const [users, setUsers] = useState<User[]>([])
   const [showUserdetail, setShowUserDetail] = useState<boolean>(false)
   const [selectedUser, setSelectedUser] = useState<Conversation>()
-  const currentUser = useMemo(() => {
-    return users.find((item) => item.id === user.id)
-  }, [users])
 
   // Automatically open latest (last opened) conversation when navigating to messages page
   useEffect(() => {
@@ -90,8 +87,6 @@ const Messages = ({ user }) => {
   }
 
   useEffect(() => {
-    // setConversations(mockConversationData)
-    // setUsers(mockUserList)
     getUsers()
     getConversations()
   }, [])

@@ -30,7 +30,7 @@ const InputField = ({
   return (
     <div className="flex flex-col w-[100%]">
       {name && (
-        <p className="text-[14px] leading-[15px] font-[500] text-[#111] font-[Montserrat] mb-3 1bp:text-[16.5px]">
+        <p className="text-[16px] leading-[15px] font-[500] text-[#111] font-[Montserrat] mb-3 1bp:text-[16.5px]">
           {name}
         </p>
       )}
@@ -81,27 +81,29 @@ const InputField = ({
             placeholder={placeholder}
             value={value}
           />
-          <div
-            className="absolute right-[14px] bottom-[5px] cursor-pointer"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {!showPassword && (
-              <Image
-                src="/assets/eye-slash.svg"
-                alt="eye slash"
-                width="24px"
-                height="24px"
-              />
-            )}
-            {showPassword && (
-              <Image
-                src="/assets/eye.svg"
-                alt="eye"
-                width="24px"
-                height="24px"
-              />
-            )}
-          </div>
+          {password && (
+            <div
+              className="absolute right-[14px] bottom-[5px] cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {!showPassword && (
+                <Image
+                  src="/assets/eye-slash.svg"
+                  alt="eye slash"
+                  width="24px"
+                  height="24px"
+                />
+              )}
+              {showPassword && (
+                <Image
+                  src="/assets/eye.svg"
+                  alt="eye"
+                  width="24px"
+                  height="24px"
+                />
+              )}
+            </div>
+          )}
         </>
       )}
 

@@ -37,7 +37,7 @@ const FileUpload = ({
         className=""
       />
       <label htmlFor={id} className="w-full">
-        <div className="cursor-pointer min-h-[131px] mx-auto flex flex-col bg-transparent p-5 border border-black/40 border-dashed rounded-md transition-all hover:bg-[#D9D9D9]/10 pt-[86px]">
+        <div className="cursor-pointer mx-auto flex flex-col items-center bg-transparent p-4 border border-black/40 border-dashed rounded-md transition-all hover:bg-[#D9D9D9]/10 pt-[86px]">
           <div className="flex justify-center">
             {src != '' &&
             !(
@@ -61,7 +61,7 @@ const FileUpload = ({
 
           {!editProfile &&
           (file == null || file == undefined || typeof file == 'undefined') ? (
-            <div className="bg-gray/[0.2] py-[30px] px-[25px] w-fit rounded-full">
+            <div className="w-fit rounded-full">
               <Image src="/assets/cloud.svg" width={44} height={35} />
             </div>
           ) : null}
