@@ -52,8 +52,6 @@ const Messages = ({ user }) => {
     const data: ProfileApiResponse.IProfiles = (
       await axios.get('/api/profiles/all')
     ).data
-    console.log('user: ', user)
-    console.log('users: ', data.users)
     setUsers(data.users)
     if (newUser) {
       const temp = data.users.filter((item) => item.id.toString() == newUser)[0]
