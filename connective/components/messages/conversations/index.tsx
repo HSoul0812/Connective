@@ -49,7 +49,7 @@ const Conversations = ({
   }, [filter])
 
   return (
-    <div className="flex flex-col w-[23%] overflow-y-scroll bg-white min-w-[180px]">
+    <div className="flex flex-col w-[28%] overflow-y-scroll bg-white min-w-[250px]">
       <Head>
         <title>Messages - Connective</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -95,10 +95,10 @@ const Conversations = ({
               {item.logo ? (
                 <div className="min-w-[40px] min-y-[40px] rounded-full ">
                   <Image
-                    width="100%"
-                    height="100%"
-                    src={item.logo}
                     className="bg-white rounded-full"
+                    width="50px"
+                    height="50px"
+                    src={item.logo}
                   />
                 </div>
               ) : (

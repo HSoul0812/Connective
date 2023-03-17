@@ -285,7 +285,7 @@ const Chat = ({
                   }`}
                 ></div>
                 <div className="text-gray text-sm ml-2">
-                  last seen 5 min ago
+                  {/* last seen 5 min ago */}
                 </div>
               </div>
             </div>

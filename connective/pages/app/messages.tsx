@@ -131,7 +131,7 @@ const Messages = ({ user }) => {
               <Image src={user.logo} height={40} width={40} />
               <div className="ml-3 mr-5">
                 <div className="font-bold text-sm">{user.username}</div>
-                <div className="text-sm text-gray">Mananger</div>
+                <div className="text-sm text-gray"></div>
               </div>
             </div>
           </div>
