@@ -277,7 +277,6 @@ export default function CreateProfile({ user, industries }) {
               text="Upload company logo here"
               file={pfp}
               setFile={setPfp}
-              id={'Company pfp upload'}
               src={src}
               profilePicture={true}
             />
@@ -333,22 +332,28 @@ export default function CreateProfile({ user, industries }) {
                   }
                 />
               </div>
-              <div className="flex flex-row w-full gap-10">
-                <SelectField
-                  title="Size"
-                  placeholder="Choose your company size"
-                  options={sizeOptions}
-                  onChange={(e) => {
-                    setSize(e.value)
-                  }}
-                  errorText={
-                    fieldErrors
-                      ? fieldErrors.fields.filter(
-                          (field: IValidationItem) => field.name == 'size',
-                        )[0]?.error
-                      : ''
-                  }
-                />
+              <div
+                className={`flex flex-row gap-10 ${
+                  isIndividual ? 'w-50 pr-5' : 'w-full'
+                }`}
+              >
+                {!isIndividual && (
+                  <SelectField
+                    title="Size"
+                    placeholder="Choose your company size"
+                    options={sizeOptions}
+                    onChange={(e) => {
+                      setSize(e.value)
+                    }}
+                    errorText={
+                      fieldErrors
+                        ? fieldErrors.fields.filter(
+                            (field: IValidationItem) => field.name == 'size',
+                          )[0]?.error
+                        : ''
+                    }
+                  />
+                )}
                 <SelectField
                   title="Status"
                   placeholder="Choose your status"

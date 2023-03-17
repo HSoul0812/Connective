@@ -219,7 +219,6 @@ export default function EditProfile({ user, industries }: Props) {
               text="Upload company logo"
               file={pfp}
               setFile={setPfp}
-              id={'Company pfp upload'}
               src={src}
               user={name}
               profilePicture={true}

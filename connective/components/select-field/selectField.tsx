@@ -1,13 +1,16 @@
-import React from "react";
-import Select, { ActionMeta, OnChangeValue } from "react-select";
+import React from 'react'
+import Select, { ActionMeta, OnChangeValue } from 'react-select'
 
 type SelectFieldProps = {
-  options: { value: number | string; label: string }[];
-  placeholder: string;
-  title: string;
-  onChange: (newValue: OnChangeValue<any, any>, actionMeta: ActionMeta<any>) => void;
-  errorText: string;
-};
+  options: { value: number | string; label: string }[]
+  placeholder: string
+  title: string
+  onChange: (
+    newValue: OnChangeValue<any, any>,
+    actionMeta: ActionMeta<any>,
+  ) => void
+  errorText: string
+}
 
 export const SelectField = ({
   options,
@@ -22,12 +25,18 @@ export const SelectField = ({
         {title}
       </p>
       <Select
-        className="w-full text-[12px] font-[Poppins]"
+        className="w-full rounded-full text-[12px] font-[Poppins]"
         onChange={onChange}
         options={options}
+        styles={{
+          control: (baseStyles, state) => ({
+            ...baseStyles,
+            borderRadius: '9999px',
+          }),
+        }}
         placeholder={placeholder}
-      ></Select>
+      />
       <p className="text-red-500 font-bold text-[12px]">{errorText}</p>
     </div>
-  );
-};
+  )
+}
