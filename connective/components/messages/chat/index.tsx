@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { NextProgressbarSpinner } from 'nextjs-progressbar-spinner'
 import { io } from 'socket.io-client'
 import Image from 'next/image'
 import axios from 'axios'
@@ -28,9 +29,10 @@ const Chat = ({
   setConversations,
 }) => {
   const [messages, setMessages] = useState([])
-  const [isNewMessageArrived, setIsNewMessageArrived] = useState(false)
-  const [showError, setShowError] = useState(false)
+  const [isNewMessageArrived, setIsNewMessageArrived] = useState<boolean>(false)
+  const [showError, setShowError] = useState<boolean>(false)
   const [socketToken, setSocketToken] = useState('abcd')
+  const [isLoading, setLoading] = useState<boolean>(false)
   const timeoutRef = useRef<any>(null)
   const [userOptions, setUserOptions] = useState([])
   const [text, setText] = useState('')
@@ -134,6 +136,7 @@ const Chat = ({
 
   useEffect(() => {
     if (selectedUser != null) {
+      setLoading(true)
       getMessages()
       const clonedConversations = [...conversations]
       const foundIndex = clonedConversations.findIndex(({ id }) => {
@@ -198,6 +201,7 @@ const Chat = ({
     const { data } = await axios.get('/api/messages/' + selectedUser.id)
     prevMessages = data.length
     setMessages(data.messages)
+    setLoading(false)
     setIsNewMessageArrived(true)
 
     const emailz = await axios('/api/messages/unread-messages-mailer', {
@@ -312,18 +316,22 @@ const Chat = ({
             id="messages-container"
             className="h-full overflow-y-scroll p-5 flex flex-col gap-10 bg-[#F8F9FA]"
           >
-            {messages?.map((item, index) => {
-              return (
-                <MessageFun
-                  key={index}
-                  message={item}
-                  showDate={handleShowDate(item, index)}
-                  showName={handleShowName(item, index)}
-                  showAvatar={handleShowAvatar(item, index)}
-                  isSender={item.sender === user?.id}
-                />
-              )
-            })}
+            {isLoading ? (
+              <div className="text-center my-auto">Loading...</div>
+            ) : (
+              messages?.map((item, index) => {
+                return (
+                  <MessageFun
+                    key={index}
+                    message={item}
+                    showDate={handleShowDate(item, index)}
+                    showName={handleShowName(item, index)}
+                    showAvatar={handleShowAvatar(item, index)}
+                    isSender={item.sender === user?.id}
+                  />
+                )
+              })
+            )}
           </div>
         </>
       )}
