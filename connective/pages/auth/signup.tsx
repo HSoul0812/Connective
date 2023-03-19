@@ -137,9 +137,9 @@ const SignUp = () => {
         <title>Signup - Conenctive</title>
       </Head>
       <OnboardingSidebar isSignUp />
-      <div className="w-100 flex overflow-hidden h-[100vh]">
+      <div className="w-7/12 flex overflow-hidden h-[100vh]">
         <div className="w-100 overflow-x-hidden flex overflow-y-scroll">
-          <div className="my-auto relative min-h-screen">
+          <div className="mx-auto relative min-h-screen">
             <p className="absolute top-[35px] right-[50px] text-[#414141] mt-[12px] font-normal text-[14px] leading-[36px] font-[Poppins] font-[400] 1bp:text-[18px] mb-[40px]">
               Have an account?{' '}
               <Link href="./signin">
