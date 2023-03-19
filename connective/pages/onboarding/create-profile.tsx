@@ -233,158 +233,168 @@ export default function CreateProfile({ user, industries }) {
         <title>Create Profile - Connective</title>
       </Head>
       <OnboardingSidebar />
-      <div className="flex flex-col mx-auto font-[Poppins] rounded-xl my-[40px]">
-        <p className="text-[44px] font-[600] text-black text-center">
-          Create {isIndividual ? 'Company' : 'Individual'} Profile
-        </p>
-        <p className="font-[400] text-[16px] leading-[37px] text-black text-center mb-[20px]">
-          Choose the best describe you
-        </p>
-        <ProfileTypeSelector
-          isIndividual={isIndividual}
-          setIndividual={setIndividual}
-        />
-        <div className="flex flex-col gap-3 mt-3">
-          <InputField
-            name={'Name'}
-            placeholder={'Enter company name'}
-            updateValue={setName}
-            errorText={
-              fieldErrors
-                ? fieldErrors.fields.filter((field) => field.name == 'name')[0]
-                    ?.error
-                : ''
-            }
-          />
-          <InputField
-            name={'Description'}
-            placeholder={'Enter company description'}
-            updateValue={setDescription}
-            errorText={
-              fieldErrors
-                ? fieldErrors.fields.filter(
-                    (field) => field.name == 'description',
-                  )[0]?.error
-                : ''
-            }
-            textarea={true}
-          />
-          <div className="relative">
-            <p className="text-[14px] leading-[15px] font-bold text-[#0D1011] font-[Montserrat] mb-3 1bp:text-[16.5px]">
-              Logo
-            </p>
-            <FileUpload
-              text="Upload company logo here"
-              file={pfp}
-              setFile={setPfp}
-              src={src}
-              profilePicture={true}
-            />
-          </div>
-
-          <div className="flex flex-row gap-[24px]">
-            <InputField
-              name={'Website'}
-              placeholder={'Enter company website URL'}
-              updateValue={setUrl}
-            />
-            <InputField
-              name={'Location'}
-              placeholder={'Enter where your company is located'}
-              updateValue={setLocation}
-            />
-          </div>
-
-          <div className="flex flex-row justify-between gap-[24px]">
-            <div className="flex flex-col w-full gap-3">
-              <div className="flex flex-row w-full gap-10">
-                <SelectField
-                  title="Industry"
-                  placeholder="Choose your industry"
-                  options={industries.map((industry) => {
-                    return { value: industry.id, label: industry.name }
-                  })}
-                  onChange={(e) => {
-                    setIndustry(e.value)
-                  }}
+      <div className="w-100 flex overflow-hidden h-[100vh]">
+        <div className="w-100 overflow-x-hidden flex-none overflow-y-scroll">
+          <div className="w-3/4 mx-auto">
+            <div className="flex flex-col font-[Poppins] my-[40px]">
+              <p className="text-[44px] font-[600] text-black text-center">
+                Create {isIndividual ? 'Company' : 'Individual'} Profile
+              </p>
+              <p className="font-[400] text-[16px] leading-[37px] text-black text-center mb-[20px]">
+                Choose the best describe you
+              </p>
+              <ProfileTypeSelector
+                isIndividual={isIndividual}
+                setIndividual={setIndividual}
+              />
+              <div className="flex flex-col gap-3 mt-3">
+                <InputField
+                  name={'Name'}
+                  placeholder={'Enter company name'}
+                  updateValue={setName}
                   errorText={
                     fieldErrors
                       ? fieldErrors.fields.filter(
-                          (field: IValidationItem) => field.name == 'industry',
+                          (field) => field.name == 'name',
                         )[0]?.error
                       : ''
                   }
                 />
-                <SelectField
-                  title="Occupation"
-                  placeholder="Choose your occupation"
-                  options={occupations}
-                  onChange={(e) => {
-                    setOccupation(e.value)
-                  }}
+                <InputField
+                  name={'Description'}
+                  placeholder={'Enter company description'}
+                  updateValue={setDescription}
                   errorText={
                     fieldErrors
                       ? fieldErrors.fields.filter(
-                          (field: IValidationItem) =>
-                            field.name == 'occupation',
+                          (field) => field.name == 'description',
                         )[0]?.error
                       : ''
                   }
+                  textarea={true}
                 />
+                <div className="relative">
+                  <p className="text-[14px] leading-[15px] font-bold text-[#0D1011] font-[Montserrat] mb-3 1bp:text-[16.5px]">
+                    Logo
+                  </p>
+                  <FileUpload
+                    text="Upload company logo here"
+                    file={pfp}
+                    setFile={setPfp}
+                    src={src}
+                    profilePicture={true}
+                  />
+                </div>
+
+                <div className="flex flex-row gap-[24px]">
+                  <InputField
+                    name={'Website'}
+                    placeholder={'Enter company website URL'}
+                    updateValue={setUrl}
+                  />
+                  <InputField
+                    name={'Location'}
+                    placeholder={'Enter where your company is located'}
+                    updateValue={setLocation}
+                  />
+                </div>
+
+                <div className="flex flex-row justify-between gap-[24px]">
+                  <div className="flex flex-col w-full gap-3">
+                    <div className="flex flex-row w-full gap-10">
+                      <SelectField
+                        title="Industry"
+                        placeholder="Choose your industry"
+                        options={industries.map((industry) => {
+                          return { value: industry.id, label: industry.name }
+                        })}
+                        onChange={(e) => {
+                          setIndustry(e.value)
+                        }}
+                        errorText={
+                          fieldErrors
+                            ? fieldErrors.fields.filter(
+                                (field: IValidationItem) =>
+                                  field.name == 'industry',
+                              )[0]?.error
+                            : ''
+                        }
+                      />
+                      <SelectField
+                        title="Occupation"
+                        placeholder="Choose your occupation"
+                        options={occupations}
+                        onChange={(e) => {
+                          setOccupation(e.value)
+                        }}
+                        errorText={
+                          fieldErrors
+                            ? fieldErrors.fields.filter(
+                                (field: IValidationItem) =>
+                                  field.name == 'occupation',
+                              )[0]?.error
+                            : ''
+                        }
+                      />
+                    </div>
+                    <div
+                      className={`flex flex-row gap-10 ${
+                        isIndividual ? 'w-50 pr-5' : 'w-full'
+                      }`}
+                    >
+                      {!isIndividual && (
+                        <SelectField
+                          title="Size"
+                          placeholder="Choose your company size"
+                          options={sizeOptions}
+                          onChange={(e) => {
+                            setSize(e.value)
+                          }}
+                          errorText={
+                            fieldErrors
+                              ? fieldErrors.fields.filter(
+                                  (field: IValidationItem) =>
+                                    field.name == 'size',
+                                )[0]?.error
+                              : ''
+                          }
+                        />
+                      )}
+                      <SelectField
+                        title="Status"
+                        placeholder="Choose your status"
+                        options={statusOptions}
+                        onChange={(e) => {
+                          setStatus(e.value)
+                        }}
+                        errorText={
+                          fieldErrors
+                            ? fieldErrors.fields.filter(
+                                (field: IValidationItem) =>
+                                  field.name == 'status',
+                              )[0]?.error
+                            : ''
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div
-                className={`flex flex-row gap-10 ${
-                  isIndividual ? 'w-50 pr-5' : 'w-full'
+
+              <button
+                onClick={submit}
+                disabled={processing}
+                className={`w-full h-[47px] font-semibold font-[Poppins] text-[12px] leading-[18px] text-[#F2F4F5] bg-purple mt-10 rounded-full shadow-md transition-all ${
+                  !processing
+                    ? 'hover:scale-105 hover:shadow-lg bg-[#0F172A]'
+                    : 'bg-[#0F172A]/70'
                 }`}
               >
-                {!isIndividual && (
-                  <SelectField
-                    title="Size"
-                    placeholder="Choose your company size"
-                    options={sizeOptions}
-                    onChange={(e) => {
-                      setSize(e.value)
-                    }}
-                    errorText={
-                      fieldErrors
-                        ? fieldErrors.fields.filter(
-                            (field: IValidationItem) => field.name == 'size',
-                          )[0]?.error
-                        : ''
-                    }
-                  />
-                )}
-                <SelectField
-                  title="Status"
-                  placeholder="Choose your status"
-                  options={statusOptions}
-                  onChange={(e) => {
-                    setStatus(e.value)
-                  }}
-                  errorText={
-                    fieldErrors
-                      ? fieldErrors.fields.filter(
-                          (field: IValidationItem) => field.name == 'status',
-                        )[0]?.error
-                      : ''
-                  }
-                />
-              </div>
+                Create Profile
+              </button>
             </div>
           </div>
         </div>
-
-        <button
-          onClick={submit}
-          disabled={processing}
-          className={`w-full h-[47px] font-semibold font-[Poppins] text-[12px] leading-[18px] text-[#F2F4F5] bg-purple mt-10 rounded-full shadow-md transition-all ${
-            !processing
-              ? 'hover:scale-105 hover:shadow-lg bg-[#0F172A]'
-              : 'bg-[#0F172A]/70'
-          }`}
-        >
-          Create Profile
-        </button>
       </div>
     </main>
   )

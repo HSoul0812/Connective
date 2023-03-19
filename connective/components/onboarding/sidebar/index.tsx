@@ -7,7 +7,7 @@ type Props = {
 const OnboardingSidebar = ({ isSignUp }: Props) => {
   return (
     <div
-      className={`relative flex min-w-[550px] w-5/12 h-fill bg-[url('/assets/journey.svg')] bg-no-repeat bg-center bg-cover flex flex-col p-[60px] mr-0 gap-[90px] relative z-[5]
+      className={`relative flex min-w-[550px] w-5/12 h-[100vh] bg-[url('/assets/journey.svg')] bg-no-repeat bg-center bg-cover flex flex-col p-[60px] mr-0 gap-[90px] relative z-[5]
       ${isSignUp ? 'justify-end' : 'justify-start'}`}
     >
       <Link href="https://www.connective-app.xyz">

@@ -28,9 +28,6 @@ export default function SignIn() {
   const [emailNotVerified, setEmailNotVerified] = useState<boolean>(false)
   const [otpCode, setOtpCode] = useState<string>('')
   const [checked, setChecked] = useState<boolean>(false)
-  const [otpCodeforResetPassword, setOtpCodeforResetPassword] = useState<
-    string
-  >('')
   const [otpError, setOtpError] = useState<string>('')
   const [expiredError, setExpiredError] = useState<boolean>(false)
   const [showForgotModal, setShowForgotModal] = useState<boolean>(false)
@@ -141,117 +138,93 @@ export default function SignIn() {
   }
 
   return (
-    <main className="flex flex-row-reverse gap-[80px] 2bp:gap-[40px] justify-center h-[100vh] bg-[#FCF7FF]">
+    <main className="flex flex-row-reverse justify-center h-[100vh] bg-[#FCF7FF]">
       <Head>
         <title>Signin - Connective</title>
       </Head>
       <LoginSidebar />
 
-      <div className="flex flex-col max-w-[704px] w-[100%] font-[Montserrat] my-[32px] ml-[64px]">
-        <div className="flex justify-between items-center mb-5">
-          <div className="cursor-pointer">
-            <Link href="https://www.connective-app.xyz">
-              <Image
-                src={logo}
-                alt="Connective logo"
-                width="173px"
-                height="41px"
-              />
-            </Link>
-          </div>
-
-          <p className="font-[Poppins] font-normal text-[14px] leading-[36px] text-center text-[#414141] 1bp:text-[16px]">
-            Don't have an account?{' '}
-            <Link href="/auth/signup">
-              <span className="text-purple cursor-pointer">Sign up!</span>
-            </Link>
-          </p>
-        </div>
-        <div className="mt-5 flex flex-col items-center">
-          <div className="text-center">
-            <p className="font-semibold text-[44px] leading-[39px] text-[#0D1011]">
-              Welcome Back!
-            </p>
-            <p className="text-[#414141] my-[12px] font-normal text-[16px] leading-[37px] font-[Poppins] 1bp:text-[18px] mb-10">
-              Login into your account
-            </p>
-
-            {/* <div
-              className="h–[47px] flex flex-row items-center w-[100%] bg-[#EFEFEF] mt-[40px] justify-center rounded-[8px] gap-[11.67px] py-[14.47px] cursor-pointer"
-              onClick=""
-            >
-              <Image
-                className="w-[16.67px] h-[16.67px] 1bp:w-[20px] 1bp:h-[20px]"
-                src={googleIcon}
-                alt="Google"
-                width="16.67px"
-                height="16.67px"
-              />
-              <p  className="font-normal text-[12px] leading-[18px] text-[#0D1011] font-[Poppins] 1bp:text-[14px]">
-                Login with with Google
-              </p>
-            </div>
-            <div  className="flex flex-row items-center gap-[12px] mt-[24px]">
-              <div  className="w-[100%] h-[1px] bg-[#D9D9D9]" />
-              <div>
-                <p  className="font-normal text-[12px] leading-[18px] text-[#414141] font-[Poppins] 1bp:text-[14px]">
-                  or
+      <div className="w-100 flex overflow-hidden h-[100vh]">
+        <div className="w-100 overflow-x-hidden flex overflow-y-scroll">
+          <div className="w-3/4 mx-auto">
+            <div className="flex flex-col max-w-[704px] w-[100%] font-[Montserrat] my-[32px]">
+              <div className="flex justify-between items-center mb-5">
+                <div className="cursor-pointer">
+                  <Link href="https://www.connective-app.xyz">
+                    <Image
+                      src={logo}
+                      alt="Connective logo"
+                      width="173px"
+                      height="41px"
+                    />
+                  </Link>
+                </div>
+                <p className="font-[Poppins] font-normal text-[14px] leading-[36px] text-center text-[#414141] 1bp:text-[16px]">
+                  Don't have an account?{' '}
+                  <Link href="/auth/signup">
+                    <span className="text-purple cursor-pointer">Sign up!</span>
+                  </Link>
                 </p>
               </div>
-              <div  className="w-[100%] h-[1px] bg-[#D9D9D9]" />
-            </div> */}
-          </div>
-
-          <AuthButton isSignUp={false} type="google" />
-          <div className="w-3/5 4bp:w-full">
-            <GoogleSsoDivider />
-
-            <div className="relative flex flex-col gap-5 mt-10 items-center">
-              <InputField
-                name={'Email'}
-                placeholder={'Enter your email'}
-                updateValue={setEmail}
-                errorText={emailError}
-              />
-              <InputField
-                name={'Password'}
-                placeholder={'Enter password'}
-                updateValue={setPassword}
-                password
-                errorText={passwordError}
-              />
-            </div>
-
-            <div className="flex flex-row justify-between items-center">
-              <div className="flex flex-row gap-[8px] my-[24px] 1bp:gap-[14px] items-center">
-                <Switch
-                  onChange={() => setChecked(!checked)}
-                  checked={checked}
-                  checkedIcon={false}
-                  uncheckedIcon={false}
-                  handleDiameter={15}
-                  offColor="#eeecf6"
-                  onColor="#eeecf6"
-                  width={38}
-                  height={20}
-                />
-                <p className="font-[Poppins] font-normal text-[12px] leading-[18px] text-[#0D1011] 1bp:text-[16px]">
-                  Remember me
-                </p>
+              <div className="mt-5 flex flex-col items-center">
+                <div className="text-center">
+                  <p className="font-semibold text-[44px] leading-[39px] text-[#0D1011]">
+                    Welcome Back!
+                  </p>
+                  <p className="text-[#414141] my-[12px] font-normal text-[16px] leading-[37px] font-[Poppins] 1bp:text-[18px] mb-10">
+                    Login into your account
+                  </p>
+                </div>
+                <AuthButton isSignUp={false} type="google" />
+                <div className="w-3/5 4bp:w-full">
+                  <GoogleSsoDivider />
+                  <div className="relative flex flex-col gap-5 mt-10 items-center">
+                    <InputField
+                      name={'Email'}
+                      placeholder={'Enter your email'}
+                      updateValue={setEmail}
+                      errorText={emailError}
+                    />
+                    <InputField
+                      name={'Password'}
+                      placeholder={'Enter password'}
+                      updateValue={setPassword}
+                      password
+                      errorText={passwordError}
+                    />
+                  </div>
+                  <div className="flex flex-row justify-between items-center">
+                    <div className="flex flex-row gap-[8px] my-[24px] 1bp:gap-[14px] items-center">
+                      <Switch
+                        onChange={() => setChecked(!checked)}
+                        checked={checked}
+                        checkedIcon={false}
+                        uncheckedIcon={false}
+                        handleDiameter={15}
+                        offColor="#eeecf6"
+                        onColor="#eeecf6"
+                        width={38}
+                        height={20}
+                      />
+                      <p className="font-[Poppins] font-normal text-[12px] leading-[18px] text-[#0D1011] 1bp:text-[16px]">
+                        Remember me
+                      </p>
+                    </div>
+                    <span onClick={() => setShowForgotModal(true)}>
+                      <p className="font-Poppins font-normal text-[12px] leading-[18px] text-[#D93F21] cursor-pointer 1bp:text-[16px]">
+                        Recover Password
+                      </p>
+                    </span>
+                  </div>
+                  <button
+                    onClick={submitAccount}
+                    className="mb-5 w-[100%] h-[56px] bg-[#7E38B7] font-[Poppins] text-[#F2F4F5] text-[16px] leading-[18px] text-center rounded-full shadow-md transition-all hover:scale-105 hover:shadow-lg 1bp:text-[16px]"
+                  >
+                    Login
+                  </button>
+                </div>
               </div>
-              <span onClick={() => setShowForgotModal(true)}>
-                <p className="font-Poppins font-normal text-[12px] leading-[18px] text-[#D93F21] cursor-pointer 1bp:text-[16px]">
-                  Recover Password
-                </p>
-              </span>
             </div>
-
-            <button
-              onClick={submitAccount}
-              className="w-[100%] h-[56px] bg-[#7E38B7] font-[Poppins] text-[#F2F4F5] text-[16px] leading-[18px] text-center rounded-full shadow-md transition-all hover:scale-105 hover:shadow-lg 1bp:text-[16px]"
-            >
-              Login
-            </button>
           </div>
         </div>
       </div>
@@ -267,18 +240,6 @@ export default function SignIn() {
           </div>
         </>
       ) : null}
-      {/* {resetPassword ? (
-        <>
-          <div className="fixed z-10 flex items-center justify-center w-full h-full shadow-black backdrop-blur-sm backdrop-brightness-90">
-            <ResetPassword
-              // @ts-ignore
-              email={email}
-              setResetPassword={setResetPassword}
-              expiredError={expiredError}
-            />
-          </div>
-        </>
-      ) : null} */}
       <SigninModal
         isShow={showForgotModal}
         onClick={forgotPassword}
