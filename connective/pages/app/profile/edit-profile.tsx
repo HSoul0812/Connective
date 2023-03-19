@@ -18,9 +18,7 @@ export default function EditProfile({ user, industries }) {
   const getAccountType = async () => {
     if (user) setAccountType(await Util.accountType(user.id))
   }
-  useEffect(() => {
-    if (typeof user == 'undefined') router.push(Routes.SIGNIN)
-  }, [user])
+
   useEffect(() => {
     getAccountType()
   }, [])
@@ -32,7 +30,7 @@ export default function EditProfile({ user, industries }) {
   return (
     <main className="flex flex-row h-screen min-w-screen font-[Montserrat] bg-[#F5F5F5]">
       <Head>
-        <title>Edit Profile - Conenctive</title>
+        <title>Edit Profile - Connective</title>
       </Head>
 
       <Sidebar user={user}></Sidebar>

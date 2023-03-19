@@ -144,7 +144,7 @@ export default function Messages({ user, industries }) {
   return (
     <Layout user={user} title="Discover">
       <Head>
-        <title>Discover - Conenctive</title>
+        <title>Discover - Connective</title>
       </Head>
       <div className="ml-[64px] mr-20 h-screen">
         <div className="flex flex-row w-[100%] mb-20 gap-10 items-center mt-20">

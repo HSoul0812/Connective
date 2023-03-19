@@ -181,13 +181,13 @@ const Sidebar = ({ user }) => {
           text="Dashboard"
           icon="/assets/navbar/DashboardIcon.svg"
           route="/app/dashboard"
-        ></SidebarItem>
+        />
 
         <SidebarItem
           text="Profile"
           icon="/assets/navbar/ProfileIcon.svg"
           route={`/app/profile/${user?.id ? user.id : 0}`}
-        ></SidebarItem>
+        />
       </div>
 
       {/*
@@ -199,12 +199,12 @@ const Sidebar = ({ user }) => {
           text="Marketplace"
           icon="/assets/navbar/MarketplaceIcon.svg"
           route="/app/marketplace"
-        ></SidebarItem>
+        />
         <SidebarItem
           text="Purchased Lists"
           icon="/assets/navbar/PurchasedListsIcon.svg"
           route="/app/lists/purchased"
-        ></SidebarItem>
+        />
       </div>
 
       <div  className="mb-3">
@@ -215,17 +215,17 @@ const Sidebar = ({ user }) => {
           text="Lists"
           icon="/assets/navbar/ListsIcon.svg"
           route="/app/lists"
-        ></SidebarItem>
+        />
         <SidebarItem
           text="Earnings"
           icon="/assets/navbar/EarningsIcon.svg"
           route="/app/earnings"
-        ></SidebarItem>
+        />
         <SidebarItem
           text="Requests List"
           icon="/assets/navbar/RequestsListIcon.svg"
           route="/app/requests"
-        ></SidebarItem>
+        />
       </div>
       */}
       <div className="mt-4">
@@ -237,12 +237,12 @@ const Sidebar = ({ user }) => {
           text2={sum && sum > 0 ? sum : null}
           icon="/assets/navbar/messages.svg"
           route="/app/messages"
-        ></SidebarItem>
+        />
         <SidebarItem
           text="Discover"
           icon="/assets/navbar/compass.svg"
           route="/app/discover"
-        ></SidebarItem>
+        />
       </div>
 
       <div className="mt-4">
@@ -253,19 +253,19 @@ const Sidebar = ({ user }) => {
           text="Feedback"
           icon="/assets/navbar/FeedbackIcon.svg"
           route="/app/feedback"
-        ></SidebarItem> */}
+        /> */}
         <SidebarItem
           text="Contact Us"
           icon="/assets/navbar/ContactUsIcon.svg"
           route="https://calendly.com/connective-app/30min?month=2022-12"
           target="_blank"
-        ></SidebarItem>
+        />
         <SidebarItem
           text="Join Our Slack"
           icon="/assets/navbar/Slack.svg"
           route="https://join.slack.com/t/connectiveaff-gdx2039/shared_invite/zt-1k972uih0-fn~2DbSdWPR8fTNRl~HCkw"
           target="_blank"
-        ></SidebarItem>
+        />
       </div>
 
       {/* <Link href="http://www.connective-app.xyz/"> */}
@@ -273,7 +273,7 @@ const Sidebar = ({ user }) => {
         text="Sign Out"
         icon="/assets/navbar/SignOutIcon.svg"
         onClick={signout}
-      ></SidebarItem>
+      />
       {/* </Link> */}
     </div>
   )

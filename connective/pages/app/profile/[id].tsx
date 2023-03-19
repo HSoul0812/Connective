@@ -35,7 +35,7 @@ export default function Profile({ user, industries }) {
   return (
     <main className="flex flex-row h-screen min-w-screen font-[Montserrat] bg-[#F5F5F5]">
       <Head>
-        <title>Profile - Conenctive</title>
+        <title>Profile - Connective</title>
       </Head>
       <Sidebar user={user}></Sidebar>
       <div className="h-screen w-screen overflow-y-scroll">
@@ -44,13 +44,10 @@ export default function Profile({ user, industries }) {
             user={user}
             industries={industries}
             id={Number(id.toString())}
-          ></BusinessProfile>
+          />
         )}
         {accountType == 'Individual' && (
-          <IndividualProfile
-            user={user}
-            id={Number(id.toString())}
-          ></IndividualProfile>
+          <IndividualProfile user={user} id={Number(id.toString())} />
         )}
       </div>
     </main>

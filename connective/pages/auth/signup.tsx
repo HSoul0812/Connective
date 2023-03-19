@@ -134,7 +134,7 @@ const SignUp = () => {
   return (
     <main className="flex flex-row min-h-screen min-w-screen">
       <Head>
-        <title>Signup - Conenctive</title>
+        <title>Signup - Connective</title>
       </Head>
       <OnboardingSidebar isSignUp />
       <div className="w-7/12 flex overflow-hidden h-[100vh]">
@@ -192,7 +192,7 @@ const SignUp = () => {
                     className="b-[#0D1011] b-[0.5px] w-[16px] h-[16px] 1bp:w-[20px] 1bp:h-[20px]"
                     type="checkbox"
                     id="checkbox"
-                  ></input>
+                  />
                   <p className="font-[Poppins] font-normal text-[12px] leading-[18px] text-[#0D1011] 1bp:text-[16px]">
                     I accept the{' '}
                     <span className="underline cursor-pointer text-purple">

@@ -50,6 +50,7 @@ export default function EditProfile({ user, industries }: Props) {
         if (data.type == 'IApiResponseError') {
           throw data
         } else {
+          console.log('business: ', data.business)
           let business = data.business
           setUserId(business.user_id.toString())
           setName(business.company_name)

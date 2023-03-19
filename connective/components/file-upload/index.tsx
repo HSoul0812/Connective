@@ -25,7 +25,6 @@ const FileUpload = ({
 }: Props) => {
   const ref = useRef<HTMLInputElement>()
   const [showModal, setShowModal] = useState<boolean>(false)
-  console.log('file-----', file)
   const handleClick = () => {
     ref.current.click()
   }
@@ -44,24 +43,19 @@ const FileUpload = ({
       <label className="w-full" onClick={() => setShowModal(true)}>
         <div className="cursor-pointer mx-auto flex flex-col items-center bg-transparent p-4 border border-black/40 border-dashed rounded-md transition-all hover:bg-[#D9D9D9]/10 pt-[86px]">
           <div className="flex justify-center">
-            {src != '' &&
-            !(
-              file == null ||
-              file == undefined ||
-              typeof file == 'undefined'
-            ) ? (
-              <img
-                className="mx-auto mt-auto h-[130px] w-[130px] rounded-full object-cover"
-                src={src}
-              />
-            ) : editProfile ? (
+            {src == '' && !file ? (
               <Avatar
                 className="rounded-full"
                 width={130}
                 height={130}
                 title={user}
               />
-            ) : null}
+            ) : (
+              <img
+                className="mx-auto mt-auto h-[130px] w-[130px] rounded-full object-cover"
+                src={src}
+              />
+            )}
           </div>
 
           {!editProfile &&

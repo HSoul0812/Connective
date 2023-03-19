@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Switch from 'react-switch'
 import { withIronSession } from 'next-iron-session'
 import { useRouter } from 'next/router'
@@ -13,7 +13,6 @@ import AuthButton from 'components/button/AuthButton'
 import GoogleSsoDivider from 'components/divider/orDivider'
 import EmailVerification from 'components/dailog/EmailVerification'
 import { AuthApiResponse, IApiResponseError } from 'types/apiResponseTypes'
-import logo from 'public/assets/logo.svg'
 import * as Routes from 'util/routes'
 // import ResetPassword from './resetpassword/[email]/[token]'
 
@@ -150,13 +149,15 @@ export default function SignIn() {
             <div className="flex flex-col max-w-[704px] w-[100%] font-[Montserrat] my-[32px]">
               <div className="flex justify-between items-center mb-5">
                 <div className="cursor-pointer">
-                  <Link href="https://www.connective-app.xyz">
-                    <Image
-                      src={logo}
-                      alt="Connective logo"
-                      width="173px"
-                      height="41px"
-                    />
+                  <Link href="https://www.connective-app.xyz" passHref>
+                    <a>
+                      <Image
+                        src="/assets/logo.svg"
+                        alt="Connective logo"
+                        width="173px"
+                        height="41px"
+                      />
+                    </a>
                   </Link>
                 </div>
                 <p className="font-[Poppins] font-normal text-[14px] leading-[36px] text-center text-[#414141] 1bp:text-[16px]">

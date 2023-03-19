@@ -442,7 +442,7 @@ export namespace DAO {
         .promise()
         .execute(query, [
           name,
-          pfpChanged ? `${pfp},` : '',
+          pfpChanged ? `${pfp}` : '',
           description,
           location,
           industry,

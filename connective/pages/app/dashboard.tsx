@@ -28,7 +28,7 @@ const DashboardRow = ({ title, buttonText, children }) => {
   return (
     <div className="ml-[64px]">
       <Head>
-        <title>Dashboard - Conenctive</title>
+        <title>Dashboard - Connective</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <p className="text-2xl font-bold">{title}</p>
