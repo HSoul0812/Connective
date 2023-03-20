@@ -21,7 +21,7 @@ import * as Routes from '../../util/routes'
 type Props = {
   text: string
   text2?: string | number
-  route?: string | URL
+  route?: string
   icon: string
   onClick?: MouseEventHandler<HTMLDivElement>
   target?: string
@@ -39,7 +39,10 @@ const SidebarItem = ({
 }: Props) => {
   const router = useRouter()
 
-  let selected = router.route == route
+  let selected =
+    router.route.includes('profile') && route.includes('profile')
+      ? true
+      : router.route == route
   if (typeof onClick == 'undefined') {
     onClick = () => {
       router.push(route)
