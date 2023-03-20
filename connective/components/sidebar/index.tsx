@@ -58,12 +58,12 @@ const SidebarItem = ({
     <div
       onClick={onClick}
       className={`
-      flex flex-row items-center gap-3 cursor-pointer text-[1.65vh] 2xl:text-[1.4vh] pl-3 py-[1.25vh] my-3 2xl:py-[1.5vh] w-full transition-all text-gray hover:border-gradient-br-purple-transparent gradient-border-2 rounded-xl
+      flex flex-row items-center gap-3 cursor-pointer text-[14px] pl-3 py-[16.5px] my-3 w-full transition-all text-gray hover:border-gradient-br-purple-transparent gradient-border-2 rounded-xl
        ${selected ? 'border-gradient-br-purple-transparent' : ''}
        ${text == 'Sign Out' ? 'mt-auto' : ''}`}
     >
       <img
-        className={`w-[2vh] h-[2vh] my-auto ${
+        className={`w-[18px] h-[18px] my-auto ${
           selected ? 'icon-filtering' : ''
         } `}
         src={icon}
@@ -159,7 +159,7 @@ const Sidebar = ({ user }) => {
   }, [getConversations])
 
   return (
-    <div className="z-10 h-fill min-w-[25vh] w-1/6 bg-[#F8F9FA] flex flex-col text-white font-[Montserrat] px-[30px] py-[25px]">
+    <div className="z-10 min-w-[25vh] w-1/6 bg-[#F8F9FA] flex flex-col text-white font-[Montserrat] px-[30px] py-[25px]">
       <Link href="/">
         <div className="flex flex-row cursor-pointer items-center mb-9">
           <Image
@@ -195,7 +195,7 @@ const Sidebar = ({ user }) => {
 
       {/*
       <div  className="mb-3">
-        <p  className="font-[Montserrat] font-bold text-[1.5vh] leading-[20px] text-[#BFBFBF] mb-2">
+        <p  className="font-[Montserrat] font-bold text-[18px] leading-[20px] text-[#BFBFBF] mb-2">
           As a buyer
         </p>
         <SidebarItem
@@ -211,7 +211,7 @@ const Sidebar = ({ user }) => {
       </div>
 
       <div  className="mb-3">
-        <p  className="font-[Montserrat] font-bold text-[1.5vh] leading-[20px] text-[#BFBFBF] mb-2">
+        <p  className="font-[Montserrat] font-bold text-[18px] leading-[20px] text-[#BFBFBF] mb-2">
           As a seller
         </p>
         <SidebarItem
@@ -232,7 +232,7 @@ const Sidebar = ({ user }) => {
       </div>
       */}
       <div className="mt-4">
-        <p className="font-[Montserrat] font-bold text-[1.5vh] leading-[20px] text-[#BFBFBF] mb-2">
+        <p className="font-[Montserrat] font-bold text-[18px] leading-[20px] text-[#BFBFBF] mb-2">
           CHAT
         </p>
         <SidebarItem
@@ -249,7 +249,7 @@ const Sidebar = ({ user }) => {
       </div>
 
       <div className="mt-4">
-        <p className="font-[Montserrat] font-bold text-[1.5vh] leading-[20px] text-[#BFBFBF] mb-2">
+        <p className="font-[Montserrat] font-bold text-[18px] leading-[20px] text-[#BFBFBF] mb-2">
           Support
         </p>
         {/* <SidebarItem
