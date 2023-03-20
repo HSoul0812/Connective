@@ -123,7 +123,12 @@ const Messages = ({ user }) => {
               <Image src="/assets/messages/alarm.svg" height={20} width={20} />
             </div>
             <div className="flex items-center ml-5 mr-3">
-              <Image src={user.logo} height={40} width={40} />
+              <Image
+                src={user.logo}
+                height={40}
+                width={40}
+                className="rounded-full"
+              />
               <div className="ml-3 mr-5">
                 <div className="font-bold text-sm">{user.username}</div>
                 <div className="text-sm text-gray"></div>

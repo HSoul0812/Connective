@@ -334,6 +334,23 @@ export namespace DAO {
     }
   }
 
+  export class Profile {
+    static async getByUserId(userId: number) {
+      var query = `SELECT * FROM (
+        SELECT Business.user_id, 1 AS isBusiness FROM Business 
+        UNION ALL 
+        SELECT Individual.user_id, 0 AS isBusiness FROM Individual
+        ) AS PROFILE
+        inner JOIN Users ON Users.id = PROFILE.user_id
+        WHERE Users.id = ?;`
+      var [result] = await connection.promise().query(query, [userId])
+
+      if (Array.isArray(result) && result.length == 0) return false
+      const isBusiness = result[0].isBusiness
+
+      return isBusiness
+    }
+  }
   /**
    * Contains functions for interacting with Businesses in the database
    */
