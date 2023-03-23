@@ -2,10 +2,15 @@ import { useState, useEffect, createContext } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { withIronSession } from 'next-iron-session'
+import { Recache } from 'recache-client'
 
 import Layout from 'components/layout'
 import { Conversations, Chat, UserDetails } from 'components/messages'
-import { MessagesApiResponse, ProfileApiResponse } from 'types/apiResponseTypes'
+import {
+  MessagesApiResponse,
+  ProfileApiResponse,
+  IApiResponseError,
+} from 'types/apiResponseTypes'
 import { User, Conversation } from 'types/types'
 
 export const MessagesContext = createContext<{
@@ -18,6 +23,7 @@ const Messages = ({ user }) => {
   const router = useRouter()
   const { newUser } = router.query
   const [users, setUsers] = useState<User[]>([])
+  const [userInfo, setUserInfo] = useState<any>()
   const [showUserdetail, setShowUserDetail] = useState<boolean>(false)
   const [selectedUser, setSelectedUser] = useState<Conversation>()
 
@@ -58,6 +64,13 @@ const Messages = ({ user }) => {
       } as Conversation
       setSelectedUser(selectedUser)
     }
+    const res: ProfileApiResponse.IDiscoverProfiles | IApiResponseError = (
+      await Recache.cached(137, axios.get, ['/api/profiles'])
+    ).data
+    if (res.type == 'IApiResponseError') throw res
+    else {
+      setUserInfo(res.users.find((item) => item.id === user.id))
+    }
   }
 
   const getConversations = async () => {
@@ -90,7 +103,10 @@ const Messages = ({ user }) => {
 
   return (
     <MessagesProvider value={{ conversations }}>
-      <Layout user={user} title="Messages">
+      <Layout
+        user={{ ...user, logo: userInfo?.logo, name: userInfo?.username }}
+        title="Messages"
+      >
         <div className="bg-white h-full overflow-clip flex flex-row">
           <Conversations
             unreadMessages={unreadMessages}

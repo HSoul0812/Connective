@@ -39,7 +39,7 @@ function Items({ currentItems }: { currentItems: Array<ReactNode> }) {
 export default function Messages({ user, industries }) {
   const router = useRouter()
   const discoverRef = useRef(null)
-
+  const [userInfo, setUserInfo] = useState<any>()
   const [users, setUsers] = useState<DiscoverUser[]>([])
   const [filter, setFilter] = useState<string>('')
   const [filteredUsers, setFilteredUsers] = useState<DiscoverUser[]>([])
@@ -60,16 +60,16 @@ export default function Messages({ user, industries }) {
   // Simulate fetching items from another resources.
   // (This could be items from props; or items loaded in a local state
   // from an API endpoint with useEffect and useState)
-  // items per page = 10
-  const endOffset = itemOffset + 10
+  // items per page = 8
+  const endOffset = itemOffset + 8
   console.log(`Loading items from ${itemOffset} to ${endOffset}`)
   const currentItems = filteredUsers.slice(itemOffset, endOffset)
-  const pageCount = Math.ceil(filteredUsers.length / 10)
+  const pageCount = Math.ceil(filteredUsers.length / 8)
 
   // Invoke when user click to request another page.
   const handlePageClick = (page) => {
     setPage(page.selected)
-    const newOffset = (page.selected * 10) % filteredUsers.length
+    const newOffset = (page.selected * 8) % filteredUsers.length
     setItemOffset(newOffset)
   }
 
@@ -84,6 +84,7 @@ export default function Messages({ user, industries }) {
       console.log(elapsed)
       //const {data} = await axios.get("/api/profiles")
       setUsers(res.users.filter((a) => a.show_on_discover))
+      setUserInfo(res.users.find((item) => item.id === user.id))
     }
   }
 
@@ -130,10 +131,10 @@ export default function Messages({ user, industries }) {
       users.filter(
         (a) =>
           a.username.toLowerCase().includes(filter.toLowerCase()) &&
-          a?.industry == selectedIndustry.value,
+          a?.industry == selectedIndustry?.value,
       ),
     )
-  }, [filter, selectedIndustry, defaultIndustry])
+  }, [users, filter, selectedIndustry, defaultIndustry])
 
   useEffect(() => {
     Recache.init('cac121461df5ec95fd867894904f0839b108b03a', 235)
@@ -142,7 +143,7 @@ export default function Messages({ user, industries }) {
   }, [])
 
   return (
-    <Layout user={user} title="Discover">
+    <Layout user={{ ...userInfo, name: userInfo?.username }} title="Discover">
       <Head>
         <title>Discover - Connective</title>
       </Head>
@@ -184,28 +185,10 @@ export default function Messages({ user, industries }) {
           <Select placeholder="Sort"  className="w-[250px] text-[12px]"></Select>
           */}
         </div>
-        <div className="flex flex-col w-full gap-10 pb-20" ref={discoverRef}>
-          <ReactPaginate
-            forcePage={page}
-            breakLabel="..."
-            nextLabel="next >"
-            onPageChange={(page) => handlePageClick(page)}
-            pageRangeDisplayed={5}
-            pageCount={pageCount}
-            previousLabel="< previous"
-            renderOnZeroPageCount={null}
-            breakClassName={'page-item'}
-            breakLinkClassName={'page-link'}
-            containerClassName={'pagination'}
-            pageClassName={'page-item'}
-            pageLinkClassName={'page-link'}
-            previousClassName={'page-item'}
-            previousLinkClassName={'page-link'}
-            nextClassName={'page-item'}
-            nextLinkClassName={'page-link'}
-            activeClassName={'active'}
-          />
-
+        <div
+          className="grid grid-cols-4 gap-10 w-full pb-20 items-stretch"
+          ref={discoverRef}
+        >
           <Items
             currentItems={currentItems.map((item) => {
               return (
@@ -219,29 +202,31 @@ export default function Messages({ user, industries }) {
               )
             })}
           />
-
+        </div>
+        <div className="w-full flex justify-center pb-5">
           <ReactPaginate
             forcePage={page}
             breakLabel="..."
-            nextLabel="next >"
+            nextLabel=">"
             onPageChange={function (page) {
               handlePageClick(page)
               discoverRef.current.scrollIntoView({ behavior: 'smooth' })
             }}
             pageRangeDisplayed={5}
             pageCount={pageCount}
-            previousLabel="< previous"
+            previousLabel="<"
             renderOnZeroPageCount={null}
             breakClassName={'page-item'}
             breakLinkClassName={'page-link'}
             containerClassName={'pagination'}
             pageClassName={'page-item'}
-            pageLinkClassName={'page-link'}
+            pageLinkClassName={'page-link text-black rounded-lg border-0 mx-2'}
             previousClassName={'page-item'}
             previousLinkClassName={'page-link'}
             nextClassName={'page-item'}
             nextLinkClassName={'page-link'}
             activeClassName={'active'}
+            activeLinkClassName={'text-white !bg-purple'}
           />
         </div>
       </div>

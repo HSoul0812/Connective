@@ -3,10 +3,8 @@ import { Recache } from 'recache-client'
 import axios from 'axios'
 import { withIronSession } from 'next-iron-session'
 import { useRouter } from 'next/router'
-import Image from 'next/image'
-import Link from 'next/link'
 import Head from 'next/head'
-import { AccountType, IValidationItem, ValidationResponse } from 'types/types'
+import { IValidationItem, ValidationResponse } from 'types/types'
 import ProfileTypeSelector from 'components/onboarding/profile-type-selector'
 import { SelectField } from 'components/select-field/selectField'
 import OnboardingSidebar from 'components/onboarding/sidebar'
@@ -19,7 +17,7 @@ import {
 } from 'util/validation/onboarding'
 import * as Routes from 'util/routes'
 import Util from 'util/index'
-import logo from 'public/assets/logo.svg'
+import { statusOptions } from 'util/validation/onboarding'
 
 export default function CreateProfile({ user, industries }) {
   const [name, setName] = useState<string>('')
@@ -46,21 +44,6 @@ export default function CreateProfile({ user, industries }) {
     { value: '100-200', label: '100-200' },
     { value: '200-1000', label: '200-1000' },
     { value: '1000+', label: '1000+' },
-  ]
-
-  const statusOptions = [
-    {
-      value: 'Looking to give client for commission.',
-      label: 'Looking to give client for commission.',
-    },
-    {
-      value: 'Looking to get client for a commission.',
-      label: 'Looking to get client for a commission.',
-    },
-    {
-      value: 'Looking to expand my network',
-      label: 'Looking to expand my network',
-    },
   ]
 
   useEffect(() => {
@@ -238,7 +221,7 @@ export default function CreateProfile({ user, industries }) {
           <div className="w-3/4 mx-auto">
             <div className="flex flex-col font-[Poppins] my-[40px]">
               <p className="text-[44px] font-[600] text-black text-center">
-                Create {isIndividual ? 'Company' : 'Individual'} Profile
+                Create {!isIndividual ? 'Company' : 'Individual'} Profile
               </p>
               <p className="font-[400] text-[16px] leading-[37px] text-black text-center mb-[20px]">
                 Choose the best describe you
@@ -278,7 +261,11 @@ export default function CreateProfile({ user, industries }) {
                     Logo
                   </p>
                   <FileUpload
-                    text="Upload company logo here"
+                    text={
+                      isIndividual
+                        ? 'Upload Profile Picture here'
+                        : 'Upload company logo here'
+                    }
                     file={pfp}
                     setFile={setPfp}
                     src={src}
@@ -287,11 +274,13 @@ export default function CreateProfile({ user, industries }) {
                 </div>
 
                 <div className="flex flex-row gap-[24px]">
-                  <InputField
-                    name={'Website'}
-                    placeholder={'Enter company website URL'}
-                    updateValue={setUrl}
-                  />
+                  {!isIndividual && (
+                    <InputField
+                      name={'Website'}
+                      placeholder={'Enter company website URL'}
+                      updateValue={setUrl}
+                    />
+                  )}
                   <InputField
                     name={'Location'}
                     placeholder={'Enter where your company is located'}

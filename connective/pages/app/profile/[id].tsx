@@ -1,22 +1,25 @@
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
+import axios from 'axios'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Recache } from 'recache-client'
 import { withIronSession } from 'next-iron-session'
+import { toInteger } from 'lodash'
 
 import Layout from 'components/layout'
-import BusinessProfile from 'components/profile/business'
-import IndividualProfile from 'components/profile/individual'
+import ProfileComponent from 'components/profile'
 import * as Routes from 'util/routes'
 import Util from 'util/index'
 import { DAO } from 'lib/dao'
 
 export default function Profile({ user, industries }) {
-  const [accountType, setAccountType] = useState<boolean>()
   const router = useRouter()
   const { id } = router.query
   const [loaded, setLoaded] = useState<boolean>(false)
+  const [data, setData] = useState<any>()
+  const [accountType, setAccountType] = useState<boolean>()
+  const [industry, setIndustry] = useState<string>('')
+  const [occupation, setOccupation] = useState<string>('')
 
   useEffect(() => {
     try {
@@ -26,59 +29,66 @@ export default function Profile({ user, industries }) {
     }
   }, [])
 
-  const getAccountType = async () => {
+  const getProfile = async () => {
     const type = await Util.accountType(Number(id.toString()))
     setAccountType(type)
+    const url = type ? '/api/profiles/business' : '/api/profiles/individual'
+    try {
+      await axios.get(`${url}?id=${id}`).then((res) => {
+        let data = res.data
+        if (data.type == 'IApiResponseError') {
+          throw data
+        } else {
+          const result = type ? data.business : data.individual
+          setData(result)
+          setLoaded(true)
+          const selectedIndustry = industries.find(
+            (industry) => industry.id == result.industry,
+          )
+
+          const selectedOccupation = selectedIndustry?.occupations.find(
+            (item) => item.id == toInteger(result.occupation),
+          )
+
+          setOccupation(selectedOccupation.name)
+          setIndustry(selectedIndustry.name)
+        }
+      })
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   useEffect(() => {
     if (typeof user == 'undefined') router.push(Routes.SIGNIN)
-    getAccountType()
+    getProfile()
   }, [user])
 
   return (
-    <Layout user={user} title="Profile/About">
+    <Layout
+      user={{
+        ...data,
+        name: accountType ? data?.company_name : data?.name,
+        logo: accountType ? data?.logo : data?.profile_picture,
+      }}
+      title="Profile/About"
+    >
       <main className="flex flex-row h-screen min-w-screen font-[Montserrat] bg-[#F5F5F5]">
         <Head>
           <title>Profile - Connective</title>
         </Head>
-        <div className="h-screen w-screen overflow-y-scroll">
+        <div className="w-screen mr-5">
           <div
             className={`${loaded ? 'flex' : 'hidden'} flex-col w-[100%] h-full`}
           >
-            <div className="relative">
-              <div
-                onClick={(e) => e.stopPropagation()}
-                className={`after:absolute after:top-[20px] `}
-              >
-                <img
-                  className="h-[25%] w-[100%] object-cover relative shadow-md rounded-[12px]"
-                  src="/assets/profile/bg.svg"
-                />
-                <div
-                  className="absolute top-[20px] right-[20px] cursor-pointer bg-white/[0.2] rounded-full w-[40px] h-[40px] flex items-center justify-center"
-                  onClick={() => console.log('asdf')}
-                >
-                  <Image
-                    src="/assets/profile/edit-white.svg"
-                    height={24}
-                    width={24}
-                  />
-                </div>
-              </div>
-            </div>
-            {accountType ? (
-              <BusinessProfile
+            {accountType !== undefined && (
+              <ProfileComponent
+                data={data}
                 user={user}
-                industries={industries}
-                id={Number(id.toString())}
-                setLoaded={setLoaded}
-              />
-            ) : (
-              <IndividualProfile
-                user={user}
-                id={Number(id.toString())}
-                setLoaded={setLoaded}
+                industry={industry}
+                occupation={occupation}
+                isBusiness={accountType}
+                getProfile={getProfile}
               />
             )}
           </div>
@@ -94,13 +104,11 @@ export default function Profile({ user, industries }) {
 export const getServerSideProps = withIronSession(
   async ({ req, res }) => {
     const user = req.session.get('user')
-
     if (!user) {
       return { props: {} }
     }
 
     const industries = await DAO.Industries.getAll()
-
     return {
       props: { user, industries },
     }

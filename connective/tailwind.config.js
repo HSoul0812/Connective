@@ -23,6 +23,8 @@ module.exports = {
         gray: '#A0AEC0',
         lightGray: '#989BA1',
         green: '#1D9745',
+        blue: '#0067c6',
+        blueLight: '#2697ff',
       },
     },
   },

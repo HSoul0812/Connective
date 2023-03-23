@@ -1,30 +1,45 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { withIronSession } from 'next-iron-session'
-import Sidebar from '../../../components/sidebar'
-import EditBusinessProfile from '../../../components/edit-profile/business'
-import EditIndividualProfile from '../../../components/edit-profile/individual'
-import Util from '../../../util'
-import Head from 'next/head'
-import * as Routes from '../../../util/routes'
-import { DAO } from '../../../lib/dao'
+import EditProfileComponent from 'components/edit-profile'
+import Util from 'util/index'
+import { DAO } from 'lib/dao'
 
 export default function EditProfile({ user, industries }) {
   const router = useRouter()
 
-  const [accountType, setAccountType] = useState<string>()
+  const [data, setData] = useState<any>()
+  const [loaded, setLoaded] = useState<boolean>(false)
+  const [accountType, setAccountType] = useState<boolean>()
 
-  const getAccountType = async () => {
-    if (user) setAccountType(await Util.accountType(user.id))
+  const getProfile = async () => {
+    try {
+      const type = await Util.accountType(user.id)
+      if (user) setAccountType(type)
+      let url = type ? '/api/profiles/business' : '/api/profiles/individual'
+      await axios.get(`${url}?id=${user.id}`).then((res) => {
+        let data = res.data
+        if (data.type == 'IApiResponseError') {
+          throw data
+        } else {
+          const result = type ? data.business : data.individual
+          setData(result)
+          setLoaded(true)
+        }
+      })
+    } catch (e) {
+      console.log(e)
+    }
   }
-
   useEffect(() => {
-    getAccountType()
+    getProfile()
   }, [])
 
   useEffect(() => {
-    if (typeof user == 'undefined') router.push(Routes.SIGNIN)
+    console.log(user)
+    // if (typeof user == 'undefined') router.push(Routes.SIGNIN)
   }, [user])
 
   return (
@@ -32,19 +47,20 @@ export default function EditProfile({ user, industries }) {
       <Head>
         <title>Edit Profile - Connective</title>
       </Head>
-
-      <Sidebar user={user}></Sidebar>
-      <div className="h-screen w-screen overflow-y-scroll">
-        {accountType == 'Business' && (
-          <EditBusinessProfile
+      {loaded ? (
+        <div className="h-screen w-screen overflow-y-scroll">
+          <EditProfileComponent
+            data={data}
+            isBusiness={accountType}
             user={user}
             industries={industries}
-          ></EditBusinessProfile>
-        )}
-        {accountType == 'Individual' && (
-          <EditIndividualProfile user={user}></EditIndividualProfile>
-        )}
-      </div>
+          />
+        </div>
+      ) : (
+        <div>
+          <p className="text-center">Loading...</p>
+        </div>
+      )}
     </main>
   )
 }
@@ -58,7 +74,6 @@ export const getServerSideProps = withIronSession(
     }
 
     const industries = await DAO.Industries.getAll()
-
     return {
       props: { user, industries },
     }

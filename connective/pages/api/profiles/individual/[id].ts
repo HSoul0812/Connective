@@ -19,8 +19,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method == 'GET') {
       //Returns callers account
       res.status(200).json({
-        individual: await DAO.Profile.getByUserID(Number(id), false),
-        // individual: await DAO.Individual.getByUserId(Number(id)),
+        individual: await DAO.Individual.getByUserId(Number(id)),
       } as ProfileApiResponse.IIndividual)
     }
   } catch (e) {

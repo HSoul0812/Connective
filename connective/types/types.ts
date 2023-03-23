@@ -105,6 +105,7 @@ export type Business = {
   industry: number
   size: string
   profileViews: number
+  occupation: string
   listViews: number
   status: string
   is_subscribed: boolean

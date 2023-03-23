@@ -59,7 +59,7 @@ export default function BusinessProfile({
 
   return (
     <>
-      <div className="w-[100%] flex flex-row justify-between items-center">
+      <div className="w-[100%] flex flex-row justify-between items-start">
         <div className="relative flex flex-row items-center gap-[40px] pl-[50px]">
           {data?.logo == '' ? (
             <Avatar width={140} height={140} title={data?.company_name} />
@@ -78,15 +78,14 @@ export default function BusinessProfile({
               )}
             </div>
           )}
-
           <div className="flex flex-col mt-[80px]">
             <div className="flex flex-row">
-              <p className="font-bold text-2xl 2xl:text-4xl mb-1 text-[#0D1011]">
+              <p className="font-bold text-xl mb-1 text-[#0D1011]">
                 {data?.company_name}
               </p>
             </div>
 
-            <div className="flex flex-row gap-10 text-[14px] 2xl:text-xl mr-16 pb-5 font-[Poppins]">
+            <div className="flex flex-row gap-10 text-[14px] 2xl:text-xl mr-16 mt-4 pb-5 font-[Poppins]">
               <div className="flex flex-row gap-2 items-center">
                 <img
                   className="h-[14px] w-[14px]"
@@ -110,71 +109,84 @@ export default function BusinessProfile({
             </div>
           </div>
         </div>
-
-        {user.id == id && (
+        <div className="flex gap-3">
           <div
-            className="flex flex-row gap-[12px] cursor-pointer text-white rounded-lg bg-[#061A40] items-center py-[18px] px-[40px]"
+            className="flex flex-row gap-[12px] cursor-pointer text-white bg-purple items-center py-[11px] px-[17px] mt-7 border-2 border-purple rounded-full"
+            onClick={() => router.push(Routes.MESSAGES)}
+          >
+            <img
+              className="w-[20px] h-[20px]"
+              src="/assets/profile/message.svg"
+            />
+            <p className="hover:scale-105 hover:shadow-lg font-[Poppins] text-center text-[14px]">
+              Message
+            </p>
+          </div>
+          <div
+            className="flex flex-row gap-[12px] cursor-pointer text-black bg-white items-center py-[11px] px-[17px] mt-7 border-2 border-purple rounded-full"
             onClick={() => router.push(Routes.EDITPROFILE)}
           >
-            <img className="w-[20px] h-[20px]" src="/assets/edit.svg" />
+            <img className="w-[20px] h-[20px]" src="/assets/profile/edit.svg" />
             <p className="hover:scale-105 hover:shadow-lg font-[Poppins] text-center text-[14px]">
               Edit Profile
             </p>
           </div>
-        )}
+        </div>
       </div>
-      {data?.status ? (
-        <div
-          className="rounded py-3 px-6 w-fit"
-          style={{
-            backgroundColor:
-              data.status === 'Looking to give client for commission.'
-                ? '#4b5e6d'
-                : '#c2cfd8',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: '20px',
-          }}
-        >
-          <p
+      <div className="ml-[50px]">
+        {data?.status ? (
+          <div
+            className="rounded py-3 px-6 w-fit"
             style={{
-              color:
+              backgroundColor:
                 data.status === 'Looking to give client for commission.'
-                  ? 'white'
-                  : 'black',
+                  ? '#4b5e6d'
+                  : '#c2cfd8',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginBottom: '20px',
             }}
-          >{`Status: ${data.status}`}</p>
-        </div>
-      ) : null}
-      <div className="mb-[60px]">
-        <p className="text-[18px] leading-[15px] font-bold text-[#0D1011] font-[Montserrat] mb-4 1bp:text-[16.5px]">
-          About
-        </p>
-        <div className="max-w-[540px] font-[Poppins] font-normal text-[16px] leading-[24px] text-[#0D1011]">
-          <p>{data?.description}</p>
-        </div>
-      </div>
-      <div className="flex flex-row gap-[35px] mb-[60px]">
-        <div className="flex flex-row gap-[5px] items-center">
-          <img
-            className="w-[17px] h-[17px]"
-            src="/assets/size.svg"
-            alt="Size"
-          />
-          <p className="font-[Montserrat] text-[14px] text-[#061A40]">
-            <span className="font-bold">Size:</span> {data?.size}
+          >
+            <p
+              style={{
+                color:
+                  data.status === 'Looking to give client for commission.'
+                    ? 'white'
+                    : 'black',
+              }}
+            >{`Status: ${data.status}`}</p>
+          </div>
+        ) : null}
+        <div className="mb-[60px]">
+          <p className="text-[18px] leading-[15px] font-bold text-[#0D1011] font-[Montserrat] mb-4 1bp:text-[16.5px]">
+            About
           </p>
+          <div className="max-w-[540px] font-[Poppins] font-normal text-[16px] leading-[24px] text-[#0D1011]">
+            <p>{data?.description}</p>
+          </div>
         </div>
-        <div className="flex flex-row gap-[5px] items-center">
-          <img
-            className="w-[17px] h-[17px]"
-            src="/assets/industry.svg"
-            alt="Industry"
-          />
-          <p className="font-[Montserrat] text-[14px] text-[#061A40]">
-            <span className="font-bold">Industry:</span> {industry}
-          </p>
+        <div className="flex flex-row gap-[35px] mb-[60px]">
+          <div className="flex flex-row gap-[5px] items-center">
+            <img
+              className="w-[17px] h-[17px]"
+              src="/assets/size.svg"
+              alt="Size"
+            />
+            <p className="font-[Montserrat] text-[14px] text-[#061A40]">
+              <span className="font-bold">Size:</span> {data?.size}
+            </p>
+          </div>
+          <div className="flex flex-row gap-[5px] items-center">
+            <img
+              className="w-[17px] h-[17px]"
+              src="/assets/industry.svg"
+              alt="Industry"
+            />
+            <p className="font-[Montserrat] text-[14px] text-[#061A40]">
+              <span className="font-bold">Industry:</span> {industry}
+            </p>
+          </div>
         </div>
       </div>
       {/* <div>

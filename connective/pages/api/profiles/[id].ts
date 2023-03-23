@@ -18,6 +18,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
       res.status(200).json({
         business: await DAO.Profile.getByUserId(Number(id)),
       })
+      console.log('calling get profile api')
     }
   } catch (e) {
     console.log(e)

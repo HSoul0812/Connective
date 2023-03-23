@@ -29,57 +29,49 @@ const DiscoverList = ({ id, title, description, imgURL, status }: Props) => {
   }
 
   return (
-    <div className="flex flex-row w-full h-48 shadow-lg bg-white rounded justify-between gap-2">
-      <div className="w-60 relative m-3 rounded-sm shrink-0">
-        {imgURL ? (
-          <Image
-            layout="fill"
-            objectFit="cover"
-            className="rounded"
-            src={imgURL}
-          />
-        ) : (
-          <Avatar title={title} />
-        )}
+    <div className="flex flex-col items-center h-full justify-center text-center w-full bg-white rounded-2xl gap-2 border border-gray p-3">
+      <div className="text-sm">
+        {status ? (
+          <div className="rounded-2xl py-3 px-6 w-fit bg-blueLight">
+            <Image src="/assets/alert.svg" height={17} width={17} />
+            <p className="text-white text-sm"> {`Status: ${status}`}</p>
+          </div>
+        ) : null}
       </div>
-      <div className="w-full h-full overflow-y-clip flex flex-col py-3">
-        <p className="text-xl font-bold mt-4">{title}</p>
+      <div className="w-full h-full overflow-y-clip flex flex-col items-center py-3">
+        <div className="w-[120px] h-[120px] m-3 rounded-sm ">
+          {imgURL ? (
+            <Image
+              className="rounded-full"
+              height={120}
+              width={120}
+              src={imgURL}
+            />
+          ) : (
+            <Avatar title={title} width={120} height={120} />
+          )}
+        </div>
+        <p className="text-xl font-bold">{title}</p>
         <p className="text-sm flex-1 h-full">
           {description.length > 195
             ? description.slice(0, 195) + '...'
             : description}
         </p>
-        <div className="text-sm">
-          {status ? (
-            <div
-              className="rounded py-3 px-6 w-fit"
-              style={{
-                backgroundColor: statusStyle.backgroundColor,
-              }}
-            >
-              <p
-                style={{
-                  color: statusStyle.textColor,
-                  marginBottom: statusStyle.textMarginBottom,
-                }}
-              >{`Status: ${status}`}</p>
-            </div>
-          ) : null}
-        </div>
       </div>
-      <div className="w-60 shrink-0 flex flex-col justify-center items-center gap-3 m-5">
+      <div className="w-full shrink-0 flex flex-col justify-center items-center gap-3 mt-2">
         <button
-          className="text-sm font-normal bg-[#006494] font-[Poppins]"
-          onClick={() => router.push(`${Routes.PROFILE}/${id}`)}
-        >
-          View Profile
-        </button>
-
-        <button
-          className="text-sm font-normal bg-[#061A40] font-[Poppins]"
+          className="text-base font-normal text-white bg-purple font-[Poppins] flex justify-between items-center px-7 py-2 rounded-full"
           onClick={() => router.push(`${Routes.MESSAGES}?newUser=${id}`)}
         >
-          Start a chat
+          <div>Start a chat</div>
+          <Image src="/assets/spread.svg" width={22} height={5} />
+        </button>
+        <button
+          className="text-base font-normal text-purple bg-transparent border !border-purple font-[Poppins] flex justify-between  items-center px-7 py-2 rounded-full"
+          onClick={() => router.push(`${Routes.PROFILE}/${id}`)}
+        >
+          <div>View Profile</div>
+          <Image src="/assets/arrow-right.svg" width={22} height={11} />
         </button>
       </div>
     </div>

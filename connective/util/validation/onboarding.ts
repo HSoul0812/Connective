@@ -126,3 +126,18 @@ export const validateEmail = (email: string) => {
       /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     )
 }
+
+export const statusOptions = [
+  {
+    value: 'Looking to give client for commission.',
+    label: 'Looking to give client for commission.',
+  },
+  {
+    value: 'Looking to get client for a commission.',
+    label: 'Looking to get client for a commission.',
+  },
+  {
+    value: 'Looking to expand my network',
+    label: 'Looking to expand my network',
+  },
+]

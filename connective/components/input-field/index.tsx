@@ -8,10 +8,11 @@ type Props = {
   password?: boolean
   textarea?: boolean
   price?: boolean
-  updateValue: (value: string) => void
+  updateValue?: (value: string) => void
   errorText?: string
   value?: string | number
   disabled?: boolean
+  isFull?: boolean
 }
 
 const InputField = ({
@@ -24,11 +25,12 @@ const InputField = ({
   errorText,
   value,
   disabled,
+  isFull,
 }: Props) => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
 
   return (
-    <div className="flex flex-col w-[100%]">
+    <div className={`flex flex-col w-full ${isFull ? 'h-full' : ''}`}>
       {name && (
         <p className="text-[16px] leading-[15px] font-[500] text-[#111] font-[Montserrat] mb-3 1bp:text-[16.5px]">
           {name}
@@ -64,10 +66,12 @@ const InputField = ({
           onChange={(e) => {
             updateValue(e.target.value)
           }}
-          className="outline-none w-full px-[14px] text-[14px] h-[47px] border border-black/20 rounded-md focus:outline-blue-200 transition-all hover:outline hover:outline-blue-300"
+          className={`outline-none w-full px-[14px] text-[14px] ${
+            isFull ? 'h-full' : 'h-[47px]'
+          } border border-black/20 rounded-md focus:outline-blue-200 transition-all hover:outline hover:outline-blue-300`}
           placeholder={placeholder}
           value={value}
-        ></textarea>
+        />
       )}
 
       {!textarea && !price && (

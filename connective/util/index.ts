@@ -20,7 +20,7 @@ const profileConfigured = async (id: number) => {
 
 const accountType = async (id: number) => {
   const result = await axios.get(`/api/profiles/${id}`)
-  return result ? true : false
+  return result.data.business ? true : false
 }
 
 const uploadFile = async (name: string, file: Blob, image = false) => {
